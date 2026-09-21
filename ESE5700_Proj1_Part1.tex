@@ -1,0 +1,175 @@
+% !TEX program = pdflatex
+% Overleaf: set the project compiler to pdfLaTeX (Menu -> Compiler -> pdfLaTeX).
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\todo}[1]{\textcolor{gray}{\textit{#1}}}
+
+\title{%
+  ESE~5700: Digital Integrated Circuits and VLSI Fundamentals\\
+  \large Project~1, Part~1: The 6T Bitcell%
+}
+\author{Tyrone Marhguy \and Victor Wanjohi}
+\date{University of Pennsylvania \\ Due: 9/29/2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+  \includegraphics[width=0.45\linewidth]{media/penn-logo.png}
+\end{center}
+
+\section*{Team and contributions}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Member} & \textbf{Contributions (this part)} \\
+\midrule
+Tyrone Marhguy & \todo{TBD} \\
+Victor Wanjohi & \todo{TBD} \\
+\bottomrule
+\end{tabular}
+
+\noindent Both team members are responsible for understanding the full design and report.
+
+\newpage
+
+\section*{1.~Sizing ($\beta$ and $\gamma$)}
+\subsection*{Hand analysis}
+\todo{Justify pull-down, pull-up, and pass-gate $(W/L)$; define cell ratio
+$\beta = (W/L)_{\mathrm{PD}}/(W/L)_{\mathrm{PG}}$ and pull-up ratio
+$\gamma = (W/L)_{\mathrm{PU}}/(W/L)_{\mathrm{PG}}$. Include read-stability and
+writability estimates.}
+
+\subsection*{Chosen sizes}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Device} & $\boldsymbol{(W/L)}$ & \textbf{Notes} \\
+\midrule
+Pull-down (PD) & \todo{TBD} & \\
+Pull-up (PU) & \todo{TBD} & \\
+Pass-gate (PG) & \todo{TBD} & \\
+$\beta$ & \todo{TBD} & \\
+$\gamma$ & \todo{TBD} & \\
+\bottomrule
+\end{tabular}
+
+\subsection*{$\beta$ sweep (schematic)}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Notes} \\
+\midrule
+\todo{1$\times$} & \todo{TBD} & \\
+\todo{1.5$\times$} & \todo{TBD} & \\
+\todo{2$\times$} & \todo{TBD} & \\
+\bottomrule
+\end{tabular}
+
+\noindent Design point selected: \todo{TBD}. Cell kept symmetric.
+
+% Place schematic export under media/part1/ when available, e.g.:
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.7\linewidth]{media/part1/bitcell-schematic.png}
+%   \caption{6T bitcell schematic with transistor sizes.}
+% \end{figure}
+
+\section*{2.~Layout}
+\todo{DRC- and LVS-clean layout: wordline horizontal, bitline pair vertical,
+tileable for Part~2. Report area in $\mu\mathrm{m}^2$ and $F^2$ ($F = 45\,\mathrm{nm}$).}
+
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Cell area & \todo{TBD}~$\mu\mathrm{m}^2$ \\
+Cell area in $F^2$ & \todo{TBD}~$F^2$ \\
+DRC & \todo{clean / summary} \\
+LVS & \todo{clean / summary} \\
+\bottomrule
+\end{tabular}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.7\linewidth]{media/part1/bitcell-layout.png}
+%   \caption{6T bitcell layout.}
+% \end{figure}
+
+\section*{3.~Extraction}
+\todo{Post-layout parasitic extraction. Report per-cell bitline-node and
+wordline-node capacitances (loads for Part~2).}
+
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Capacitance} & \textbf{Value} \\
+\midrule
+$C_{\mathrm{BL}}$ (per cell) & \todo{TBD} \\
+$C_{\mathrm{WL}}$ (per cell) & \todo{TBD} \\
+\bottomrule
+\end{tabular}
+
+\section*{4.~Stability characterization (post-layout, $V_{DD}=1.2\,\mathrm{V}$)}
+\subsection*{4a.~Hold SNM}
+\todo{Butterfly plot with WL $= 0$; report SNM$_{\mathrm{hold}} = \min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.}
+
+\subsection*{4b.~Read SNM}
+\todo{Butterfly plot with WL $= V_{DD}$, BL$=$BLB$=V_{DD}$; report SNM$_{\mathrm{read}}$
+and DC voltage of the ``0'' node vs.\ the Section~1 estimate.}
+
+\subsection*{4c.~Write margin}
+\todo{Store $Q=1$, WL $= V_{DD}$, BL $= V_{DD}$; sweep BLB; report
+$\mathrm{WM}_{\mathrm{BL}} = V_{\mathrm{trip}}$.}
+
+\subsection*{4d.~Cell current}
+\todo{Report $I_{\mathrm{cell}}$ from the ``0''-side bitline
+(WL $= V_{DD}$, bitlines at $V_{DD}$).}
+
+\subsection*{4e.~Supply dependence}
+\begin{tabular}{@{}lll@{}}
+\toprule
+$\boldsymbol{V_{DD}}$ & \textbf{SNM$_{\mathrm{read}}$} & $\boldsymbol{\mathrm{WM}_{\mathrm{BL}}}$ \\
+\midrule
+$1.2\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
+$0.9\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
+$0.6\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
+\bottomrule
+\end{tabular}
+
+\noindent Still reads and writes at $0.6\,\mathrm{V}$? \todo{yes/no + notes}.
+
+% Waveform / butterfly figures go under media/part1/, e.g.:
+% media/part1/butterfly-hold.png
+% media/part1/butterfly-read.png
+% media/part1/write-margin.png
+
+\section*{5.~Functional check}
+\todo{Transient test with ideal WL and precharge pulses; bitline pair loaded by
+15 additional per-cell bitline loads. Write 0, read; write 1, read. Show WL, BL,
+BLB, $Q$, $\overline{Q}$.}
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.95\linewidth]{media/part1/functional-check.png}
+%   \caption{Functional write/read waveforms.}
+% \end{figure}
+
+\section*{6.~Discussion}
+\todo{Short paragraph: what limits the cell, and what you would change for Part~2.}
+
+\section*{Technology note}
+All work uses the course 45\,nm Cadence Virtuoso flow (schematic, layout, Spectre/ADE,
+DRC/LVS/PEX) at nominal $V_{DD}=1.2\,\mathrm{V}$ unless noted. Characterization above
+is post-layout unless a subsection states otherwise.
+
+\end{document}
