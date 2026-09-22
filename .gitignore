@@ -36,6 +36,7 @@ __pycache__/
 *.pdf
 !ESE5700_Proj1_Part1.pdf
 !docs/ese5700-project1.pdf
+!ESE-5700-Part1.pdf
 
 # Spectre / Cadence simulation byproducts
 *.raw
