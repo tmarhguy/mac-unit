@@ -5,4 +5,3 @@ DEFINE     cds_ff_mpt      /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_m
 DEFINE     wsp_cds_ff_mpt  /vast/projects/radway/cad-tools/pdks/gpdk018/wsp_cds_ff_mpt
 DEFINE     cds_ff_mpt_scl  /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt_scl
 DEFINE     proj1_lib       ./proj1_lib
-
