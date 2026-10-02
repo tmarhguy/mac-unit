@@ -1,0 +1,17 @@
+[#limitations]
+== Known Limitations
+
+Honest limits. Anything here is a candidate for the next part —
+not a silent caveat.
+
+* Bitcell figures beyond the Cadence checkout screenshots are still
+placeholders (`media/part1/` holds only `.gitkeep` today).
+* Sizing, SNM, write margin, cell current, and extraction tables
+are `TBD` until Spectre benches run on the extracted netlist.
+* Macro and MAC chapters are structural stubs for Parts 2–3.
+* Supply behaviour below 0.9 V is unknown until the §4e sweep runs.
+* No corner (SS/FF, temperature) or mismatch analysis yet.
+* Area, power, and timing carry no estimates — measurement only.
+
+TIP: What limits the cell, and what changes for Part 2, belongs in
+the Part 1 report §6 Discussion and is mirrored here once written.

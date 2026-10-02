@@ -1,0 +1,52 @@
+[#macro]
+== SRAM Macro (Part 2 — roadmap)
+
+NOTE: Roadmap — Part 2 hardware does not exist yet. Every value in
+this chapter is TBD; nothing here is measured or estimated.
+
+Part 2 deliverable: the Part 1 bitcell tiled into a 16 × 4
+synchronous SRAM macro. This chapter is a stub with fixed headings
+so Part 2 bring-up only fills tables and drops figures.
+
+=== Tiling and floorplan
+
+* Wordline horizontal, bitline pair vertical (from <<bitcell,Bitcell>>).
+* 16 rows × 4 columns of the exact Part 1 cell — no resized one-off.
+* Per-cell stem:[C_{\mathrm{BL}}] / stem:[C_{\mathrm{WL}}] scale to
+full-line loads here.
+
+Macro area, aspect ratio, pinout: TBD.
+
+=== Periphery
+
+* Row decoder (4-to-16) driving wordlines.
+* Precharge / equalize on the bitline pairs.
+* Sense or full-swing read path per handout; write drivers.
+* Control: clock, chip-select, write-enable, address, data in/out.
+
+Periphery schematic and timing arcs: TBD.
+
+=== Timing and loads
+
+* Read path: WL rise → bitline develop → sense/sample.
+* Write path: setup → WL pulse → hold.
+* Bitline load = 16 × stem:[C_{\mathrm{BL}}] + periphery;
+wordline load = 4 × stem:[C_{\mathrm{WL}}] + wire (extracted).
+
+.Corner timing (post-layout, 1.2 V)
+[cols="1,1,1",options="header"]
+|===
+| Arc | Value | Notes
+
+| Read access | TBD | |
+| Write pulse min | TBD | |
+| Precharge recovery | TBD | |
+|===
+
+Waveforms and corner table: TBD.
+
+=== Verification hooks
+
+DRC/LVS/PEX clean at macro level; functional march over all 16
+addresses; read/write at 1.2 V minimum. Detail lives in
+<<verification,Verification>>.

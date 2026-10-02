@@ -1,0 +1,73 @@
+[#introduction]
+== Introduction
+
+This chapter defines what the system is, what this site covers,
+and how to navigate the rest of the document.
+
+=== Purpose
+
+This project builds an SRAM-based 4-bit multiply-accumulate (MAC)
+accelerator in the ESE 5700 45 nm Cadence Virtuoso / Spectre flow.
+Two 16 × 4 SRAM macros feed a 4×4 multiplier, a 12-bit accumulator,
+and a sequencer that computes a 16-element dot product of 4-bit
+unsigned weights and activations.
+
+This site is the running report for that system.
+It records design intent, interfaces, verification strategy,
+layout detail, and measured behaviour in one numbered document.
+
+The fastest way to see the working environment: the Cadence hero
+figure at the top of this site.
+
+=== Scope
+
+The site covers:
+
+* project specification and three-part build order (see <<spec,Specification>>)
+* 6T bitcell design, layout, and post-layout stability (see <<bitcell,Bitcell>>)
+* 16 × 4 SRAM macro tiling and timing (see <<macro,SRAM Macro>>)
+* full MAC datapath, sequencer, and integration (see <<mac-system,MAC System>>)
+* correctness strategy (see <<verification,Verification>>)
+* measured results (see <<results,Results>>)
+* honest limits (see <<limitations,Known Limitations>>)
+
+It does not replace:
+
+* `README.md` — quick start and repository map
+* `ESE5700_Proj1_Part1.tex` — Gradescope-canonical Part 1 report source
+* `docs/ese5700-project1.pdf` — official project handout
+* Virtuoso/Spectre run data — tool logs and waveforms behind individual claims
+
+=== How to read this site
+
+Read chapters in order the first time.
+Chapters 1–2 give context; chapters 3–5 give the working design;
+chapters 6–8 give the evidence that the hardware behaves as claimed.
+
+Each chapter is self-contained enough to be entered directly from the
+sidebar once the overview in <<spec,Specification>> is familiar.
+
+=== Conventions
+
+.Normal cross-reference and link usage
+* Internal references look like this: <<verification,Verification>>.
+* External links look like this: https://github.com/tmarhguy/mac-unit[project repository].
+* Inline code uses monospace, e.g. `proj1_lib`, `sample_inv`, `VDD`, `WL`.
+* File paths are repository-relative, e.g. `media/cadence/inv_layout.png`.
+
+.List conventions
+* Unordered lists state properties or inventories.
+* Ordered lists state procedures where sequence matters:
+
+. Open the library in Virtuoso.
+. Check and save the schematic.
+. Run DRC, then LVS, then PEX.
+
+NOTE: Honest status is a project rule.
+Roadmap items stay labelled roadmap; unverified claims stay out of
+this site. Where a number has not been measured it is written
+`TBD`.
+
+TIP: The sidebar on the left is collapsible.
+Select a chapter title to navigate; select its arrow control to
+expand or collapse its subsections without leaving the page.

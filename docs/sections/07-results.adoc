@@ -1,0 +1,37 @@
+[#results]
+== Results
+
+NOTE: Only Part 1 has analysis so far — and no bench has run yet, so
+every entry below is TBD. Parts 2–3 have no hardware; their sections
+are structural stubs. Nothing on this page is measured or estimated.
+
+Measured numbers only. Every entry here must trace to a bench or
+tool log named in <<verification,Verification>>. Unmeasured stays
+`TBD` — never silently estimated.
+
+=== Part 1 — bitcell (post-layout, 1.2 V)
+
+.Bitcell summary
+[cols="1,1",options="header"]
+|===
+| Metric | Measured
+
+| stem:[\beta] / stem:[\gamma] | TBD
+| Area | TBD μm² (TBD stem:[F^2])
+| stem:[C_{\mathrm{BL}}] / stem:[C_{\mathrm{WL}}] (per cell) | TBD / TBD
+| stem:[\mathrm{SNM_{hold}}] | TBD
+| stem:[\mathrm{SNM_{read}}] | TBD
+| stem:[\mathrm{WM_{BL}}] | TBD
+| stem:[I_{\mathrm{cell}}] | TBD
+| DRC / LVS | TBD / TBD
+|===
+
+Supply behaviour (0.6 V readability/writability): TBD.
+
+=== Part 2 — macro (roadmap)
+
+Access time, write margin at macro level, power, area: TBD.
+
+=== Part 3 — MAC (roadmap)
+
+Functional vectors, cycle count, f_max estimate, power, area: TBD.

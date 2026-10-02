@@ -1,0 +1,89 @@
+[#spec]
+== Specification
+
+System overview: what the unit computes, how the work splits into
+three graded parts, and where each piece lives in the tree.
+
+=== Dot-product specification
+
+The unit computes a 16-element dot product of 4-bit unsigned
+weights stem:[W] and activations stem:[X]:
+
+[stem]
+++++
+\mathrm{ACC} = \sum_{i=0}^{15} W[i] \cdot X[i]
+++++
+
+Blocks:
+
+* two 16 × 4 SRAM macros (weights, activations)
+* one 4×4 unsigned multiplier
+* one 12-bit accumulator (max sum: 16 × 15 × 15 = 3600 < 4096)
+* one sequencer stepping through the 16 index positions
+
+=== Three-part build order
+
+Three graded parts, one accumulator at the end:
+
+.Three-part deliverables
+[cols="1,3,1,1",options="header"]
+|===
+| Part | Deliverable | Due | In repo
+
+| **1** | 6T bitcell: schematic, custom layout, post-layout stability
+| 9/29/2026 | yes
+| **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro
+| 10/6/2026 | roadmap
+| **3** | Two SRAMs + datapath + sequencer → MAC unit
+| 10/20/2026 | roadmap
+|===
+
+This site already carries the Part 2 and Part 3 chapter shells
+so bring-up never requires restructuring — only filling tables.
+
+=== Technology and flow
+
+* Course 45 nm process, Cadence Virtuoso schematic and layout.
+* Spectre / ADE for characterization and transient checks.
+* DRC, LVS, and PEX required; characterization is post-layout.
+* Nominal supply stem:[V_{DD} = 1.2\,\mathrm{V}];
+supply sweep additionally covers 0.9 V and 0.6 V for Part 1 §4e.
+
+Full handout: link:ese5700-project1.pdf[course project handout, window=_blank].
+
+=== Repository map
+
+.Repository layout
+[cols="1,2",options="header"]
+|===
+| Path | Owns
+
+| `ESE5700_Proj1_Part1.tex` | Gradescope-canonical Part 1 report source
+| `docs/index.adoc` + `docs/sections/` | This site (running report)
+| `docs/ese5700-project1.pdf` | Official handout
+| `media/cadence/` | Virtuoso screenshots (flow checkout, heroes)
+| `media/part1/` | Part 1 report figures (schematic, layout, butterflies)
+| `scripts/` | Local build helpers (TeX container, docs builder)
+| `.github/workflows/` | `latex-to-pdf.yml` + `docs.yml`
+|===
+
+=== Flow checkout (sample inverter)
+
+Before the bitcell, the Cadence environment is checked out with a
+sample inverter (`proj1_lib sample_inv`):
+
+* Schematic capture in Virtuoso Schematic Editor XL.
+* Custom layout of the same cell.
+* Library load window confirming the user setup.
+
+.Sample inverter close-up — device and pin placement before wiring detail
+image::inv_sch_closeup.png[Sample inverter schematic close-up,align=center,width=560]
+
+.Sample inverter layout — N/P placement and supply rails
+image::inv_layout.png[Sample inverter custom layout,align=center,width=720]
+
+.Cadence library load window — environment checkout for `tmarhguy`
+image::cadence_load_window_tmarhguy_title.png[Cadence library load window,align=center,width=560]
+
+These figures prove the flow runs; the graded design starts in
+<<bitcell,Bitcell>>.
