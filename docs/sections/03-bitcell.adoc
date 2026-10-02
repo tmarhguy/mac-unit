@@ -1,0 +1,782 @@
+[#bitcell]
+== Bitcell (Part 1)
+
+Part 1 deliverable: a sized, drawn, DRC/LVS-clean 6T bitcell with
+post-layout stability characterization. This chapter mirrors the
+Gradescope report (`ESE5700_Proj1_Part1.tex` §§1–6) so the site
+and the submitted PDF never diverge in structure.
+
+[#bitcell-sizing]
+=== Sizing — beta and gamma
+
+Definitions:
+
+latexmath:[\beta = (W/L)_{\mathrm{PD}} / (W/L)_{\mathrm{PG}}]
+latexmath:[\gamma = (W/L)_{\mathrm{PU}} / (W/L)_{\mathrm{PG}}]
+
+Cell ratio stem:[\beta] guards the read (0-node rise vs. trip);
+pull-up ratio stem:[\gamma] guards the write (pull-up vs. pass-gate).
+The cell is kept symmetric.
+
+.Chosen sizes
+[cols="1,1,2",options="header"]
+|===
+| Device | stem:[(W/L)] | Notes
+
+| Pull-down (PD) | TBD | —
+| Pull-up (PU) | TBD | —
+| Pass-gate (PG) | TBD | —
+| stem:[\beta] | TBD | —
+| stem:[\gamma] | TBD | —
+|===
+
+.Beta sweep (schematic SNM_read)
+[cols="1,1,2",options="header"]
+|===
+| stem:[\beta] | stem:[\mathrm{SNM_{read}}] | Notes
+
+| 1× | TBD | —
+| 1.5× | TBD | —
+| 2× | TBD | —
+|===
+
+Design point selected: TBD.
+
+.6T bitcell schematic with transistor sizes (`proj1_lib` 6t-sram)
+image::bitcell-schematic.png[6T bitcell schematic from Virtuoso,align=center,width=640]
+
+[#bitcell-read-stability]
+=== Cell Ratio and Read Stability
+
+// Source section: hand notes §1.1.1.
+
+For the 6T SRAM, assume stem:[q = 0] for read-stability analysis.
+Given stem:[q = 0], the node is pulled down by the NMOS inside inverter 1.
+
+.6T SRAM cell used for read-stability analysis
+image::6t-cell-wl-bl-inv12-q-qb.png[6T SRAM cell used for read-stability analysis,align=center,width=640]
+
+The read path can first be approximated using a voltage-divider model.
+
+.Approximate voltage-divider model
+image::voltage_div_diagram.png[Approximate voltage-divider model,align=center,width=640]
+
+With stem:[BL = V_{DD}], the pass-gate resistance is stem:[R_{PG}] and
+the pull-down resistance is stem:[R_{PD1}].
+
+By voltage division,
+
+[stem]
+++++
+\frac{V_q}{V_{DD}}
+=
+\frac{R_{PD1}}{R_{PG} + R_{PD1}}
+++++
+
+or equivalently,
+
+[stem]
+++++
+\frac{V_q}{V_{DD}}
+=
+\frac{1}
+{1 + \frac{R_{PG}}{R_{PD1}}}
+++++
+
+From transistor physics,
+
+[stem]
+++++
+R_T \propto \frac{1}{W_T}
+++++
+
+Assume that the pass transistor and pull-down transistor have the same
+channel length.
+
+Define the cell ratio
+
+[stem]
+++++
+\beta
+=
+\frac{(W/L)_{PD}}{(W/L)_{PG}}
+=
+\frac{W_{PD}}{W_{PG}}
+++++
+
+Therefore,
+
+[stem]
+++++
+\beta
+\approx
+\frac{R_{PG}}{R_{PD}}
+++++
+
+and hence the voltage-divider approximation becomes
+
+[stem]
+++++
+\frac{V_q}{V_{DD}}
+\approx
+\frac{1}{1+\beta}
+++++
+
+so that
+
+[stem]
+++++
+V_q
+\approx
+\frac{V_{DD}}{1+\beta}.
+++++
+
+From this approximation, increasing the selected value of stem:[\beta]
+reduces the value of stem:[V_q].
+
+The relevance of this result is reinforced by considering the transistor
+transition voltage. Let stem:[V_m] denote the inverter switching point,
+where both the PMOS and NMOS are conducting and
+
+[stem]
+++++
+V_{in} = V_{out} = V_m.
+++++
+
+At stem:[V_m], the inverter is at its transition point and is not stable
+with respect to a prior logic-state voltage.
+
+
+[#bitcell-current-balance]
+=== MOSFET Current-Balance Analysis
+
+// Source section: hand notes §1.1.2.
+
+At the equilibrium read-disturb voltage, the storage-node voltage is
+constant.
+
+Neglecting gate leakage and other secondary currents, Kirchhoff's current
+law implies that the pull-down and pass-gate currents are equal:
+
+[stem]
+++++
+I_{pd} = I_{pg}
+++++
+
+or, in terms of current magnitudes,
+
+[stem]
+++++
+|I_{pg}| = |I_{pd}|.
+++++
+
+// TODO(figures): crop the current-balance sketch (BL — R_PG — I_pg —> q,
+// R_PD1 — I_pd —> GND, hand notes §1.1.2) to
+// media/part1/current-balance.png and reference it here.
+// No placeholder is rendered — nothing fabricated.
+
+==== Pass-Gate NMOS
+
+For the pass transistor,
+
+[stem]
+++++
+D = V_{DD},
+\qquad
+G = V_{DD},
+\qquad
+S = V_q.
+++++
+
+Therefore,
+
+[stem]
+++++
+V_{DS} = V_{DD} - V_q
+++++
+
+and
+
+[stem]
+++++
+V_{GS} = V_{DD} - V_q.
+++++
+
+Since
+
+[stem]
+++++
+V_{DS} = V_{GS},
+++++
+
+the saturation condition
+
+[stem]
+++++
+V_{DS} > V_{GS} - V_{tn}
+++++
+
+is satisfied, so the pass transistor operates in saturation.
+
+Its current is therefore
+
+[stem]
+++++
+I_{pg}
+=
+\frac{1}{2}
+k_{pg}
+\left(V_{GS}-V_{tn}\right)^2
+++++
+
+with
+
+[stem]
+++++
+k_{pg}
+=
+\mu_n C_{ox}
+\left(\frac{W}{L}\right)_{pg}.
+++++
+
+.Pass-gate saturation current and transconductance factor — handwritten source
+image::ip_kpg_cox_vgs_vth_w_l_eq.png[Handwritten pass-gate current equations,align=center,width=640]
+
+
+==== Pull-Down NMOS
+
+For the pull-down NMOS, stem:[pd1],
+
+[stem]
+++++
+V_D = V_q,
+\qquad
+V_G = \overline{V_q} \approx V_{DD},
+\qquad
+V_S = 0.
+++++
+
+Therefore,
+
+[stem]
+++++
+V_{DS} = V_q
+++++
+
+and
+
+[stem]
+++++
+V_{GS} = V_{DD}.
+++++
+
+For the read-disturb condition,
+
+[stem]
+++++
+V_{DS} < V_{GS} - V_{tn},
+++++
+
+so the pull-down transistor operates in the triode region.
+
+The pull-down current is therefore
+
+[stem]
+++++
+I_{pd}
+=
+k_{pd}
+\left[
+\left(V_{GS}-V_{tn}\right)V_{DS}
+-
+\frac{V_{DS}^2}{2}
+\right]
+++++
+
+where
+
+[stem]
+++++
+k_{pd}
+=
+\mu_n C_{ox}
+\left(\frac{W}{L}\right)_{PD}.
+++++
+
+At the equilibrium read-disturb voltage,
+
+[stem]
+++++
+I_{pd} = I_{pg}.
+++++
+
+
+==== Solving for the Read-Disturb Voltage
+
+Substituting the device voltages into the current expressions gives
+
+[stem]
+++++
+k_{pd}
+\left[
+\left(V_{DD}-V_{tn}\right)V_q
+-
+\frac{V_q^2}{2}
+\right]
+=
+\frac{1}{2}
+k_{pg}
+\left(V_{DD}-V_q-V_{tn}\right)^2.
+++++
+
+Rearranging,
+
+[stem]
+++++
+\frac{k_{pd}}{k_{pg}}
+=
+\frac
+{\left(V_{DD}-V_q-V_{tn}\right)^2}
+{2\left(V_{DD}-V_{tn}\right)V_q - V_q^2}.
+++++
+
+Let
+
+[stem]
+++++
+E = V_{DD}-V_{tn}.
+++++
+
+Then
+
+[stem]
+++++
+\frac{k_{pd}}{k_{pg}}
+=
+\frac{(E-V_q)^2}
+{2EV_q-V_q^2}.
+++++
+
+.Strength ratio in terms of the disturb voltage — handwritten source
+image::kpd_kpg_e_vq_evq_eq.png[Handwritten k_pd over k_pg equation,align=center,width=640]
+
+Also,
+
+[stem]
+++++
+\frac{k_{pd}}{k_{pg}}
+=
+\frac{(W/L)_{PD}}{(W/L)_{PG}}
+=
+\beta.
+++++
+
+Thus,
+
+[stem]
+++++
+\left(2EV_q-V_q^2\right)\beta
+=
+(E-V_q)^2.
+++++
+
+Expanding,
+
+[stem]
+++++
+2E\beta V_q-\beta V_q^2
+=
+E^2+V_q^2-2EV_q.
+++++
+
+Collecting terms,
+
+[stem]
+++++
+V_q^2(1+\beta)
++
+V_q(-2E-2E\beta)
++
+E^2
+=
+0.
+++++
+
+Using the quadratic formula,
+
+[stem]
+++++
+V_q
+=
+E
+\left(
+1
+\pm
+\sqrt{\frac{\beta}{1+\beta}}
+\right).
+++++
+
+The positive solution exceeds stem:[V_{DD}-V_{tn}] and is inconsistent
+with the assumed conducting pass gate and triode-region pull-down
+transistor.
+
+Therefore the physically relevant solution is
+
+[stem]
+++++
+\boxed{
+V_q
+=
+(V_{DD}-V_{tn})
+\left(
+1-
+\sqrt{\frac{\beta}{1+\beta}}
+\right)
+}.
+++++
+
+.Read-disturb voltage in closed form — handwritten source
+image::vq_vdd_vth_beta_eq.png[Handwritten V_q closed-form equation,align=center,width=640]
+
+This result illustrates that increasing the cell ratio stem:[\beta]
+reduces the voltage developed at the stored-zero node during a read.
+
+The derivation assumes:
+
+* ideal long-channel square-law behavior,
+* equal NMOS threshold voltages,
+* negligible body effect, and
+* stem:[\overline{Q} \approx V_{DD}].
+
+Writability / stem:[\gamma] estimate: TBD.
+
+
+[#bitcell-switching]
+=== Inverter Switching Voltage
+
+// Source section: hand notes §1.1.3.
+
+The disturbed storage node stem:[q] is connected to the input of
+inverter 2.
+
+// The SRAM-cell figure is reused here because it shows q driving INV2.
+.6T SRAM cell showing the disturbed node connected to inverter 2
+image::6t-cell-wl-bl-inv12-q-qb.png[6T SRAM cell showing q connected to inverter 2,align=center,width=640]
+
+The switching voltage is defined by
+
+[stem]
+++++
+V_{in} = V_{out} = V_m.
+++++
+
+At the inverter's DC switching point, the NMOS and PMOS drain-current
+magnitudes are equal:
+
+[stem]
+++++
+I_{DN} = |I_{DP}|.
+++++
+
+Assuming both MOSFETs are in saturation and using square-law current
+equations,
+
+[stem]
+++++
+\frac{1}{2}
+k_n
+(V_m-V_{tn})^2
+=
+\frac{1}{2}
+k_p
+(V_{DD}-V_m-|V_{tp}|)^2.
+++++
+
+Therefore,
+
+[stem]
+++++
+\frac{k_p}{k_n}
+=
+\frac{(V_m-V_{tn})^2}
+{(V_{DD}-V_m-|V_{tp}|)^2}.
+++++
+
+Define
+
+[stem]
+++++
+B
+=
+\sqrt{\frac{k_p}{k_n}}.
+++++
+
+Then
+
+[stem]
+++++
+B
+\left(
+V_{DD}-V_m-|V_{tp}|
+\right)
+=
+V_m-V_{tn}.
+++++
+
+Solving for stem:[V_m],
+
+[stem]
+++++
+V_m
+=
+\frac
+{B(V_{DD}-|V_{tp}|)+V_{tn}}
+{1+B}.
+++++
+
+Equivalently,
+
+[stem]
+++++
+\boxed{
+V_m
+=
+\frac
+{V_{tn}+B(V_{DD}-|V_{tp}|)}
+{1+B}
+}.
+++++
+
+
+// NOTE:
+// The following PG / gamma notation is preserved as written in the
+// handwritten source.
+
+Also,
+
+[stem]
+++++
+\frac{k_p}{k_n}
+=
+\frac
+{\mu_p C_{ox}(W/L)_{PU}}
+{\mu_n C_{ox}(W/L)_{PG}}.
+++++
+
+Define
+
+[stem]
+++++
+\beta = (W/L)_{PD},
+\qquad
+\gamma = (W/L)_{PG}.
+++++
+
+The handwritten derivation then writes
+
+[stem]
+++++
+\frac{k_p}{k_n}
+=
+\frac{\gamma \mu_p}
+{\beta \mu_n}
+=
+B^2.
+++++
+
+Therefore,
+
+[stem]
+++++
+B
+=
+\sqrt{
+\frac{\mu_p \gamma}
+{\mu_n \beta}
+}.
+++++
+
+Substituting this into the switching-voltage equation gives
+
+[stem]
+++++
+\boxed{
+V_m
+=
+\frac{
+V_{tn}
++
+\sqrt{
+\frac{\mu_p\gamma}
+{\mu_n\beta}
+}
+\left(V_{DD}-|V_{tp}|\right)
+}{
+1+
+\sqrt{
+\frac{\mu_p\gamma}
+{\mu_n\beta}
+}
+}
+}.
+++++
+
+Thus, the inverter switching voltage depends on the supply voltage,
+transistor threshold voltages, and the relative PMOS/NMOS strengths.
+
+
+[#bitcell-selection]
+=== Read-Stability Condition and Cell-Ratio Selection
+
+// Source section: hand notes §1.1.4.
+
+For read stability, require the disturbed stored-zero voltage to remain
+below the inverter switching voltage:
+
+[stem]
+++++
+V_q < V_m.
+++++
+
+Using the expressions derived above,
+
+[stem]
+++++
+(V_{DD}-V_{tn})
+\left(
+1-
+\sqrt{\frac{\beta}{1+\beta}}
+\right)
+<
+\frac{
+V_{tn}
++
+\sqrt{
+\frac{\mu_p\gamma}
+{\mu_n\beta}
+}
+\left(V_{DD}-|V_{tp}|\right)
+}{
+1+
+\sqrt{
+\frac{\mu_p\gamma}
+{\mu_n\beta}
+}
+}.
+++++
+
+Increasing stem:[\beta] strengthens the pull-down transistor relative to
+the pass gate and reduces the read-disturb voltage.
+
+However, stem:[\beta] also affects the inverter switching voltage and,
+importantly, the cell area.
+
+Therefore, the final cell ratio cannot be selected simply by minimizing
+stem:[V_q].
+
+[#bitcell-layout]
+=== Layout
+
+Wordline runs horizontal, bitline pair runs vertical, tileable for
+Part 2. Report area in μm² and in stem:[F^2] with
+stem:[F = 45\,\mathrm{nm}].
+
+.Layout metrics
+[cols="1,1",options="header"]
+|===
+| Metric | Value
+
+| Cell area | TBD μm²
+| Cell area | TBD stem:[F^2]
+| DRC | TBD (clean / summary)
+| LVS | TBD (clean / summary)
+|===
+
+.Bitcell layout (report figure)
+image::bitcell-layout.png[6T bitcell layout placeholder,align=center,width=640]
+
+[#bitcell-extraction]
+=== Extraction
+
+Post-layout parasitic extraction. Per-cell bitline-node and
+wordline-node capacitances are the loads Part 2 multiplies by
+row/column count.
+
+.Extracted loads (per cell)
+[cols="1,1",options="header"]
+|===
+| Capacitance | Value
+
+| stem:[C_{\mathrm{BL}}] (per cell) | TBD
+| stem:[C_{\mathrm{WL}}] (per cell) | TBD
+|===
+
+[#bitcell-stability]
+=== Stability characterization
+
+All benches at stem:[V_{DD} = 1.2\,\mathrm{V}] post-layout unless
+a subsection states otherwise.
+
+==== Hold SNM
+
+Butterfly with stem:[WL = 0]. Report
+latexmath:[\mathrm{SNM_{hold}} = \min(\mathrm{SNM}_L, \mathrm{SNM}_R)].
+
+image::butterfly-hold.png[Hold butterfly placeholder,align=center,width=640]
+
+Value: TBD.
+
+==== Read SNM
+
+Butterfly with stem:[WL = V_{DD}], stem:[BL = BLB = V_{DD}].
+Report stem:[\mathrm{SNM_{read}}] and the DC voltage of the 0-node
+against the hand estimate in <<bitcell-read-stability,Cell Ratio and Read Stability>>.
+
+image::butterfly-read.png[Read butterfly placeholder,align=center,width=640]
+
+Value: TBD.
+
+==== Write margin
+
+Store stem:[Q = 1], stem:[WL = V_{DD}], stem:[BL = V_{DD}];
+sweep BLB. Report latexmath:[\mathrm{WM_{BL}} = V_{\mathrm{trip}}].
+
+image::write-margin.png[Write-margin sweep placeholder,align=center,width=640]
+
+Value: TBD.
+
+==== Cell current
+
+Report stem:[I_{\mathrm{cell}}] from the 0-side bitline with
+stem:[WL = V_{DD}] and both bitlines at stem:[V_{DD}]. Value: TBD.
+
+==== Supply dependence
+
+.Supply sweep
+[cols="1,1,1",options="header"]
+|===
+| stem:[V_{DD}] | stem:[\mathrm{SNM_{read}}] | stem:[\mathrm{WM_{BL}}]
+
+| 1.2 V | TBD | TBD
+| 0.9 V | TBD | TBD
+| 0.6 V | TBD | TBD
+|===
+
+Still reads and writes at 0.6 V? TBD + notes.
+
+[#bitcell-functional]
+=== Functional check
+
+Transient with ideal WL and precharge pulses; bitline pair loaded by
+15 additional per-cell bitline loads. Sequence: write 0, read;
+write 1, read. Show WL, BL, BLB, stem:[Q], stem:[\overline{Q}].
+
+image::functional-check.png[Functional write/read waveforms placeholder,align=center,width=720]
+
+[#bitcell-discussion]
+=== Discussion
+
+TBD — one paragraph: what limits the cell, and what changes for Part 2.
+
+IMPORTANT: No sizing lands without post-layout SNM/WM agreement.
+Schematic-only numbers never promote to the results chapter.

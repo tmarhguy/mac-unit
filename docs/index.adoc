@@ -1,0 +1,73 @@
+= MAC Unit Project Report
+:author: Tyrone Marhguy, Victor Wanjohi
+:doctype: book
+:toc: left
+:toclevels: 3
+:sectnums:
+:sectnumlevels: 3
+:icons: font
+:docinfo: shared
+:imagesdir: images
+:stem: latexmath
+:experimental:
+
+// Entry point for the report site.
+// Add, remove, or reorder chapters by editing the include list below.
+// Each chapter lives in sections/ as NN-name.adoc with a level-1 (==) heading.
+
+[preface]
+== MAC at a glance
+
+SRAM-based 4-bit multiply-accumulate (MAC) accelerator for
+ESE 5700 — two 16 × 4 SRAM macros, a 4×4 multiplier, a 12-bit
+accumulator, and a sequencer computing a 16-element dot product
+in the course 45 nm Cadence Virtuoso / Spectre flow.
+
+.6T SRAM bitcell schematic in Virtuoso — `proj1_lib` 6t-sram
+image::bitcell-schematic.png[6T SRAM bitcell schematic canvas,align=center,width=432]
+
+++++
+<div style="text-align:center; margin: 1.5rem 0;">
+<a href="https://github.com/tmarhguy/mac-unit" target="_blank" rel="noopener" style="display:inline-block;background:#24292f;color:#ffffff;font-size:20px;font-weight:700;padding:14px 36px;border-radius:10px;text-decoration:none;margin:6px;">GitHub Repository</a>
+</div>
+++++
+
+The unit computes:
+
+[stem]
+++++
+\mathrm{ACC} = \sum_{i=0}^{15} W[i] \cdot X[i]
+++++
+
+over 4-bit unsigned weights and activations. Part 1 sizes and
+characterizes the 6T bitcell; Part 2 tiles it into a 16 × 4 macro;
+Part 3 wires two macros through the multiplier, accumulator, and
+sequencer. Dive in with <<spec,Specification>> for the full breakdown,
+or <<bitcell,Bitcell>> for the Part 1 design as it stands.
+
+// Chapters — reorder freely. Filenames carry a numeric prefix only so
+// directory listings stay in reading order; the visible numbers come
+// from :sectnums:, not from filenames.
+//
+// Blank lines between the includes are significant: they terminate any
+// open block (e.g. a trailing list) in the previous file so the next
+// chapter heading is always parsed as a new section.
+include::sections/01-introduction.adoc[]
+
+include::sections/02-spec.adoc[]
+
+include::sections/03-bitcell.adoc[]
+
+include::sections/04-macro.adoc[]
+
+include::sections/05-mac-system.adoc[]
+
+include::sections/06-verification.adoc[]
+
+include::sections/07-results.adoc[]
+
+include::sections/08-limitations.adoc[]
+
+include::sections/09-about.adoc[]
+
+include::sections/10-authors.adoc[]

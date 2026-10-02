@@ -1,4 +1,4 @@
-# SRAM-Based 4-bit MAC Accelerator
+# SRAM-Based 4-bit MAC Accelerator - ESE 5700 (MSE EE - UPENN)
 
 [![LaTeX to PDF](https://img.shields.io/github/actions/workflow/status/tmarhguy/mac-unit/latex-to-pdf.yml?branch=main&logo=github&label=LaTeX%20to%20PDF&style=flat-square)](https://github.com/tmarhguy/mac-unit/actions/workflows/latex-to-pdf.yml)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Reports-008080?logo=latex&logoColor=white&style=flat-square)](https://github.com/tmarhguy/mac-unit)
@@ -6,11 +6,30 @@
 [![45 nm](https://img.shields.io/badge/process-45%20nm-informational?style=flat-square)](https://github.com/tmarhguy/mac-unit)
 [![SRAM / MAC](https://img.shields.io/badge/design-16x4%20SRAM%20%2B%20MAC-6f42c1?style=flat-square)](https://github.com/tmarhguy/mac-unit)
 
+<p align="center">
+  <img alt="6T SRAM bitcell schematic" src="media/part1/bitcell-schematic.png" width="336">
+  <br>
+  <em>The actual design — 6T SRAM bitcell schematic (`proj1_lib` 6t-sram) in Virtuoso.</em>
+</p>
+
+<p align="center">
+  <a href="https://github.com/tmarhguy"><img alt="Tyrone Marhguy" src="https://img.shields.io/badge/Tyrone_Marhguy-24292f?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://github.com/vwanjohi"><img alt="Victor Wanjohi" src="https://img.shields.io/badge/Victor_Wanjohi-24292f?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://tmarhguy.github.io/mac-unit/"><img alt="Report Site" src="https://img.shields.io/badge/Report_Site-2e7d32?style=for-the-badge"></a>
+</p>
+
 **ESE 5700 — Digital Integrated Circuits and VLSI Fundamentals** (University of Pennsylvania). Project 1: an SRAM-based 4-bit multiply-accumulate (MAC) accelerator in the course **45 nm** Cadence Virtuoso / Spectre flow.
 
 **This GitHub repository is not the official Gradescope submission.** It is a shared archive for LaTeX sources, figures, and CI-built PDFs. Each part is uploaded separately to Gradescope as one team PDF.
 
 **Course handout (in-repo):** [docs/ese5700-project1.pdf](docs/ese5700-project1.pdf).
+
+## Docs
+
+- [Report site](https://tmarhguy.github.io/mac-unit/) — the running
+  report, built from [`docs/index.adoc`](docs/index.adoc) with `make docs`
+- [architecture](docs/architecture.md) — design and build order
+- [ADRs](docs/adr/) — sizing and signoff decisions
 
 ## Team
 
@@ -47,8 +66,18 @@ Technology: course **45 nm** process, Virtuoso schematic/layout, Spectre/ADE, DR
 | [ESE5700_Proj1_Part1.pdf](ESE5700_Proj1_Part1.pdf) | CI-built PDF (after the workflow runs) |
 | [docs/ese5700-project1.pdf](docs/ese5700-project1.pdf) | Official project handout |
 | [media/](media/) | Part 1 figures and README assets |
-| [scripts/](scripts/) | Local helper matching the GitHub Actions TeX container |
-| [.github/workflows/](.github/workflows/) | LaTeX → PDF workflow |
+| [scripts/](scripts/) | Local helpers: TeX container + docs builder (`build-docs.sh`) |
+| [.github/workflows/](.github/workflows/) | LaTeX → PDF + Docs (GitHub Pages) workflows |
+| [docs/index.adoc](docs/index.adoc) | Technical manual source (Asciidoctor book) |
+
+## Build the manual locally
+
+Requirements: Asciidoctor (`brew install asciidoctor`), or `apt-get install asciidoctor` on Linux. No npm needed.
+
+```bash
+make docs
+make docs-open   # serve build/docs on :8000
+```
 
 ## Build the report locally
 

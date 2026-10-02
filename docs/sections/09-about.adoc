@@ -1,0 +1,29 @@
+[#about]
+== About This Site
+
+Meta information about this report — deliberately placed after the
+work itself.
+
+This site is the running report for the project — figures, derivations,
+and measured numbers as they land. It is the companion to the concise,
+GitHub-facing `README.md` and the Gradescope-bound LaTeX reports:
+
+* `README.md` — project identity, status, and quick start.
+* `ESE5700_Proj1_Part1.tex` — joint team Part 1 report source (Gradescope canonical).
+* `docs/ese5700-project1.pdf` — official project handout (in-repo).
+* `docs/` (this site) — spec, design, verification, and
+results in report style.
+
+=== Conventions
+
+Conventions used throughout:
+
+* `monospace` marks commands, file paths, identifiers, and literals.
+* Unmeasured values are written as `TBD` — never silently estimated.
+* Nominal supply is stem:[V_{DD} = 1.2\,\mathrm{V}] unless noted.
+* Characterization is post-layout unless a subsection states otherwise.
+* Normative detail lives alongside this site as Markdown
+(`docs/*.md`, `docs/adr/`) and is linked, not duplicated.
+
+TIP: New here? Start with <<introduction,Introduction>> for scope and
+reading order, then <<spec,Specification>> for the system overview.

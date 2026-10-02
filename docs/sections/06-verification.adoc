@@ -1,0 +1,65 @@
+[#verification]
+== Verification
+
+How the project proves the hardware is correct — and how to re-run
+that proof locally.
+
+=== Signoff gates
+
+Every graded part must clear the same three gates before numbers
+promote to <<results,Results>>:
+
+. DRC clean (course 45 nm deck, no waived violations unrecorded).
+. LVS clean (schematic vs. layout match).
+. PEX + post-layout simulation (extracted netlist, not schematic-only).
+
+IMPORTANT: No sizing, timing, or margin lands without post-layout
+evidence. Schematic-only numbers stay in their design section.
+
+=== Spectre benches
+
+* Butterfly (hold: stem:[WL = 0]; read: stem:[WL = V_{DD}],
+stem:[BL = BLB = V_{DD}]) → SNM via maximum-square method.
+* Write margin: store stem:[Q = 1], sweep BLB, record
+stem:[V_{\mathrm{trip}}].
+* Cell current: 0-side bitline, stem:[WL = V_{DD}].
+* Supply sweep: 1.2 V, 0.9 V, 0.6 V for SNM_read and WM_BL.
+* Functional transient: ideal WL + precharge, 15-load bitlines,
+write-0/read, write-1/read on WL, BL, BLB, stem:[Q],
+stem:[\overline{Q}].
+
+=== Correctness properties
+
+.Properties and where they are checked
+[cols="2,2",options="header"]
+|===
+| Property | Where it is checked
+
+| `DRC == clean`, `LVS == clean`
+| Virtuoso DRC/LVS logs per cell, macro, top
+
+| `PEX(post-layout) == simulated`
+| Extracted Spectre netlists, not schematic
+
+| `SNM_read > 0` at 1.2 V and 0.9 V
+| Butterfly benches (§4a–4b)
+
+| `WM_BL` recorded with trip voltage
+| Write-margin sweep (§4c)
+
+| `write(0); read == 0`, `write(1); read == 1`
+| Functional transient (§5)
+
+| `ACC == sum(W[i]*X[i])` on reference vectors
+| Part 3 integration bench
+|===
+
+=== Re-running locally
+
+. Open `proj1_lib` in Virtuoso (see flow checkout in <<spec,Specification>>).
+. Check-and-save each schematic; run DRC then LVS then PEX.
+. Launch ADE with the documented bench states and compare against
+the tables in <<bitcell,Bitcell>> and <<results,Results>>.
+
+Tool logs and export settings behind each figure are recorded with
+the figure in `media/` so a teammate can reproduce it.
