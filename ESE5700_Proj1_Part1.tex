@@ -47,10 +47,86 @@ Victor Wanjohi & \todo{TBD} \\
 
 \section*{1.~Sizing ($\beta$ and $\gamma$)}
 \subsection*{Hand analysis}
-\todo{Justify pull-down, pull-up, and pass-gate $(W/L)$; define cell ratio
-$\beta = (W/L)_{\mathrm{PD}}/(W/L)_{\mathrm{PG}}$ and pull-up ratio
-$\gamma = (W/L)_{\mathrm{PU}}/(W/L)_{\mathrm{PG}}$. Include read-stability and
-writability estimates.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/6t-cell-wl-bl-inv12-q-qb.png}
+  \caption{6T cell read-disturb setup: $Q=0$ stored, wordline asserted,
+  bitlines precharged (hand sketch).}
+\end{figure}
+Assume the stored state $Q=0$ ($\overline{Q}\approx V_{DD}$) for
+read-stability analysis. With $Q=0$ the ``0'' node is pulled down by
+the NMOS inside INV1 while the bitline (precharged to $V_{DD}$) drives
+current through the pass-gate, so the disturbed node follows an
+approximate voltage-divider model:
+\begin{equation}
+\frac{V_Q}{V_{DD}} = \frac{R_{\mathrm{PD1}}}{R_{\mathrm{PG}}+R_{\mathrm{PD1}}}
+= \frac{1}{1+R_{\mathrm{PG}}/R_{\mathrm{PD1}}}.
+\end{equation}
+From transistor physics $R_T\propto 1/W_T$ at fixed $L$. Defining the
+cell ratio $\beta=(W/L)_{\mathrm{PD}}/(W/L)_{\mathrm{PG}}
+=W_{\mathrm{PD}}/W_{\mathrm{PG}}$ gives
+$\beta\approx R_{\mathrm{PG}}/R_{\mathrm{PD}}$, hence
+\begin{equation}
+\frac{V_Q}{V_{DD}} \approx \frac{1}{1+\beta},
+\qquad V_Q \approx \frac{V_{DD}}{1+\beta}:
+\end{equation}
+a larger $\beta$ lowers the read-disturb bump. Whether that bump flips
+the cell is set by the inverter switching voltage $V_M$
+($V_{\mathrm{in}}=V_{\mathrm{out}}$), where both devices conduct.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/voltage_div_diagram.png}
+  \caption{Approximate resistive divider for the read disturb:
+  precharged bitline through $R_{\mathrm{PG}}$ against the pull-down
+  $R_{\mathrm{PD1}}$ to ground (hand sketch).}
+\end{figure}
+
+Current balance at the equilibrium disturb voltage: neglecting gate
+leakage, KCL gives $I_{\mathrm{PD}}=I_{\mathrm{PG}}$. The pass-gate has
+$D=G=V_{DD}$, $S=V_Q$, so $V_{DS}=V_{GS}=V_{DD}-V_Q$ and
+$V_{DS}>V_{GS}-V_{Tn}$ always: saturation, with
+$I_{\mathrm{PG}}=\tfrac{1}{2}k_{\mathrm{PG}}(V_{GS}-V_{Tn})^2$ and
+$k_{\mathrm{PG}}=\mu_n C_{ox}(W/L)_{\mathrm{PG}}$.
+The pull-down (pd1) has $V_D=V_Q$, $V_G\approx V_{DD}$, $V_S=0$, so
+$V_{DS}=V_Q<V_{GS}-V_{Tn}$: triode, with
+$I_{\mathrm{PD}}=k_{\mathrm{PD}}[(V_{GS}-V_{Tn})V_{DS}-V_{DS}^2/2]$.
+Equating the two with $E=V_{DD}-V_{Tn}$ yields
+\begin{equation}
+V_Q^2(1+\beta)+V_Q(-2E-2E\beta)+E^2=0
+\quad\Rightarrow\quad
+V_Q = E\left(1\pm\sqrt{\frac{\beta}{1+\beta}}\right),
+\end{equation}
+of which the positive root exceeds $V_{DD}-V_{Tn}$ and is inconsistent
+with the assumed saturated pass-gate / triode pull-down, leaving
+\begin{equation}
+V_Q = (V_{DD}-V_{Tn})\left(1-\sqrt{\frac{\beta}{1+\beta}}\right).
+\end{equation}
+This assumes ideal long-channel square-law behavior, equal NMOS
+thresholds, and negligible body effect.
+
+The disturbed node $Q$ drives INV2, whose switching point satisfies
+$I_{DN}=|I_{DP}|$ with both devices in saturation:
+\begin{equation}
+V_M = \frac{V_{Tn}+B\,(V_{DD}-|V_{Tp}|)}{1+B},
+\qquad B=\sqrt{\frac{k_P}{k_N}}
+      =\sqrt{\frac{\gamma\,\mu_p}{\beta\,\mu_n}},
+\end{equation}
+with $k_P/k_N=\mu_p C_{ox}(W/L)_{\mathrm{PU}}/
+\big(\mu_n C_{ox}(W/L)_{\mathrm{PG}}\big)$,
+$\beta=(W/L)_{\mathrm{PD}}$, and $\gamma=(W/L)_{\mathrm{PG}}$ as written
+in the hand-note derivation, so $V_M$ depends on the supply, the
+threshold voltages, and the
+relative PMOS/NMOS strengths. Read stability requires $V_Q<V_M$:
+\begin{equation}
+(V_{DD}-V_{Tn})\left(1-\sqrt{\frac{\beta}{1+\beta}}\right)
+<
+\frac{V_{Tn}+\sqrt{\frac{\mu_p\gamma}{\mu_n\beta}}\,(V_{DD}-|V_{Tp}|)}
+     {1+\sqrt{\frac{\mu_p\gamma}{\mu_n\beta}}}.
+\end{equation}
+Increasing $\beta$ strengthens the pull-down relative to the pass-gate
+and lowers the disturb voltage, but $\beta$ also moves $V_M$ and costs
+area: the final cell ratio is not selected by minimizing $V_Q$ alone.
+Writability/$\gamma$ estimate: \todo{TBD}.
 
 \subsection*{Chosen sizes}
 \begin{tabular}{@{}lll@{}}
@@ -78,12 +154,12 @@ $\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Notes} \\
 
 \noindent Design point selected: \todo{TBD}. Cell kept symmetric.
 
-% Place schematic export under media/part1/ when available, e.g.:
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.7\linewidth]{media/part1/bitcell-schematic.png}
-%   \caption{6T bitcell schematic with transistor sizes.}
-% \end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/bitcell-schematic.png}
+  \caption{6T bitcell schematic with transistor sizes
+  (\texttt{proj1\_lib} 6t-sram, Virtuoso capture).}
+\end{figure}
 
 \section*{2.~Layout}
 \todo{DRC- and LVS-clean layout: wordline horizontal, bitline pair vertical,

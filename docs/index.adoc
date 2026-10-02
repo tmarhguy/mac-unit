@@ -23,8 +23,8 @@ ESE 5700 — two 16 × 4 SRAM macros, a 4×4 multiplier, a 12-bit
 accumulator, and a sequencer computing a 16-element dot product
 in the course 45 nm Cadence Virtuoso / Spectre flow.
 
-.Virtual schematic in Cadence — Virtuoso Schematic Editor XL (`proj1_lib sample_inv`)
-image::inv_sch_cadence_window_included.png[Virtuoso schematic editor showing the sample inverter,align=center,width=432]
+.6T SRAM bitcell schematic in Virtuoso — `proj1_lib` 6t-sram
+image::bitcell-schematic.png[6T SRAM bitcell schematic canvas,align=center,width=432]
 
 ++++
 <div style="text-align:center; margin: 1.5rem 0;">

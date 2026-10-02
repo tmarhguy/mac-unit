@@ -42,12 +42,8 @@ The cell is kept symmetric.
 
 Design point selected: TBD.
 
-.Bitcell schematic with transistor sizes (report figure)
-image::bitcell-schematic.png[6T bitcell schematic placeholder,align=center,width=640]
-
-NOTE: `media/part1/bitcell-schematic.png` is the source of truth
-for this figure. Until it lands, the site renders the image
-reference as a placeholder — no silently substituted sketch.
+.6T bitcell schematic with transistor sizes (`proj1_lib` 6t-sram)
+image::bitcell-schematic.png[6T bitcell schematic from Virtuoso,align=center,width=640]
 
 [#bitcell-read-stability]
 === Cell Ratio and Read Stability
