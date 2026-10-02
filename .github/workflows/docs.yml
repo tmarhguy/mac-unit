@@ -1,15 +1,11 @@
 name: Docs
 
 on:
+  # NOTE: push covers every branch (including PR branches), so no
+  # pull_request trigger — a second trigger only starts a duplicate run
+  # that cancels the first via the pages concurrency group.
   push:
     branches: ["**"]
-    paths:
-      - "docs/**"
-      - "media/**"
-      - "scripts/build-docs.sh"
-      - "Makefile"
-      - ".github/workflows/docs.yml"
-  pull_request:
     paths:
       - "docs/**"
       - "media/**"
