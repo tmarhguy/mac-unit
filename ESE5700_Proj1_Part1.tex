@@ -53,6 +53,8 @@ Victor Wanjohi & \todo{TBD} \\
   \caption{6T cell read-disturb setup: $Q=0$ stored, wordline asserted,
   bitlines precharged (hand sketch).}
 \end{figure}
+
+\subsubsection*{Read stability}
 Assume the stored state $Q=0$ ($\overline{Q}\approx V_{DD}$) for
 read-stability analysis. With $Q=0$ the ``0'' node is pulled down by
 the NMOS inside INV1 while the bitline (precharged to $V_{DD}$) drives
@@ -126,6 +128,7 @@ relative PMOS/NMOS strengths. Read stability requires $V_Q<V_M$:
 Increasing $\beta$ strengthens the pull-down relative to the pass-gate
 and lowers the disturb voltage, but $\beta$ also moves $V_M$ and costs
 area: the final cell ratio is not selected by minimizing $V_Q$ alone.
+\subsubsection*{Write stability}
 Writability/$\gamma$ estimate: \todo{TBD}.
 
 \subsection*{Chosen sizes}
@@ -244,7 +247,7 @@ BLB, $Q$, $\overline{Q}$.}
 \todo{Short paragraph: what limits the cell, and what you would change for Part~2.}
 
 \section*{Technology note}
-All work uses the course 18\,nm Cadence Virtuoso flow (schematic, layout, Spectre/ADE,
+All work is done in the Cadence GPDK 18 nm technology (schematic, layout, Spectre/ADE,
 DRC/LVS/PEX) at nominal $V_{DD}=1.2\,\mathrm{V}$ unless noted. Characterization above
 is post-layout unless a subsection states otherwise.
 
