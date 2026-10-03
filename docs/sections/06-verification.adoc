@@ -9,7 +9,7 @@ that proof locally.
 Every graded part must clear the same three gates before numbers
 promote to <<results,Results>>:
 
-. DRC clean (course 45 nm deck, no waived violations unrecorded).
+. DRC clean (Cadence GPDK 18 nm deck, no waived violations unrecorded).
 . LVS clean (schematic vs. layout match).
 . PEX + post-layout simulation (extracted netlist, not schematic-only).
 

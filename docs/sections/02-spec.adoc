@@ -43,7 +43,7 @@ so bring-up never requires restructuring — only filling tables.
 
 === Technology and flow
 
-* Course 45 nm process, Cadence Virtuoso schematic and layout.
+* Cadence GPDK 18 nm process, Virtuoso schematic and layout.
 * Spectre / ADE for characterization and transient checks.
 * DRC, LVS, and PEX required; characterization is post-layout.
 * Nominal supply stem:[V_{DD} = 1.2\,\mathrm{V}];

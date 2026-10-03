@@ -3,7 +3,7 @@
 [![LaTeX to PDF](https://img.shields.io/github/actions/workflow/status/tmarhguy/mac-unit/latex-to-pdf.yml?branch=main&logo=github&label=LaTeX%20to%20PDF&style=flat-square)](https://github.com/tmarhguy/mac-unit/actions/workflows/latex-to-pdf.yml)
 [![LaTeX](https://img.shields.io/badge/LaTeX-Reports-008080?logo=latex&logoColor=white&style=flat-square)](https://github.com/tmarhguy/mac-unit)
 [![ESE 5700](https://img.shields.io/badge/ESE%205700-Fall%202026%20%7C%20UPenn-011F5B?style=flat-square)](https://github.com/tmarhguy/mac-unit)
-[![45 nm](https://img.shields.io/badge/process-45%20nm-informational?style=flat-square)](https://github.com/tmarhguy/mac-unit)
+[![18 nm](https://img.shields.io/badge/process-18%20nm-informational?style=flat-square)](https://github.com/tmarhguy/mac-unit)
 [![SRAM / MAC](https://img.shields.io/badge/design-16x4%20SRAM%20%2B%20MAC-6f42c1?style=flat-square)](https://github.com/tmarhguy/mac-unit)
 
 <p align="center">
@@ -18,7 +18,7 @@
   <a href="https://tmarhguy.github.io/mac-unit/"><img alt="Report Site" src="https://img.shields.io/badge/Report_Site-2e7d32?style=for-the-badge"></a>
 </p>
 
-**ESE 5700 — Digital Integrated Circuits and VLSI Fundamentals** (University of Pennsylvania). Project 1: an SRAM-based 4-bit multiply-accumulate (MAC) accelerator in the course **45 nm** Cadence Virtuoso / Spectre flow.
+**ESE 5700 — Digital Integrated Circuits and VLSI Fundamentals** (University of Pennsylvania). Project 1: an SRAM-based 4-bit multiply-accumulate (MAC) accelerator in the **Cadence GPDK 18 nm** Virtuoso / Spectre flow.
 
 **This GitHub repository is not the official Gradescope submission.** It is a shared archive for LaTeX sources, figures, and CI-built PDFs. Each part is uploaded separately to Gradescope as one team PDF.
 
@@ -56,7 +56,7 @@ using two **16 × 4** SRAM macros, a 4×4 multiplier, a 12-bit accumulator, and 
 | **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro | 10/6/2026 | later |
 | **3** | Two SRAMs + datapath + sequencer → MAC unit | 10/20/2026 | later |
 
-Technology: course **45 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 1.2\,\mathrm{V}$.
+Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 1.2\,\mathrm{V}$.
 
 ## Repository layout
 

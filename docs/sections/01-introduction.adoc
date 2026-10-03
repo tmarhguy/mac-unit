@@ -7,7 +7,7 @@ and how to navigate the rest of the document.
 === Purpose
 
 This project builds an SRAM-based 4-bit multiply-accumulate (MAC)
-accelerator in the ESE 5700 45 nm Cadence Virtuoso / Spectre flow.
+accelerator in the ESE 5700 Cadence GPDK 18 nm Virtuoso / Spectre flow.
 Two 16 × 4 SRAM macros feed a 4×4 multiplier, a 12-bit accumulator,
 and a sequencer that computes a 16-element dot product of 4-bit
 unsigned weights and activations.
