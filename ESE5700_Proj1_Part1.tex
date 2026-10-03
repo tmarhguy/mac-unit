@@ -113,6 +113,7 @@ $I_{DN}=|I_{DP}|$ with both devices in saturation:
 V_M = \frac{V_{Tn}+B\,(V_{DD}-|V_{Tp}|)}{1+B},
 \qquad B=\sqrt{\frac{k_P}{k_N}}
       =\sqrt{\frac{\gamma\,\mu_p}{\beta\,\mu_n}},
+\label{eq:vm}
 \end{equation}
 with $k_P/k_N=\mu_p C_{ox}(W/L)_{\mathrm{PU}}/
 \big(\mu_n C_{ox}(W/L)_{\mathrm{PG}}\big)$,
@@ -222,7 +223,7 @@ This assumes ideal long-channel square-law behavior, a saturated pull-up
 pulling $\overline{Q}$ up.
  
 The written node $Q$ drives INV2, whose switching point $V_M$ is the one in
-\VMeq, with $B = \sqrt{\gamma\mu_p/(\beta\mu_n)}$. Write stability requires
+Eq.~\eqref{eq:vm}, with $B = \sqrt{\gamma\mu_p/(\beta\mu_n)}$. Write stability requires
 $V_Q < V_M$:
 \begin{equation}
   (V_{DD} - V_{Tn})
