@@ -448,7 +448,8 @@ The derivation assumes:
 * negligible body effect, and
 * stem:[\overline{Q} \approx V_{DD}].
 
-Writability / stem:[\gamma] estimate: TBD.
+See <<bitcell-write-stability,Pull-up Ratio and Write Stability>> for the
+writability / stem:[\gamma] analysis.
 
 
 [#bitcell-switching]
@@ -673,6 +674,218 @@ importantly, the cell area.
 
 Therefore, the final cell ratio cannot be selected simply by minimizing
 stem:[V_q].
+
+[#bitcell-write-stability]
+=== Pull-up Ratio and Write Stability
+
+// Source: ESE5700_Proj1_Part1.tex §1 "Write stability"
+// (Eqs eq:w-divider, eq:w-divider-gamma, eq:w-quadratic, eq:w-vq,
+// eq:w-condition, eq:w-gamma; Tabs tab:w-gamma, tab:w-strength;
+// Fig fig:w-divider TikZ).
+
+Assume the stored state stem:[Q = 1] (stem:[\overline{Q} \approx 0])
+for the write analysis, with a 0 written through BL. With BL driven to
+stem:[0\,\mathrm{V}] and WL at stem:[V_{DD}], the pass-gate pulls the
+“1” node down while the PMOS inside INV1, still on because
+stem:[\overline{Q} \approx 0], pulls it up to stem:[V_{DD}].
+
+==== Write voltage-divider model
+
+The written node therefore follows an approximate voltage-divider model:
+
+[stem]
+++++
+\frac{V_q}{V_{DD}}
+=
+\frac{R_{PG}}{R_{PG} + R_{PU1}}
+=
+\frac{1}{1 + R_{PU1}/R_{PG}}
+++++
+
+From transistor physics stem:[R_T \propto 1/(\mu_T W_T)] at fixed
+stem:[L]. The two devices are of opposite type, so the mobility ratio
+does not cancel as it does in the read divider. Defining the pull-up
+ratio
+
+[stem]
+++++
+\gamma
+=
+\frac{(W/L)_{PU}}{(W/L)_{PG}}
+=
+\frac{W_{PU}}{W_{PG}}
+++++
+
+gives stem:[R_{PU1}/R_{PG} \approx \mu_n/(\mu_p\gamma)], hence
+
+[stem]
+++++
+\frac{V_q}{V_{DD}}
+\approx
+\frac{1}{1 + \dfrac{\mu_n}{\mu_p\gamma}},
+\qquad
+V_q
+\approx
+V_{DD}\,\frac{\mu_p\gamma}{\mu_n + \mu_p\gamma}.
+++++
+
+A smaller stem:[\gamma] lowers the written node. Whether it falls far
+enough to flip the cell is set by the switching voltage stem:[V_m]
+(stem:[V_{in} = V_{out}]) of INV2, which stem:[Q] drives — the
+stem:[V_m] expression derived in <<bitcell-switching,Inverter Switching
+Voltage>>.
+
+NOTE: The LaTeX report draws this divider as a TikZ figure
+(Fig `fig:w-divider`: supply through stem:[R_{PU1}] against
+stem:[R_{PG}] to the 0 V bitline). No PNG is staged under
+`media/part1/` for it, so no `image::` is rendered here — nothing
+fabricated.
+
+==== MOSFET current balance at the write point
+
+Neglecting gate leakage, KCL gives
+stem:[I_{PU} = I_{PG}] at the equilibrium write voltage.
+
+Pass-gate: stem:[G = V_{DD}], stem:[S = \mathrm{BL} = 0] and
+stem:[D = Q], so stem:[V_{GS} = V_{DD}] and
+stem:[V_{DS} = V_q < V_{GS} - V_{tn}] at the equilibrium point:
+triode, with
+
+[stem]
+++++
+I_{PG}
+=
+k_{PG}\left[(V_{DD} - V_{tn})V_q - V_q^2/2\right]
+++++
+
+and stem:[k_{PG} = \mu_n C_{ox}(W/L)_{PG}].
+
+Pull-up (pu1): stem:[S = V_{DD}], stem:[G = \overline{Q} \approx 0]
+and stem:[D = Q], so stem:[V_{SG} = V_{DD}] and
+stem:[V_{SD} = V_{DD} - V_q > V_{SG} - |V_{tp}|] as long as
+stem:[V_q < |V_{tp}|]: saturation, with
+
+[stem]
+++++
+I_{PU}
+=
+\tfrac{1}{2}k_{PU}(V_{DD} - |V_{tp}|)^2
+++++
+
+and stem:[k_{PU} = \mu_p C_{ox}(W/L)_{PU}].
+
+Equating the two with stem:[E = V_{DD} - V_{tn}],
+stem:[F = V_{DD} - |V_{tp}|] and
+stem:[k_{PU}/k_{PG} = \gamma\,\mu_p/\mu_n] yields
+
+[stem]
+++++
+V_q^{2} - 2E\,V_q + \gamma\frac{\mu_p}{\mu_n}F^{2} = 0
+\quad\Rightarrow\quad
+V_q = E \pm \sqrt{E^{2} - \gamma\frac{\mu_p}{\mu_n}F^{2}},
+++++
+
+of which the positive root exceeds stem:[V_{DD} - V_{tn}] and is
+inconsistent with the assumed triode pass-gate, leaving
+
+[stem]
+++++
+\boxed{
+V_q = (V_{DD} - V_{tn})
+- \sqrt{(V_{DD} - V_{tn})^{2}
+- \gamma\frac{\mu_p}{\mu_n}\bigl(V_{DD} - |V_{tp}|\bigr)^{2}}
+}.
+++++
+
+This assumes ideal long-channel square-law behavior, a saturated
+pull-up (stem:[V_q < |V_{tp}|]), an ideal stem:[0\,\mathrm{V}]
+bitline, and no help from PG2 pulling stem:[\overline{Q}] up.
+
+==== Write-stability condition and pull-up-ratio selection
+
+The written node stem:[Q] drives INV2, whose switching point
+stem:[V_m] is the one derived in <<bitcell-switching,Inverter Switching
+Voltage>>, with stem:[B = \sqrt{\gamma\mu_p/(\beta\mu_n)}]. Write
+stability requires stem:[V_q < V_m]:
+
+[stem]
+++++
+(V_{DD} - V_{tn})
+- \sqrt{(V_{DD} - V_{tn})^{2}
+- \gamma\frac{\mu_p}{\mu_n}\bigl(V_{DD} - |V_{tp}|\bigr)^{2}}
+\;<\;
+\frac{V_{tn} + \sqrt{\dfrac{\mu_p\gamma}{\mu_n\beta}}
+\bigl(V_{DD} - |V_{tp}|\bigr)}
+{1 + \sqrt{\dfrac{\mu_p\gamma}{\mu_n\beta}}}.
+++++
+
+The boxed stem:[V_q] expression holds only while the pull-up is
+saturated, stem:[V_q < |V_{tp}|]. With the values used in the hand
+analysis stem:[V_m] is about stem:[0.37\,\mathrm{V}], above
+stem:[|V_{tp}| = 0.3\,\mathrm{V}], so the inequality cannot be solved
+for stem:[\gamma] with the boxed expression alone. Requiring the
+stricter stem:[V_q < V_{tn}] keeps the boxed expression valid when
+stem:[V_{tn} \le |V_{tp}|], guarantees that the NMOS of INV2 is off,
+and gives the required pull-up ratio in closed form:
+
+[stem]
+++++
+\boxed{
+\gamma < \frac{\mu_n}{\mu_p}\cdot
+\frac{V_{tn}\bigl(2V_{DD} - 3V_{tn}\bigr)}
+{\bigl(V_{DD} - |V_{tp}|\bigr)^{2}}
+}.
+++++
+
+==== Numerical evaluation — hand-analysis placeholders only
+
+CAUTION: the numbers below are the LaTeX hand-analysis placeholders
+at stem:[V_{DD} = 0.8\,\mathrm{V}], with
+stem:[V_{tn} = |V_{tp}| = 0.3\,\mathrm{V}] and
+stem:[\mu_n/\mu_p = 2]. They are _not_ GPDK 18 nm / post-layout results
+at the nominal stem:[V_{DD} = 1.2\,\mathrm{V}], and no bench has run yet.
+
+The closed-form bound gives stem:[\gamma < 1.68]. Evaluating the full
+inequality numerically at stem:[\beta = 2], with the triode pull-up
+current beyond stem:[V_q = |V_{tp}|], relaxes the limit to about
+stem:[\gamma < 1.9]. For stem:[\gamma = 1] the divider puts stem:[V_q]
+at stem:[0.27\,\mathrm{V}] and the current balance at
+stem:[0.15\,\mathrm{V}] (0.146 V in the table); the divider is
+pessimistic because a saturated pull-up supplies less current than a
+resistor would.
+
+.Written-node voltage against pull-up ratio at V_DD = 0.8 V, μn/μp = 2
+[cols="1,1,1,1",options="header"]
+|===
+| stem:[\gamma] | stem:[V_q] (V) | Margin to stem:[V_{tn}] (V) | Margin to stem:[V_m] at stem:[\beta = 2] (V)
+
+| 0.5 | 0.067 | 0.233 | 0.285
+| 1 | 0.146 | 0.154 | 0.220
+| 1.5 | 0.250 | 0.050 | 0.126
+| 2 | 0.40, pull-up in triode | fails | fails
+|===
+
+The bound scales directly with the NMOS-to-PMOS strength ratio. FinFET
+kits often have a PMOS much closer to the NMOS than the planar
+assumption of 2, and that decides whether a one-fin pass-gate can
+overpower a one-fin pull-up:
+
+.Sensitivity of the write bound to the NMOS-to-PMOS strength ratio
+[cols="1,1,1,1",options="header"]
+|===
+| Strength ratio stem:[\mu_n/\mu_p] | stem:[\gamma] limit | stem:[V_q] at stem:[\gamma = 1] (V) | stem:[V_q] at stem:[\gamma = 0.5] (V)
+
+| 2 | 1.68 | 0.146 | 0.067
+| 1.5 | 1.26 | 0.211 | 0.092
+| 1.25 | 1.05 | 0.276 | 0.113
+| 1 | 0.84 | fails | 0.146
+|===
+
+Reducing stem:[\gamma] weakens the pull-up relative to the pass-gate
+and lowers the written node, but stem:[\gamma] moves in whole-fin
+steps, a stronger pass-gate lowers stem:[\beta] and loads the bitline,
+and stem:[\gamma] also moves stem:[V_m]: the final pull-up ratio is not
+selected by minimizing stem:[V_q] alone.
 
 [#bitcell-layout]
 === Layout
