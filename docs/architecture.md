@@ -1,40 +1,12 @@
-# MAC Unit Architecture
+# Architecture and build order
 
-Source of truth for the system design; the full requirements live in
-the course handout (`docs/ese5700-project1.pdf`). This document tracks
-what exists today and what each part adds. The report site
-(`docs/index.adoc`) links here instead of duplicating numbers.
+The current project basis is Cadence GPDK 18 nm at nominal 0.8 V. Available Part 1 evidence is a symmetric 6T cell schematic and a three-point schematic read-SNM sweep. See the [report](../ESE5700_Proj1_Part1.tex) for analysis and the [results directory](../results/part1/read-snm/) for raw exports.
 
-## Current state
+## Planned hierarchy
 
-**Part 1 — 6T bitcell (due 10/13/2026).**
-Sizing (beta/gamma), custom layout, PEX loads, post-layout SNM / WM /
-I_cell, functional transient. Report source:
-`ESE5700_Proj1_Part1.tex`. Figures land in `media/part1/`.
-Canonical schematic β sweep: `results/part1/read-snm/beta{1,1p5,2}/` (raw → q/qb → snm.json → butterfly.png/.svg via `scripts/check_snm_sweep.py`). Measured read-SNM at 0.8V: β1 126.6mV, β1.5 145.8mV, β2 156.3mV (selected β=2, γ=1).
+1. Complete a tileable bitcell layout; run DRC/LVS and parasitic extraction.
+2. Rerun read and hold SNM, write margin, cell current, supply behavior and functional write/read on the extracted cell.
+3. Tile the validated cell into a 16 × 4 SRAM macro with decoder, precharge, write and sense circuitry.
+4. Feed two macros into a 4 × 4 multiplier and 12-bit accumulator. A sequencer addresses the 16 word pairs.
 
-**Part 2 — 16 × 4 SRAM macro (due 10/20/2026, roadmap).**
-Part 1 cell tiled with WL horizontal / BL vertical, plus decoder,
-precharge, sense/write periphery. Per-cell `C_BL` / `C_WL` from Part 1
-scale to full-line loads.
-
-**Part 3 — MAC unit (due 10/27/2026, roadmap).**
-Two macros + 4×4 multiplier + 12-bit accumulator + sequencer
-computing `ACC = sum W[i]*X[i]` over 16 positions.
-
-## Block map
-
-| Block | Owns | Part |
-|---|---|---|
-| 6T bitcell | PD/PU/PG sizing, SNM, WM, layout, PEX | 1 |
-| 16 × 4 macro | tiling, decoder, precharge, sense, timing | 2 |
-| multiplier | 4×4 unsigned products | 3 |
-| accumulator | 12-bit sum (max 3600 < 4096) | 3 |
-| sequencer | 16-step control FSM | 3 |
-
-## Non-negotiables
-
-- Post-layout numbers only in results; schematic-only stays in design.
-- DRC and LVS clean at every level before signoff.
-- Unmeasured values are `TBD`.
-- Gradescope PDFs are canonical for grading; this repo archives sources.
+Only the schematic read sweep currently has measured results. Later blocks must be verified before performance, area or timing can be reported.

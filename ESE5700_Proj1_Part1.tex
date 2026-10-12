@@ -1,504 +1,234 @@
 % !TEX program = pdflatex
-% Overleaf: set the project compiler to pdfLaTeX (Menu -> Compiler -> pdfLaTeX).
-\documentclass[11pt]{article}
-
+\documentclass[10pt,letterpaper]{article}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage[margin=1in]{geometry}
-\usepackage{amsmath,amssymb}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{tikz}
-\usepackage{parskip}
-\usepackage{xcolor}
-\usepackage[hidelinks]{hyperref}
-
-\newcommand{\todo}[1]{\textcolor{gray}{\textit{#1}}}
-
-\title{%
-  ESE~5700: Digital Integrated Circuits and VLSI Fundamentals\\
-  \large Project~1, Part~1: The 6T Bitcell%
-}
-\author{Tyrone Marhguy \and Victor Wanjohi}
-\date{University of Pennsylvania \\ Due: 10/13/2026}
-
+\usepackage{lmodern,amsmath,amssymb,booktabs,graphicx,microtype,array,tabularx}
+\usepackage[margin=.78in,headheight=14pt]{geometry}
+\usepackage{subcaption,float,placeins,tikz,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\definecolor{navy}{HTML}{153654}\definecolor{pale}{HTML}{EAF1F7}\definecolor{cyan}{HTML}{00D8E8}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small ESE 5700 / Project 1 / Part 1}\fancyhead[R]{\small 6T bitcell}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{.3pt}
+\captionsetup{font=small,labelfont=bf}
+\newcommand{\sourcepath}[1]{\nolinkurl{#1}}
+\newcommand{\openitem}{\textcolor{navy}{\textbf{Not yet evidenced}}}
+% Overlay computed largest-square locations on the ORIGINAL ViVA capture.
+% Coordinates are normalized to the full screenshot; square positions come from
+% results/part1/read-snm/beta*/snm.json, with 0..800 mV plot axes calibrated
+% to the visible ViVA ticks. Unequal screen-axis scales make voltage squares
+% appear rectangular in screen pixels.
+\newcommand{\cadencecapture}[5]{%
+\begin{tikzpicture}
+\node[anchor=south west,inner sep=0] (im) at (0,0) {\includegraphics[width=\linewidth]{#1}};
+\begin{scope}[x={(im.south east)},y={(im.north west)}]
+\draw[cyan,line width=1pt] #2 rectangle #3;
+\draw[cyan,line width=1pt] #4 rectangle #5;
+\end{scope}
+\end{tikzpicture}}
 \begin{document}
-\maketitle
-
 \begin{center}
-  \includegraphics[width=0.45\linewidth]{media/penn-logo.png}
+{\small UNIVERSITY OF PENNSYLVANIA \quad ESE 5700}\par\vspace{8pt}
+{\Huge\bfseries The 6T SRAM bitcell}\par\vspace{4pt}
+{\large Project 1, Part 1: design, analysis and present evidence}\par\vspace{10pt}
+Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi\par\vspace{8pt}
+\colorbox{pale}{\parbox{.93\linewidth}{\small\centering Cadence GPDK 18 nm \quad $V_{DD}=0.8$ V \quad Schematic $\beta$ sweep recorded; post-layout characterization pending}}
 \end{center}
 
-\section*{Team and contributions}
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Member} & \textbf{Contributions (this part)} \\
-\midrule
-Tyrone Marhguy & \todo{TBD} \\
-Victor Wanjohi & \todo{TBD} \\
-\bottomrule
+\section*{Executive summary}
+The symmetric 6T cell was drawn in Virtuoso. Read disturb and write contention were analyzed by hand, and three schematic read butterflies were exported from Spectre. At $0.8$ V, increasing $\beta$ from 1 to 2 raises read SNM from $126.6$ to $156.3$ mV and lowers the disturbed zero-node crossing from $134.3$ to $77.1$ mV. The $\beta=2$, $\gamma=1$ cell is a schematic candidate. Layout signoff, extraction, and post-layout characterization remain incomplete.
+
+\begin{table}[h]
+\centering\caption{What this report can establish now. Values are from \sourcepath{results/part1/read-snm/beta*/snm.json}.}
+\begin{tabular}{@{}cccc@{}}\toprule
+$\beta$ & PD / PG / PU fins & Schematic read SNM (mV) & Read-disturbed zero node (mV) \\\midrule
+1.0 & 2 / 2 / 2 & 126.6 & 134.3 \\
+1.5 & 3 / 2 / 2 & 145.8 & 96.6 \\
+\textbf{2.0} & \textbf{4 / 2 / 2} & \textbf{156.3} & \textbf{77.1} \\\bottomrule
 \end{tabular}
+\end{table}
 
-\noindent Both team members are responsible for understanding the full design and report.
+\section{Assignment scope and evidence standard}
+The current handout requires: sized symmetric schematic and hand analysis; a three-point schematic $\beta$ sweep; custom tileable layout with area and DRC/LVS summaries; per-cell BL and WL capacitance after extraction; post-layout hold/read SNM, write margin, cell current and supply dependence; a transient write/read sequence; and a discussion of the limiting trade-off. It also requires individual team contributions. Figures and numbers below are labeled as \emph{measured schematic}, \emph{hand estimate}, or \emph{open}. The supplied handout sets $F=10$ nm for area in $F^2$, and supply points of $0.8$, $0.7$ and $0.5$ V.
 
-\newpage
-
-\section*{1.~Sizing ($\beta$ and $\gamma$)}
-\subsection*{Hand analysis}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/6t-cell-wl-bl-inv12-q-qb.png}
-  \caption{6T cell read-disturb setup: $Q=0$ stored, wordline asserted,
-  bitlines precharged (hand sketch).}
+\section{Cell schematic and selected dimensions}
+A 6T cell consists of cross-coupled inverters INV1 and INV2 and two pass-gates. Both storage nodes connect to precharged bitlines only while WL is high. For the candidate schematic, the captured device settings are $L=18$ nm and $n_{\rm fin}=4$ for each pull-down, $n_{\rm fin}=2$ for each pull-up, and $n_{\rm fin}=2$ for each pass-gate. Thus the nominal fin-count ratios are
+\begin{equation}
+\beta=\frac{(W/L)_{\rm PD}}{(W/L)_{\rm PG}}\simeq\frac{4}{2}=2,
+\qquad
+\gamma=\frac{(W/L)_{\rm PU}}{(W/L)_{\rm PG}}\simeq\frac{2}{2}=1.
+\label{eq:ratios}
+\end{equation}
+The effective process-model strengths are not simply fin counts; the ratios express the intended relative sizing. Both halves are identical, meeting the symmetric-cell requirement at schematic level.
+\begin{figure}[H]\centering
+\includegraphics[width=.82\linewidth]{media/part1/bitcell-schematic.png}
+\caption{Original Virtuoso cell schematic, with device fin counts and $18$ nm length visible. The plot and bench evidence in later sections comes from this family of schematics.}\label{fig:cell}
 \end{figure}
+\FloatBarrier
 
-\subsubsection*{Read stability}
-Assume the stored state $Q=0$ ($\overline{Q}\approx V_{DD}$) for
-read-stability analysis. With $Q=0$ the ``0'' node is pulled down by
-the NMOS inside INV1 while the bitline (precharged to $V_{DD}$) drives
-current through the pass-gate, so the disturbed node follows an
-approximate voltage-divider model:
-\begin{equation}
-\frac{V_Q}{V_{DD}} = \frac{R_{\mathrm{PD1}}}{R_{\mathrm{PG}}+R_{\mathrm{PD1}}}
-= \frac{1}{1+R_{\mathrm{PG}}/R_{\mathrm{PD1}}}.
-\end{equation}
-From transistor physics $R_T\propto 1/W_T$ at fixed $L$. Defining the
-cell ratio $\beta=(W/L)_{\mathrm{PD}}/(W/L)_{\mathrm{PG}}
-=W_{\mathrm{PD}}/W_{\mathrm{PG}}$ gives
-$\beta\approx R_{\mathrm{PG}}/R_{\mathrm{PD}}$, hence
-\begin{equation}
-\frac{V_Q}{V_{DD}} \approx \frac{1}{1+\beta},
-\qquad V_Q \approx \frac{V_{DD}}{1+\beta}:
-\end{equation}
-a larger $\beta$ lowers the read-disturb bump. Whether that bump flips
-the cell is set by the inverter switching voltage $V_M$
-($V_{\mathrm{in}}=V_{\mathrm{out}}$), where both devices conduct.
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/voltage_div_diagram.png}
-  \caption{Approximate resistive divider for the read disturb:
-  precharged bitline through $R_{\mathrm{PG}}$ against the pull-down
-  $R_{\mathrm{PD1}}$ to ground (hand sketch).}
+\section{Hand sizing analysis}
+\subsection{Read disturb and the cell ratio}
+Assume $Q=0$, $\overline Q\approx V_{DD}$, WL$=V_{DD}$ and BL$=$BLB$=V_{DD}$. Current flows from BL through the pass-gate into $Q$ and down through the pull-down. The handwritten circuit and divider in Figure~\ref{fig:read-sketch} were part of the original analysis. They identify the two opposing devices and the node whose rise can upset INV2.
+\begin{figure}[H]\centering
+\includegraphics[width=.88\linewidth,height=.29\textheight,keepaspectratio]{media/part1/6t-cell-wl-bl-inv12-q-qb.png}
+\caption{Original handwritten read-state diagram, with node labels.}\label{fig:read-sketch}
 \end{figure}
-
-Current balance at the equilibrium disturb voltage: neglecting gate
-leakage, KCL gives $I_{\mathrm{PD}}=I_{\mathrm{PG}}$. The pass-gate has
-$D=G=V_{DD}$, $S=V_Q$, so $V_{DS}=V_{GS}=V_{DD}-V_Q$ and
-$V_{DS}>V_{GS}-V_{Tn}$ always: saturation, with
-$I_{\mathrm{PG}}=\tfrac{1}{2}k_{\mathrm{PG}}(V_{GS}-V_{Tn})^2$ and
-$k_{\mathrm{PG}}=\mu_n C_{ox}(W/L)_{\mathrm{PG}}$.
-The pull-down (pd1) has $V_D=V_Q$, $V_G\approx V_{DD}$, $V_S=0$, so
-$V_{DS}=V_Q<V_{GS}-V_{Tn}$: triode, with
-$I_{\mathrm{PD}}=k_{\mathrm{PD}}[(V_{GS}-V_{Tn})V_{DS}-V_{DS}^2/2]$.
-Equating the two with $E=V_{DD}-V_{Tn}$ yields
+\begin{figure}[H]\centering
+\includegraphics[width=.88\linewidth,height=.29\textheight,keepaspectratio]{media/part1/voltage_div_diagram.png}
+\caption{Original handwritten read-divider sketch.}\label{fig:read-divider-sketch}
+\end{figure}
+For equal nominal channel length, a resistive first estimate gives
 \begin{equation}
-V_Q^2(1+\beta)+V_Q(-2E-2E\beta)+E^2=0
-\quad\Rightarrow\quad
-V_Q = E\left(1\pm\sqrt{\frac{\beta}{1+\beta}}\right),
+\frac{V_Q}{V_{DD}}=\frac{R_{\rm PD}}{R_{\rm PG}+R_{\rm PD}}
+\approx\frac{1}{1+\beta},\qquad
+V_Q\approx\frac{V_{DD}}{1+\beta}.
+\label{eq:read-divider}
 \end{equation}
-of which the positive root exceeds $V_{DD}-V_{Tn}$ and is inconsistent
-with the assumed saturated pass-gate / triode pull-down, leaving
-\begin{equation}
-V_Q = (V_{DD}-V_{Tn})\left(1-\sqrt{\frac{\beta}{1+\beta}}\right).
-\end{equation}
-This assumes ideal long-channel square-law behavior, equal NMOS
-thresholds, and negligible body effect.
+At $0.8$ V, this simple expression predicts $0.400$, $0.320$ and $0.267$ V for $\beta=1$, $1.5$ and $2$. These are \emph{hand estimates}, much higher than the DC crossings in Table~1 because the devices are nonlinear and the ratio is only a proxy for their actual strengths. Their useful prediction is the downward trend with increasing $\beta$.
 
-The disturbed node $Q$ drives INV2, whose switching point satisfies
-$I_{DN}=|I_{DP}|$ with both devices in saturation:
+For a more physical but still ideal long-channel model, set $E=V_{DD}-V_{Tn}$ and $k=\mu_n C_{ox}(W/L)$. The pass-gate is saturated with $V_{GS}=V_{DS}=V_{DD}-V_Q$; the pull-down is in triode if $V_Q<E$. Neglecting leakage and body effect, Kirchhoff's law at $Q$ gives
 \begin{equation}
-V_M = \frac{V_{Tn}+B\,(V_{DD}-|V_{Tp}|)}{1+B},
-\qquad B=\sqrt{\frac{k_P}{k_N}}
-      =\sqrt{\frac{\gamma\,\mu_p}{\beta\,\mu_n}},
+\underbrace{\tfrac12 k_{\rm PG}(E-V_Q)^2}_{I_{\rm PG}}
+=\underbrace{k_{\rm PD}(EV_Q-\tfrac12 V_Q^2)}_{I_{\rm PD}}.
+\label{eq:read-balance}
+\end{equation}
+Solving the physical root using $k_{\rm PD}/k_{\rm PG}\approx\beta$ yields
+\begin{equation}
+V_Q=E\left(1-\sqrt{\frac{\beta}{1+\beta}}\right).
+\label{eq:read-root}
+\end{equation}
+The positive quadratic root violates the assumed operating region. The original handwritten steps in Figure~\ref{fig:read-notes} show the pass-gate current, current-ratio equation and closed form; the equations above state them legibly. Neither model substitutes for the GPDK simulation.
+\begin{figure}[H]\centering
+\includegraphics[width=.95\linewidth,height=.22\textheight,keepaspectratio]{media/part1/ip_kpg_cox_vgs_vth_w_l_eq.png}
+\caption{Original handwritten pass-gate current equation.}\label{fig:read-notes}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=.95\linewidth,height=.22\textheight,keepaspectratio]{media/part1/kpd_kpg_e_vq_evq_eq.png}
+\caption{Original handwritten PD/PG current balance.}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=.95\linewidth,height=.22\textheight,keepaspectratio]{media/part1/vq_vdd_vth_beta_eq.png}
+\caption{Original handwritten read-disturb voltage root.}
+\end{figure}
+The disturbed node drives INV2. The read criterion is $V_Q<V_M$, where $V_M$ is INV2's switching voltage. In a square-law inverter approximation,
+\begin{equation}
+V_M=\frac{V_{Tn}+B(V_{DD}-|V_{Tp}|)}{1+B},\quad
+B=\sqrt{\frac{k_{\rm PU}}{k_{\rm PD}}}\approx\sqrt{\frac{\gamma\mu_p}{\beta\mu_n}}.
 \label{eq:vm}
 \end{equation}
-Here $k_P$ and $k_N$ are the pull-up and pull-down transconductance
-parameters. With $\beta$ defined as PD/PG and $\gamma$ as PU/PG,
-$k_P/k_N=\gamma\mu_p/(\beta\mu_n)$. Thus $V_M$ depends on the supply,
-threshold voltages, and relative PMOS/NMOS strengths. Read stability
-requires $V_Q<V_M$:
+$V_M$ is not independently measured here. Increasing $\beta$ lowers the disturb voltage, but it also changes $V_M$, area and later bitline loading; measured read SNM is therefore the deciding schematic quantity.
+\FloatBarrier
+
+\subsection{Write contention and the pull-up ratio}
+For a write of zero into a stored one, take $Q\approx V_{DD}$ initially, $\overline Q\approx0$, BL$=0$, WL$=V_{DD}$. The pass-gate discharges $Q$ against an ON pull-up. The first-order divider reverses the read case:
 \begin{equation}
-(V_{DD}-V_{Tn})\left(1-\sqrt{\frac{\beta}{1+\beta}}\right)
-<
-\frac{V_{Tn}+\sqrt{\frac{\mu_p\gamma}{\mu_n\beta}}\,(V_{DD}-|V_{Tp}|)}
-     {1+\sqrt{\frac{\mu_p\gamma}{\mu_n\beta}}}.
+\frac{V_Q}{V_{DD}}\approx\frac{R_{\rm PG}}{R_{\rm PG}+R_{\rm PU}}
+\approx\frac{\mu_p\gamma}{\mu_n+\mu_p\gamma}.
+\label{eq:write-divider}
 \end{equation}
-Increasing $\beta$ strengthens the pull-down relative to the pass-gate
-and lowers the disturb voltage, but $\beta$ also moves $V_M$ and costs
-area: the final cell ratio is not selected by minimizing $V_Q$ alone.
-\subsubsection*{Write stability}
-Assume the stored state $Q = 1$ ($\overline{Q} \approx 0$) for the write
-analysis, with a 0 written through BL. With BL driven to $0\,\mathrm{V}$ and
-WL at $V_{DD}$, the pass-gate pulls the ``1'' node down while the PMOS inside
-INV1, still on because $\overline{Q} \approx 0$, pulls it up to $V_{DD}$. The
-written node therefore follows an approximate voltage-divider model:
-\begin{equation}
-  \frac{V_Q}{V_{DD}}
-  = \frac{R_{\mathrm{PG}}}{R_{\mathrm{PG}} + R_{\mathrm{PU1}}}
-  = \frac{1}{1 + R_{\mathrm{PU1}}/R_{\mathrm{PG}}}.
-  \label{eq:w-divider}
-\end{equation}
-From transistor physics $R_T \propto 1/(\mu_T W_T)$ at fixed $L$. The two
-devices are of opposite type, so the mobility ratio does not cancel as it does
-in the read divider. Defining the pull-up ratio
-$\gamma = (W/L)_{\mathrm{PU}}/(W/L)_{\mathrm{PG}}
-        = W_{\mathrm{PU}}/W_{\mathrm{PG}}$
-gives $R_{\mathrm{PU1}}/R_{\mathrm{PG}} \approx \mu_n/(\mu_p\gamma)$, hence
-\begin{equation}
-  \frac{V_Q}{V_{DD}} \approx \frac{1}{1 + \dfrac{\mu_n}{\mu_p\gamma}},
-  \qquad
-  V_Q \approx V_{DD}\,\frac{\mu_p\gamma}{\mu_n + \mu_p\gamma}:
-  \label{eq:w-divider-gamma}
-\end{equation}
-a smaller $\gamma$ lowers the written node. Whether it falls far enough to
-flip the cell is set by the switching voltage $V_M$
-($V_{\mathrm{in}} = V_{\mathrm{out}}$) of INV2, which $Q$ drives.
- 
-\begin{figure}[h]
-  \centering
-  % Replace this drawing with \includegraphics of a hand sketch if the
-  % assignment asks for one.
-  \begin{tikzpicture}[line width=0.6pt, x=1cm, y=1cm]
-    % supply terminal
-    \draw (0,0) circle (2pt);
-    \node[left=3pt] at (0,0) {$V_{DD}$};
-    \draw (0.07,0) -- (1,0);
-    % R_PU1
-    \draw (1,0) -- ++(0.15,0.25) -- ++(0.3,-0.5) -- ++(0.3,0.5)
-          -- ++(0.3,-0.5) -- ++(0.3,0.5) -- ++(0.3,-0.5)
-          -- ++(0.15,0.25) -- (4,0);
-    \node[above] at (1.9,0.35) {$R_{\mathrm{PU1}}$};
-    % node Q
-    \fill (4,0) circle (2pt);
-    \node[above=4pt] at (4,0) {$Q$};
-    \node[below=4pt] at (4,0) {$V_Q$};
-    % R_PG
-    \draw (4,0) -- (5.2,0) -- ++(0.15,0.25) -- ++(0.3,-0.5) -- ++(0.3,0.5)
-          -- ++(0.3,-0.5) -- ++(0.3,0.5) -- ++(0.3,-0.5)
-          -- ++(0.15,0.25) -- (8.13,0);
-    \node[above] at (6.1,0.35) {$R_{\mathrm{PG}}$};
-    % bitline terminal
-    \draw (8.2,0) circle (2pt);
-    \node[right=3pt] at (8.2,0) {BL $= 0\,\mathrm{V}$};
-  \end{tikzpicture}
-  \caption{Approximate resistive divider for the write: supply through
-    $R_{\mathrm{PU1}}$ against the pass-gate $R_{\mathrm{PG}}$ to the
-    $0\,\mathrm{V}$ bitline.}
-  \label{fig:w-divider}
+A smaller $\gamma$ weakens the pull-up relative to the pass-gate and lowers the written node. The receiving inverter must switch before the cell can settle back, so the condition is $V_Q<V_M$. If $\rho=\mu_n/\mu_p$, the divider implies $\gamma<\rho V_M/(V_{DD}-V_M)$, conditional on the assumed resistor model. Without a measured $V_M$ or process strengths this is a design inequality, not a numeric proof that $\gamma=1$ writes.
+
+The more detailed hand current balance treats the pass-gate as triode and the pull-up as saturated while $V_Q<|V_{Tp}|$. With $E=V_{DD}-V_{Tn}$ and $F=V_{DD}-|V_{Tp}|$,
+\begin{align}
+I_{\rm PG}&=k_{\rm PG}(EV_Q-V_Q^2/2),\\
+I_{\rm PU}&=\tfrac12 k_{\rm PU}F^2,\qquad
+\frac{k_{\rm PU}}{k_{\rm PG}}\approx\gamma\frac{\mu_p}{\mu_n},\\
+V_Q&=E-\sqrt{E^2-\gamma(\mu_p/\mu_n)F^2}.
+\label{eq:write-root}
+\end{align}
+The other quadratic root is inconsistent with the assumed pass-gate region. Equation~\eqref{eq:write-root} also ceases to apply if the pull-up enters triode; no extracted model parameters have been inserted to make a fabricated numeric write limit. A stronger pass-gate helps writing but reduces $\beta$ and adds load; the $\gamma=1$ candidate needs a write-margin sweep before acceptance.
+
+\section{Read-SNM bench and reduction method}
+\subsection{Circuit setup}
+The available Cadence benches break the inverter feedback for DC transfer curves. The $Q$ sweep records $\overline Q$; the complementary sweep records $Q$. Both use WL$=V_{DD}$, BL$=$BLB$=V_{DD}$ and a $0$--$0.8$ V sweep. Figure~\ref{fig:benches} identifies the actual circuit setup rather than replacing it with a generic butterfly drawing.
+\begin{figure}[H]\centering
+\includegraphics[width=.98\linewidth,height=.43\textheight,keepaspectratio]{media/part1/read_snm_q_tb_sch.png}
+\caption{Original Virtuoso $Q$-side read-SNM sweep bench.}\label{fig:benches}
 \end{figure}
- 
-Current balance at the equilibrium write voltage: neglecting gate leakage,
-KCL gives $I_{\mathrm{PU}} = I_{\mathrm{PG}}$. The pass-gate has
-$G = V_{DD}$, $S = \mathrm{BL} = 0$ and $D = Q$, so $V_{GS} = V_{DD}$ and
-$V_{DS} = V_Q < V_{GS} - V_{Tn}$ at the equilibrium point: triode, with
-$I_{\mathrm{PG}} = k_{\mathrm{PG}}\bigl[(V_{DD} - V_{Tn})V_Q - V_Q^2/2\bigr]$
-and $k_{\mathrm{PG}} = \mu_n C_{ox}(W/L)_{\mathrm{PG}}$. The pull-up (pu1) has
-$S = V_{DD}$, $G = \overline{Q} \approx 0$ and $D = Q$, so $V_{SG} = V_{DD}$
-and $V_{SD} = V_{DD} - V_Q > V_{SG} - |V_{Tp}|$ as long as $V_Q < |V_{Tp}|$:
-saturation, with
-$I_{\mathrm{PU}} = \tfrac{1}{2}k_{\mathrm{PU}}(V_{DD} - |V_{Tp}|)^2$ and
-$k_{\mathrm{PU}} = \mu_p C_{ox}(W/L)_{\mathrm{PU}}$. Equating the two with
-$E = V_{DD} - V_{Tn}$, $F = V_{DD} - |V_{Tp}|$ and
-$k_{\mathrm{PU}}/k_{\mathrm{PG}} = \gamma\,\mu_p/\mu_n$ yields
+\begin{figure}[H]\centering
+\includegraphics[width=.98\linewidth,height=.43\textheight,keepaspectratio]{media/part1/read_snm_qb_tb_sch.png}
+\caption{Original Virtuoso $\overline Q$-side read-SNM sweep bench.}
+\end{figure}
+\subsection{From ViVA export to a margin}
+Each run has a four-column \sourcepath{raw.csv} ViVA export. \sourcepath{scripts/check_snm_sweep.py} detects which trace is normal and which is reflected, writes normalized \sourcepath{q.csv} and \sourcepath{qb.csv}, mirrors one VTC about $y=x$, locates the three intersections, and fits the largest axis-aligned square within each of the two lobes. The reported margin is
 \begin{equation}
-  V_Q^{2} - 2E\,V_Q + \gamma\frac{\mu_p}{\mu_n}F^{2} = 0
-  \quad\Rightarrow\quad
-  V_Q = E \pm \sqrt{E^{2} - \gamma\frac{\mu_p}{\mu_n}F^{2}},
-  \label{eq:w-quadratic}
+\mathrm{SNM}_{\rm read}=\min(\mathrm{SNM}_{L},\mathrm{SNM}_{R}).
 \end{equation}
-of which the positive root exceeds $V_{DD} - V_{Tn}$ and is inconsistent with
-the assumed triode pass-gate, leaving
-\begin{equation}
-  V_Q = (V_{DD} - V_{Tn})
-        - \sqrt{(V_{DD} - V_{Tn})^{2}
-                - \gamma\frac{\mu_p}{\mu_n}\bigl(V_{DD} - |V_{Tp}|\bigr)^{2}}.
-  \label{eq:w-vq}
-\end{equation}
-This assumes ideal long-channel square-law behavior, a saturated pull-up
-($V_Q < |V_{Tp}|$), an ideal $0\,\mathrm{V}$ bitline, and no help from PG2
-pulling $\overline{Q}$ up.
- 
-The written node $Q$ drives INV2, whose switching point $V_M$ is the one in
-Eq.~\eqref{eq:vm}, with $B = \sqrt{\gamma\mu_p/(\beta\mu_n)}$. Write stability requires
-$V_Q < V_M$:
-\begin{equation}
-  (V_{DD} - V_{Tn})
-  - \sqrt{(V_{DD} - V_{Tn})^{2}
-          - \gamma\frac{\mu_p}{\mu_n}\bigl(V_{DD} - |V_{Tp}|\bigr)^{2}}
-  \;<\;
-  \frac{V_{Tn} + \sqrt{\dfrac{\mu_p\gamma}{\mu_n\beta}}
-        \bigl(V_{DD} - |V_{Tp}|\bigr)}
-       {1 + \sqrt{\dfrac{\mu_p\gamma}{\mu_n\beta}}}.
-  \label{eq:w-condition}
-\end{equation}
-Equation~\eqref{eq:w-vq} holds only while the pull-up is saturated,
-$V_Q < |V_{Tp}|$. With the values used here $V_M$ is about
-$0.37\,\mathrm{V}$, above $|V_{Tp}| = 0.3\,\mathrm{V}$, so
-\eqref{eq:w-condition} cannot be solved for $\gamma$ with \eqref{eq:w-vq}
-alone. Requiring the stricter $V_Q < V_{Tn}$ keeps \eqref{eq:w-vq} valid when
-$V_{Tn} \le |V_{Tp}|$, guarantees that the NMOS of INV2 is off, and gives the
-required pull-up ratio in closed form:
-\begin{equation}
-  \gamma < \frac{\mu_n}{\mu_p}\cdot
-  \frac{V_{Tn}\bigl(2V_{DD} - 3V_{Tn}\bigr)}
-       {\bigl(V_{DD} - |V_{Tp}|\bigr)^{2}}.
-  \label{eq:w-gamma}
-\end{equation}
- 
-For an illustrative calculation at $V_{DD} = 0.8\,\mathrm{V}$, with the assumed values
-$V_{Tn} = |V_{Tp}| = 0.3\,\mathrm{V}$ and $\mu_n/\mu_p = 2$,
-\eqref{eq:w-gamma} gives $\gamma < 1.68$. Evaluating \eqref{eq:w-condition}
-numerically at $\beta = 2$, with the triode pull-up current beyond
-$V_Q = |V_{Tp}|$, relaxes the limit to about $\gamma < 1.9$. For $\gamma = 1$
-the divider \eqref{eq:w-divider-gamma} puts $V_Q$ at $0.27\,\mathrm{V}$ and
-the current balance \eqref{eq:w-vq} at $0.15\,\mathrm{V}$; the divider is
-pessimistic because a saturated pull-up supplies less current than a resistor
-would.
- 
-\begin{table}[h]
-  \centering
-  \caption{Written-node voltage against pull-up ratio at
-    $V_{DD} = 0.8\,\mathrm{V}$, $\mu_n/\mu_p = 2$.}
-  \label{tab:w-gamma}
-  \begin{tabular}{cccc}
-    \hline
-    $\gamma$ & $V_Q$ from \eqref{eq:w-vq} (V) & Margin to $V_{Tn}$ (V)
-             & Margin to $V_M$ at $\beta = 2$ (V) \\
-    \hline
-    0.5 & 0.067 & 0.233 & 0.285 \\
-    1   & 0.146 & 0.154 & 0.220 \\
-    1.5 & 0.250 & 0.050 & 0.126 \\
-    2   & 0.40, pull-up in triode & fails & fails \\
-    \hline
-  \end{tabular}
+A 16,001-point voltage grid is used for the final result. Repeating the fit at 4,001 points changes the side length by at most $0.05$ mV. The square coordinates and crossings are retained in each \sourcepath{snm.json}. The low-voltage crossing is reported as the DC ``0''-node read-disturb operating point. This is a \emph{schematic} analysis, even though Part 1 ultimately asks for the same measurements after extraction.
+
+\section{Measured schematic read stability}
+\begin{table}[H]\centering
+\caption{Three-point read sweep at $0.8$ V, from the raw Spectre exports. Extra digits preserve calculation traceability.}\label{tab:sweep}
+\begin{tabular}{@{}cccccc@{}}\toprule
+$\beta$ & PD fins & SNM$_L$ (mV) & SNM$_R$ (mV) & SNM$_{\rm read}$ (mV) & low crossing (mV) \\\midrule
+1.0 & 2 & 126.6 & 126.6 & 126.6 & 134.3 \\
+1.5 & 3 & 145.8 & 145.8 & 145.8 & 96.6 \\
+2.0 & 4 & 156.3 & 156.3 & 156.3 & 77.1 \\\bottomrule
+\end{tabular}
 \end{table}
- 
-The bound scales directly with the NMOS-to-PMOS strength ratio. The
-assumed ratio must be replaced with values from the GPDK 18~nm process models
-before using this bound to choose device sizes:
- 
-\begin{table}[h]
-  \centering
-  \caption{Sensitivity of the write bound to the NMOS-to-PMOS strength ratio.}
-  \label{tab:w-strength}
-  \begin{tabular}{cccc}
-    \hline
-    Strength ratio $\mu_n/\mu_p$ & $\gamma$ limit from \eqref{eq:w-gamma}
-      & $V_Q$ at $\gamma = 1$ (V) & $V_Q$ at $\gamma = 0.5$ (V) \\
-    \hline
-    2    & 1.68 & 0.146 & 0.067 \\
-    1.5  & 1.26 & 0.211 & 0.092 \\
-    1.25 & 1.05 & 0.276 & 0.113 \\
-    1    & 0.84 & fails & 0.146 \\
-    \hline
-  \end{tabular}
+For submission at the handout's requested two significant figures, the three read-SNM results are $0.13$, $0.15$ and $0.16$ V; the corresponding disturbed zero-node crossings are $0.13$, $0.097$ and $0.077$ V. The additional digits in Table~\ref{tab:sweep} are retained to distinguish the underlying calculations.
+The selected candidate gains $29.7$ mV ($23\%$) over $\beta=1$ at this schematic operating point. The low crossing drops by $57.2$ mV. That direction agrees with Equations~\eqref{eq:read-divider} and \eqref{eq:read-root}. No layout-area penalty or write-margin trade-off has been measured yet.
+
+\subsection{Original Cadence butterflies with fitted squares}
+Figures~\ref{fig:beta1}--\ref{fig:beta2} are the \emph{original ViVA screenshots}; the cyan outlines are report overlays placed at the coordinates saved by the maximum-square script. The voltage axes in ViVA use different horizontal and vertical pixel scales, so a square in volts appears rectangular on screen. The outlines are analytical annotations, not marks produced by Cadence. They make the two fitted lobes visible on the actual captured curves.
+\begin{figure}[H]\centering
+\cadencecapture{media/part1/read_snm_beta1.png}{(0.44343,0.64747)}{(0.55413,0.74755)}{(0.79442,0.32997)}{(0.90512,0.43005)}
+\caption{Original $\beta=1$ ViVA butterfly with both computed largest-square locations overlaid; SNM $=126.6$ mV.}\label{fig:beta1}
+\end{figure}
+\begin{figure}[H]\centering
+\cadencecapture{media/part1/read_snm_beta1p5.png}{(0.40559,0.63067)}{(0.53259,0.74560)}{(0.77164,0.29783)}{(0.89863,0.41276)}
+\caption{Original $\beta=1.5$ ViVA butterfly with fitted-square overlays; SNM $=145.8$ mV.}\label{fig:beta1p5}
+\end{figure}
+\begin{figure}[H]\centering
+\cadencecapture{media/part1/read_snm_beta2.png}{(0.38419,0.61790)}{(0.52050,0.74175)}{(0.75670,0.27716)}{(0.89301,0.40100)}
+\caption{Original $\beta=2$ ViVA butterfly with fitted-square overlays; SNM $=156.3$ mV. This is the selected schematic candidate.}\label{fig:beta2}
+\end{figure}
+\FloatBarrier
+
+\section{Layout and extraction: work state}
+The available \sourcepath{media/part1/6t_sram_layout_unlaid.png} shows separated device structures and is a planning artifact. It is useful as evidence that placement was explored, but it does not show the continuous, tileable finished cell demanded by the handout. It provides no reliable boundary dimensions, DRC or LVS result. Figure~\ref{fig:draft} is therefore labeled explicitly rather than reported as a completed layout.
+\begin{figure}[H]\centering
+\includegraphics[width=.8\linewidth]{media/part1/6t_sram_layout_unlaid.png}
+\caption{Unlaid placement draft. It is \emph{not} a DRC/LVS-clean bitcell layout and cannot support area, parasitic or post-layout claims.}\label{fig:draft}
+\end{figure}
+The final layout needs a horizontal wordline and vertical BL/BLB pair, with abutting cells able to share the intended bitline contacts and supply rails. After routing and signoff, the cell area must be measured as $A_{\mu m^2}$ and converted using the handout's $F=10$ nm:
+\begin{equation}
+A_{F^2}=\frac{A_{\mu m^2}}{(0.01\,\mu\mathrm m)^2}=10^4 A_{\mu m^2}.
+\end{equation}
+No numeric area is printed because no finished boundary measurement exists. Likewise, the extracted per-cell BL-node and WL-node capacitances must be read from the completed parasitic view; the schematic sweep cannot supply them. A simple width-times-length transistor sum would not be a substitute for the required cell layout area.
+
+\section{Remaining Part 1 characterization}
+Table~\ref{tab:required} answers the handout's remaining items with an explicit evidence state and the bench or artifact needed. These are action definitions, not claimed test outcomes. For any asymmetric butterfly, use the smaller of the two fitted square sides.
+\begin{table}[H]\centering\small
+\caption{Required post-layout and functional results. All numeric cells remain unreported until the extracted benches run.}\label{tab:required}
+\begin{tabularx}{\linewidth}{@{}p{.19\linewidth}X p{.17\linewidth}@{}}\toprule
+Item & Required setup / report artifact & Current state \\\midrule
+Hold SNM & WL$=0$; two broken-feedback inverter VTCs; butterfly and $\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$. & \openitem \\
+Read SNM & WL$=V_{DD}$, BL$=$BLB$=V_{DD}$; extracted butterfly and DC zero-node voltage. & Schematic only \\
+Write margin & Store $Q=1$, WL$=V_{DD}$; hold the opposite bitline at $V_{DD}$ and sweep the write-zero bitline downward. Record flip-point $V_{\rm trip}=\mathrm{WM}_{\rm BL}$. & \openitem \\
+Cell current & Read a stored zero with bitlines at $V_{DD}$; report current drawn from its bitline. & \openitem \\
+Supply dependence & Repeat read SNM and write margin at $0.8$, $0.7$, $0.5$ V; state whether the cell still reads and writes at $0.5$ V. & $0.8$ V schematic read only \\
+Functional check & Transient WL/precharge pulses and 15 extra per-cell bitline loads; write 0/read, then write 1/read. Show WL, BL, BLB, $Q$, $\overline Q$. & \openitem \\
+\bottomrule
+\end{tabularx}
 \end{table}
- 
-Reducing $\gamma$ weakens the pull-up relative to the pass-gate and lowers the
-written node, but a stronger pass-gate
-lowers $\beta$ and loads the bitline, and $\gamma$ also moves $V_M$: the final
-pull-up ratio is not selected by minimizing $V_Q$ alone.
+The post-layout supply table cannot honestly be filled from the current files. In particular, the $0.8$ V read number above must not be copied into its post-layout column. The bitline load for the transient column surrogate also depends on the missing extracted per-cell capacitance. No waveforms in the repository establish a non-disturbing read or completed write under that load.
 
-\subsection*{Chosen sizes}
-\begin{tabular}{@{}lll@{}}
-\toprule
-\textbf{Device} & $\boldsymbol{(W/L)}$ & \textbf{Notes} \\
-\midrule
-Pull-down (PD) & $4\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=4$ \\
-Pull-up (PU) & $2\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=2$ \\
-Pass-gate (PG) & $2\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=2$ \\
-$\beta$ & $2$ & PD/PG $=4/2$ \\
-$\gamma$ & $1$ & PU/PG $=2/2$ \\
-\bottomrule
-\end{tabular}
+\section{Discussion and next decisions}
+The schematic sweep shows the expected read trade-off: strengthening PD relative to PG lowers the read-disturbed zero node and enlarges the butterfly margin. The candidate $\beta=2$ is supported \emph{only for schematic read stability at 0.8 V}. Its larger PD may cost cell area and change internal and bitline parasitics, while $\gamma=1$ still needs a quantitative writability test. Part 2 should inherit a cell only after layout, DRC/LVS, PEX and the complete Part 1 stability/functional benches are recorded. If extracted read SNM degrades or write margin is too small, revise PD/PG/PU sizing and repeat both schematic and extracted checks. Per-cell $C_{\rm BL}$ and $C_{\rm WL}$ then become measured inputs to the 16-by-4 array's line-load estimate.
 
-\subsection*{$\beta$ sweep (schematic, $V_{DD}=0.8\,\mathrm{V}$)}
-\begin{tabular}{@{}llll@{}}
-\toprule
-$\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{0-node disturb} & \textbf{Source} \\
-\midrule
-$1\times$ (PD $2$ fin) & $126.6\,\mathrm{mV}$ & $134.3\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta1/snm.json} \\
-$1.5\times$ (PD $3$ fin) & $145.8\,\mathrm{mV}$ & $96.6\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta1p5/snm.json} \\
-$2\times$ (PD $4$ fin) & $156.3\,\mathrm{mV}$ & $77.1\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta2/snm.json} \\
-\bottomrule
-\end{tabular}
+\section*{Traceability and team contributions}
+The handout used for this report is \sourcepath{docs/ese5700-project1-current.pdf} (Part 1 on pp.~3--4). Reproducible results are in \sourcepath{results/part1/read-snm/beta1/}, \sourcepath{beta1p5/}, and \sourcepath{beta2/}; each contains \sourcepath{raw.csv}, normalized curves and \sourcepath{snm.json}. The overlay coordinates are the two \sourcepath{lobes} entries in those JSON files. Recompute with the command below. The original handwritten and Cadence images are retained in \sourcepath{media/part1/}.
 
-\noindent SNM$_{\mathrm{read}}=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$ by maximum-square fit on the read butterfly (WL$=V_{DD}$, BL$=$BLB$=V_{DD}$). Method: \texttt{scripts/check\_snm\_sweep.py} splits the 4-column Cadence export to \texttt{q.csv}/\texttt{qb.csv}, mirrors one VTC, finds three intersections on a $16001$-point grid, fits the largest square in each lobe. Convergence checked $4001$ vs $16001$ ($<0.05\,\mathrm{mV}$ for $\beta=1.5,2$; $0.04\,\mathrm{mV}$ for $\beta=1$). Cell kept symmetric.
+\begin{center}\small\texttt{python3 scripts/check\_snm\_sweep.py --all}\end{center}
 
-\noindent Design point selected: $\beta=2$, $\gamma=1$. Cell kept symmetric.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/bitcell-schematic.png}
-  \caption{6T bitcell schematic with transistor sizes
-  (\texttt{proj1\_lib} 6t-sram, Virtuoso capture).}
+The selected design was also captured in separate $Q$- and $\overline Q$-side sweep schematics (Figure~\ref{fig:variants}). These establish the nominally symmetric device assignment used by the two transfer-curve benches; they do not provide layout evidence.
+\begin{figure}[H]\centering
+\includegraphics[width=.98\linewidth,height=.30\textheight,keepaspectratio]{media/part1/read_snm_q_sch_2.png}
+\caption{Original Cadence $Q$-side cell for $\beta=2$.}\label{fig:variants}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=.98\linewidth,height=.30\textheight,keepaspectratio]{media/part1/read_snm_qb_sch_2.png}
+\caption{Original Cadence $\overline Q$-side cell for $\beta=2$. The other PD variants remain in \sourcepath{media/part1/}.}
 \end{figure}
 
-\section*{2.~Layout}
-\todo{DRC- and LVS-clean layout: wordline horizontal, bitline pair vertical,
-tileable for Part~2. Report area in $\mu\mathrm{m}^2$ and $F^2$ ($F = 10\,\mathrm{nm}$).}
-
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Metric} & \textbf{Value} \\
-\midrule
-Cell area & \todo{TBD}~$\mu\mathrm{m}^2$ \\
-Cell area in $F^2$ & \todo{TBD}~$F^2$ \\
-DRC & \todo{clean / summary} \\
-LVS & \todo{clean / summary} \\
-\bottomrule
-\end{tabular}
-
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.7\linewidth]{media/part1/bitcell-layout.png}
-%   \caption{6T bitcell layout.}
-% \end{figure}
-
-\section*{3.~Extraction}
-\todo{Post-layout parasitic extraction. Report per-cell bitline-node and
-wordline-node capacitances (loads for Part~2).}
-
-\begin{tabular}{@{}ll@{}}
-\toprule
-\textbf{Capacitance} & \textbf{Value} \\
-\midrule
-$C_{\mathrm{BL}}$ (per cell) & \todo{TBD} \\
-$C_{\mathrm{WL}}$ (per cell) & \todo{TBD} \\
-\bottomrule
-\end{tabular}
-
-\section*{4.~Stability characterization (post-layout, $V_{DD}=0.8\,\mathrm{V}$)}
-\subsection*{4a.~Hold SNM}
-\todo{Butterfly plot with WL $= 0$; report SNM$_{\mathrm{hold}} = \min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.}
-
-\subsection*{4b.~Read SNM}
-Read butterfly with WL$=V_{DD}$, BL$=$BLB$=V_{DD}$ at $V_{DD}=0.8\,\mathrm{V}$ (schematic). Each $\beta$ uses two DC sweeps: sweep $Q$, record $\overline{Q}$; sweep $\overline{Q}$, record $Q$ (testbenches \texttt{media/part1/read\_snm\_q\_tb\_sch.png}, \texttt{media/part1/read\_snm\_qb\_tb\_sch.png}; per-$\beta$ cell schematics \texttt{read\_snm\_q\_sch\_*.png}, \texttt{read\_snm\_qb\_sch\_*.png}). The 4-column ViVA export (\texttt{results/part1/read-snm/beta*/raw.csv}) is split to \texttt{q.csv}/\texttt{qb.csv} and evaluated by \texttt{scripts/check\_snm\_sweep.py} (wrapper around \texttt{scripts/butterfly\_snm.py}): mirror one VTC across $y=x$, interpolate on a uniform $16001$-point grid, locate three intersections, fit the largest axis-aligned square in each lobe. Reported SNM$_{\mathrm{read}}=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
-
-\begin{tabular}{@{}lllll@{}}
-\toprule
-$\boldsymbol{\beta}$ & \textbf{SNM$_{L}$} & \textbf{SNM$_{R}$} & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Intersections (mV)} \\
-\midrule
-$1$ & $126.6\,\mathrm{mV}$ & $126.6\,\mathrm{mV}$ & $126.6\,\mathrm{mV}$ & $134.3, 410.0, 797.9$ \\
-$1.5$ & $145.8\,\mathrm{mV}$ & $145.8\,\mathrm{mV}$ & $145.8\,\mathrm{mV}$ & $96.6, 388.0, 798.6$ \\
-$2$ & $156.3\,\mathrm{mV}$ & $156.3\,\mathrm{mV}$ & $156.3\,\mathrm{mV}$ & $77.1, 372.5, 798.8$ \\
-\bottomrule
-\end{tabular}
-
-\noindent Lobes are symmetric to $<0.1\,\mathrm{mV}$ (symmetric cell). The low-side intersection is the DC voltage of the ``0'' node: $134.3\,\mathrm{mV}$ ($\beta=1$), $96.6\,\mathrm{mV}$ ($\beta=1.5$), $77.1\,\mathrm{mV}$ ($\beta=2$), decreasing with $\beta$ as the Section~1 divider predicts ($V_Q\approx V_{DD}/(1+\beta)$ gives $400/320/267\,\mathrm{mV}$ resistive; square-law $(V_{DD}-V_{Tn})(1-\sqrt{\beta/(1+\beta)})$ is closer but still long-channel only). Full machine-readable results: \texttt{results/part1/read-snm/beta*/snm.json} with squares, grid step, and $4$k/$16$k convergence.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta1.png}
-  \caption{Read butterfly $\beta=1$: two VTCs + largest squares. SNM$_{\mathrm{read}}=126.6\,\mathrm{mV}$. Clean plot from \texttt{check\_snm\_sweep.py}; Cadence screenshot \texttt{media/part1/read\_snm\_beta1.png} in repo.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta1p5.png}
-  \caption{Read butterfly $\beta=1.5$: SNM$_{\mathrm{read}}=145.8\,\mathrm{mV}$.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta2.png}
-  \caption{Read butterfly $\beta=2$ (selected): SNM$_{\mathrm{read}}=156.3\,\mathrm{mV}$.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.48\linewidth]{media/part1/read_snm_q_tb_sch.png}\hfill
-  \includegraphics[width=0.48\linewidth]{media/part1/read_snm_qb_tb_sch.png}
-  \caption{Read-SNM testbenches: Q-sweep (left) and QB-sweep (right). WL$=V_{DD}$, BL$=$BLB$=V_{DD}$, DC sweep $0\to0.8\,\mathrm{V}$.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_q_sch_1.png}\hfill
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_q_sch_1p5.png}\hfill
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_q_sch_2.png}
-  \caption{Q-side cell schematics: $\beta=1$ (PD 2 fin), $1.5$ (3 fin), $2$ (4 fin). PG/PU 2 fin, $L=18\,\mathrm{nm}$.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_qb_sch_1.png}\hfill
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_qb_sch_1p5.png}\hfill
-  \includegraphics[width=0.32\linewidth]{media/part1/read_snm_qb_sch_2.png}
-  \caption{QB-side cell schematics: $\beta=1$, $1.5$, $2$ (same sizing). Cell kept symmetric.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\linewidth]{media/part1/read_snm_beta1.png}
-  \caption{Cadence ViVA read butterfly $\beta=1$ (QB reflected). Exported to \texttt{results/part1/read-snm/beta1/raw.csv}.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\linewidth]{media/part1/read_snm_beta1p5.png}
-  \caption{Cadence ViVA read butterfly $\beta=1.5$. Exported to \texttt{results/part1/read-snm/beta1p5/raw.csv}.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\linewidth]{media/part1/read_snm_beta2.png}
-  \caption{Cadence ViVA read butterfly $\beta=2$ (selected). Exported to \texttt{results/part1/read-snm/beta2/raw.csv}.}
-\end{figure}
-
-\subsection*{4c.~Write margin}
-\todo{Store $Q=1$, WL $= V_{DD}$, BL $= V_{DD}$; sweep BLB; report
-$\mathrm{WM}_{\mathrm{BL}} = V_{\mathrm{trip}}$.}
-
-\subsection*{4d.~Cell current}
-\todo{Report $I_{\mathrm{cell}}$ from the ``0''-side bitline
-(WL $= V_{DD}$, bitlines at $V_{DD}$).}
-
-\subsection*{4e.~Supply dependence}
-\begin{tabular}{@{}lll@{}}
-\toprule
-$\boldsymbol{V_{DD}}$ & \textbf{SNM$_{\mathrm{read}}$} & $\boldsymbol{\mathrm{WM}_{\mathrm{BL}}}$ \\
-\midrule
-$0.8\,\mathrm{V}$ & $156.3\,\mathrm{mV}$ ($\beta=2$ schematic) & \todo{TBD} \\
-$0.7\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
-$0.5\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
-\bottomrule
-\end{tabular}
-
-\noindent Still reads and writes at $0.5\,\mathrm{V}$? \todo{yes/no + notes}.
-
-% Waveform / butterfly figures under media/part1/:
-% butterfly-read-beta1.png/.svg, butterfly-read-beta1p5.png/.svg,
-% butterfly-read-beta2.png/.svg (clean, from check_snm_sweep.py),
-% read_snm_beta*.png (Cadence screenshots),
-% read_snm_q_sch_*.png, read_snm_qb_sch_*.png, *_tb_sch.png.
-
-\section*{5.~Functional check}
-\todo{Transient test with ideal WL and precharge pulses; bitline pair loaded by
-15 additional per-cell bitline loads. Write 0, read; write 1, read. Show WL, BL,
-BLB, $Q$, $\overline{Q}$.}
-
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.95\linewidth]{media/part1/functional-check.png}
-%   \caption{Functional write/read waveforms.}
-% \end{figure}
-
-\section*{6.~Discussion}
-\todo{Short paragraph: what limits the cell, and what you would change for Part~2.}
-
-\section*{Technology note}
-The assignment specifies the Cadence GPDK 18~nm technology and nominal
-$V_{DD}=0.8\,\mathrm{V}$ (Part~1 characterized at $0.8\,\mathrm{V}$ with a
-$0.8/0.7/0.5\,\mathrm{V}$ supply sweep; $F=10\,\mathrm{nm}$ for area in $F^2$).
-The Cadence schematic inspected on Betty on October~10,~2026 uses devices
-labeled with $L=18\,\mathrm{nm}$, consistent with that GPDK 18~nm flow.
-All layout, extraction, and post-layout measurements must use that flow.
-Schematic read-SNM values in \S1 and \S4b are measured from Spectre DC sweeps
-(\texttt{results/part1/read-snm/beta*/raw.csv} $\rightarrow$ \texttt{snm.json});
-all other tables remain TBD until post-layout benches run.
-
+Both authors are responsible for understanding the complete design and report. The repository does not state which author performed each task, so a contribution breakdown cannot be assigned without their input; this is an open handout requirement before team submission.
 \end{document}

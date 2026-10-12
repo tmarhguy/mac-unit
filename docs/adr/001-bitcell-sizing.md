@@ -21,7 +21,7 @@ beta1 126.6mV, beta1.5 145.8mV, beta2 156.3mV. Selected beta=2, gamma=1
 
 ## Consequences
 
-- Chosen `(W/L)` table lives in `docs/sections/03-bitcell.adoc`.
+- Device settings and the sizing rationale live in the Part 1 report's cell and hand-analysis sections.
 - Post-layout butterfly + write-margin benches are mandatory;
   schematic-only SNM never promotes to results beyond the design section.
 - Per-cell `C_BL` / `C_WL` become Part 2 line-load inputs.

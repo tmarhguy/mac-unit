@@ -129,12 +129,31 @@ def page():
         svg = svg.replace('aria-labelledby="title desc"',f'aria-labelledby="{prefix}-title {prefix}-desc"')
         return svg
     text = re.sub(r'<img\s+src="images/([\w-]+)\.svg"[^>]*>',diagram,text)
+    image_count = 0
+    def defer_image(match):
+        nonlocal image_count
+        image_count += 1
+        tag = match.group(0)
+        if 'decoding=' not in tag:
+            tag = tag.replace('<img', '<img decoding="async"', 1)
+        if image_count > 1 and 'loading=' not in tag:
+            tag = tag.replace('<img', '<img loading="lazy"', 1)
+        return tag
+    text = re.sub(r'<img\b[^>]*>',defer_image,text)
     text = re.sub(r'(<code\b[^>]*data-lang="([\w-]+)"[^>]*>)(.*?)</code>',code,text,flags=re.S)
     file.write_text(text)
     (OUT/'.nojekyll').touch()
 
+def not_found():
+    source = (ROOT/'docs/404.html').read_text()
+    url = os.environ.get('DOCS_SITE_URL') or SITE.get('url','')
+    site_root = urlsplit(url).path or '/'
+    if not site_root.endswith('/'):
+        site_root += '/'
+    (OUT/'404.html').write_text(source.replace('__SITE_ROOT__',html.escape(site_root,quote=True)))
+
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('stage',choices=['head','page'])
+    parser.add_argument('stage',choices=['head','page','not-found'])
     args=parser.parse_args()
-    head() if args.stage=='head' else page()
+    {'head':head,'page':page,'not-found':not_found}[args.stage]()

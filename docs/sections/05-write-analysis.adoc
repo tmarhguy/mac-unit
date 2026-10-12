@@ -1,0 +1,29 @@
+[#write-analysis]
+== Write-stability hand analysis
+
+To overwrite a stored one with zero, start with Q≈VDD and QB≈0, assert WL, and drive the write-zero bitline to ground. The access transistor discharges Q against the ON pull-up. A first-order divider gives:
+
+[stem]
+++++
+\frac{V_Q}{V_{DD}}\approx\frac{R_{PG}}{R_{PG}+R_{PU}}\approx\frac{\mu_p\gamma}{\mu_n+\mu_p\gamma}.
+++++
+
+A smaller γ lowers the written node. The cell flips only if Q falls below the receiving inverter's switching point, so the estimate requires stem:[V_Q<V_M]. With stem:[\rho=\mu_n/\mu_p], the divider implies stem:[\gamma<\rho V_M/(V_{DD}-V_M)]. This is a conditional design inequality; it cannot prove a write margin without model strengths and a measured trip point.
+
+=== Current-balance refinement
+
+The original detailed write analysis treats the pass-gate as triode and the pull-up as saturated while stem:[V_Q<|V_{Tp}|]. Let stem:[E=V_{DD}-V_{Tn}] and stem:[F=V_{DD}-|V_{Tp}|]. Equating the two branch currents yields:
+
+[stem]
+++++
+I_{PG}=k_{PG}(EV_Q-V_Q^2/2),\qquad I_{PU}=\tfrac12 k_{PU}F^2,
+++++
+
+[stem]
+++++
+V_Q=E-\sqrt{E^2-\gamma(\mu_p/\mu_n)F^2}.
+++++
+
+The other quadratic root conflicts with the assumed pass-gate region; this expression also ceases to apply when PU enters triode. The completed manuscript retains the full typed derivation. No separate handwritten *write* image is present in `media/part1/`, so the site does not invent one.
+
+The β=2, γ=1 candidate still needs the handout's write-margin sweep: store Q=1, hold the opposing bitline high, sweep the write-zero bitline down from VDD, and record its flip voltage. A stronger PG can improve write ability but weaken read stability and increase bitline load; the read sweep alone cannot close that trade-off.

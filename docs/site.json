@@ -1,8 +1,8 @@
 {
-  "name": "MAC Unit",
-  "label": "Documentation",
-  "title": "MAC Unit documentation",
-  "description": "SRAM-based 4-bit MAC accelerator \u2014 ESE 5700, UPenn.",
+  "name": "6T SRAM",
+  "label": "Project report",
+  "title": "6T SRAM bitcell | ESE 5700",
+  "description": "ESE 5700 Part 1: 18 nm 6T SRAM sizing, hand analysis, Cadence read-SNM evidence, and verification status.",
   "url": "",
   "image": "",
   "about": "#about",
@@ -10,8 +10,7 @@
   "website": "",
   "source": "https://github.com/tmarhguy/mac-unit/blob/main/docs/index.adoc",
   "groups": {
-    "0": "Documentation",
-    "9": "Author"
+    "0": "Report"
   },
   "branch": "main",
   "hero": null

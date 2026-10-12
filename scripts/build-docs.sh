@@ -25,7 +25,10 @@ if [ ! -f "$SRC" ]; then
   exit 1
 fi
 
+# Rebuild from a clean output directory so removed pages and assets cannot ship.
+rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR/theme" "$OUT_DIR/images"
+python3 "$REPO_ROOT/scripts/prepare-docs.py" head
 
 # Version stamp, RISC-V-spec style ("Version <sha>, <date>" under the
 # title). Derived from git at build time; falls back to the build date
@@ -37,9 +40,9 @@ REVNUM="$(git -C "$REPO_ROOT" rev-parse --short HEAD 2>/dev/null || echo unversi
 # (CSS/JS injection) without editing generated HTML afterwards.
 asciidoctor \
   --backend html5 \
-  --safe-mode safe \
+  --safe-mode unsafe \
   --attribute docinfo=shared \
-  --attribute docinfodir="$REPO_ROOT/docs/theme" \
+  --attribute docinfodir="$OUT_DIR/theme" \
   --attribute revdate="$REVDATE" \
   --attribute revnumber="$REVNUM" \
   --out-file "$OUT_FILE" \
@@ -69,10 +72,14 @@ if [ -d "$REPO_ROOT/media/part1" ]; then
   cp "$REPO_ROOT/media/part1/"*.png "$OUT_DIR/images/" 2>/dev/null || true
 fi
 
-# Handout PDF lives in docs/; stage it next to the manual so the
-# link:ese5700-project1.pdf[] reference resolves in the built site.
-if [ -f "$REPO_ROOT/docs/ese5700-project1.pdf" ]; then
-  cp "$REPO_ROOT/docs/ese5700-project1.pdf" "$OUT_DIR/ese5700-project1.pdf"
+python3 "$REPO_ROOT/scripts/prepare-docs.py" page
+python3 "$REPO_ROOT/scripts/prepare-docs.py" not-found
+if [ -f "$REPO_ROOT/docs/ese5700-project1-current.pdf" ]; then
+  cp "$REPO_ROOT/docs/ese5700-project1-current.pdf" "$OUT_DIR/ese5700-project1-current.pdf"
 fi
+if [ -f "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" ]; then
+  cp "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" "$OUT_DIR/report.pdf"
+fi
+python3 "$REPO_ROOT/scripts/export-docs-template.py"
 
 echo "Built $OUT_FILE"

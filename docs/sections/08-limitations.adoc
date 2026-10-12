@@ -1,16 +1,36 @@
-[#limitations]
-== Known Limitations
+[#signoff]
+== Layout, extraction and remaining verification
 
-Honest limits. Anything here is a candidate for the next part —
-not a silent caveat.
+=== Layout work state
 
-* Bitcell Cadence screenshots, TB schematics, and clean butterfly plots live in `media/part1/`; raw CSVs and `snm.json` in `results/part1/read-snm/beta*/`.
-* Schematic read-SNM is measured (β1 126.6mV, β1.5 145.8mV, β2 156.3mV selected); hold/write/cell-current, extraction, and all post-layout tables are `TBD` until Spectre benches run on the extracted netlist.
-* Macro and MAC chapters are structural stubs for Parts 2–3.
-* Legacy 45nm `results/part1/gpdk45/`, `corrected-read-snm/`, `existing-read-snm/` and `scripts/characterize_bitcell.py` were deleted; GPDK 18nm schematic flow is `scripts/check_snm_sweep.py` + `scripts/butterfly_snm.py` (0.8V nominal).
-* Supply behaviour at 0.7 V / 0.5 V is unknown until the §4e sweep runs.
-* No corner (SS/FF, temperature) or mismatch analysis yet.
-* Area, power, and timing carry no estimates — measurement only.
+The available layout image is a placement draft with separated structures. It documents work toward the cell but does not show a finished connected, tileable cell or a DRC/LVS-clean result.
 
-TIP: What limits the cell, and what changes for Part 2, belongs in
-the Part 1 report §6 Discussion and is mirrored here once written.
+.Unlaid placement draft; not a signed-off layout
+image::6t_sram_layout_unlaid.png[Unfinished separated bitcell placement structures,align=center,width=760]
+
+The handout requires WL horizontal and BL/BLB vertical, with abutting mirrored cells able to share contacts and supply rails. The completed cell needs a measured boundary area in μm² and in stem:[F^2], where the current handout sets stem:[F=10\,\mathrm{nm}]. The conversion will be stem:[A_{F^2}=10^4 A_{\mu m^2}] when the actual area is known. DRC and LVS summaries must accompany the image. None of these values or logs are in the repository.
+
+After layout signoff, PEX must provide the bitline-node and wordline-node capacitance of *one cell*. Those extracted loads feed the later 16 × 4 macro and the 15-extra-cell functional surrogate. No capacitance is inferred from the schematic or placement draft.
+
+=== Handout checklist for Part 1
+
+[cols="1,2,1",options="header"]
+|===
+| Required item | Bench or report artifact | Evidence now
+| Schematic sizing and β sweep | Symmetric cell, read/write hand analysis, three read butterflies | Present, schematic
+| Tileable layout and area | Finished cell, DRC/LVS, μm² and stem:[F^2] | Placement draft only
+| Extraction | Per-cell stem:[C_{BL}] and stem:[C_{WL}] | Not recorded
+| Hold SNM | WL=0, both VTCs, butterfly and smaller square | Not recorded
+| Read SNM | WL=VDD, BL=BLB=VDD, extracted butterfly and DC zero node | Schematic only
+| Write margin | Store Q=1; sweep write-zero bitline down; report flip voltage | Not recorded
+| Cell current | Current from zero-side BL during read | Not recorded
+| Supply dependence | Read SNM and write margin at 0.8, 0.7, 0.5 V; answer 0.5 V read/write | 0.8 V schematic read only
+| Functional check | 15 extra per-cell BL loads; write 0/read, write 1/read; show WL, BL, BLB, Q, QB | Not recorded
+| Contributions | Actual role of each author | Not recorded
+|===
+
+The post-layout supply table cannot be populated with the existing schematic value. The transient column load also needs the extracted per-cell BL capacitance. The next evidence sequence is: finish layout, record DRC/LVS and area, extract, then run the full set of benches at the current handout supplies.
+
+=== Design decision
+
+Increasing PD strength relative to PG improved the measured schematic read margin. The larger PD may cost layout area and parasitic load, and γ=1 still needs a quantitative write result. If the extracted cell misses read or write margin, revise PD/PG/PU sizing and repeat both schematic and extracted checks before the cell is tiled into Part 2.

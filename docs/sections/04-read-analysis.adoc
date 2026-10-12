@@ -1,0 +1,43 @@
+[#read-analysis]
+== Read-stability hand analysis
+
+Assume the cell stores Q=0 and QB≈VDD. WL is high, and both bitlines are precharged to VDD. The pass-gate sources current from BL into Q while the pull-down sinks it. The handwritten cell and divider sketches show this contention directly.
+
+.Read state and node labels from the original hand analysis
+image::6t-cell-wl-bl-inv12-q-qb.png[Hand drawn six transistor SRAM read state,align=center,width=600]
+
+.First-order read-disturb divider, handwritten
+image::voltage_div_diagram.png[Hand drawn pass-gate pull-down voltage divider,align=center,width=670]
+
+=== Voltage-divider estimate
+
+At fixed nominal length, a simple resistance model gives:
+
+[stem]
+++++
+\frac{V_Q}{V_{DD}}\approx\frac{R_{PD}}{R_{PG}+R_{PD}}\approx\frac{1}{1+\beta},\qquad V_Q\approx\frac{V_{DD}}{1+\beta}.
+++++
+
+At 0.8 V this predicts 0.400, 0.320 and 0.267 V for β=1, 1.5 and 2. These are *hand estimates*. The measured DC zero-node crossings are 0.134, 0.097 and 0.077 V; the resistor approximation overestimates them because MOS device resistance varies with voltage. It correctly predicts that stronger PD reduces the disturb.
+
+=== MOS current balance
+
+With stem:[E=V_{DD}-V_{Tn}], the idealized saturated PG and triode PD currents are:
+
+[stem]
+++++
+I_{PG}=\tfrac12 k_{PG}(E-V_Q)^2,\quad I_{PD}=k_{PD}(EV_Q-V_Q^2/2),\quad k=\mu_n C_{ox}(W/L).
+++++
+
+At DC equilibrium stem:[I_{PG}=I_{PD}]. The physical root is stem:[V_Q=E(1-\sqrt{\beta/(1+\beta)})]. This long-channel model assumes equal NMOS thresholds, negligible body effect and the stated operating regions. It is a guide to the trend, not a substitute for GPDK simulation.
+
+.Original handwritten pass-gate current expression
+image::ip_kpg_cox_vgs_vth_w_l_eq.png[Handwritten saturated pass-gate current and transconductance,align=center,width=560]
+
+.Original handwritten PD/PG current-ratio step
+image::kpd_kpg_e_vq_evq_eq.png[Handwritten current balance ratio used in read disturb derivation,align=center,width=540]
+
+.Original handwritten physical root for disturbed Q
+image::vq_vdd_vth_beta_eq.png[Handwritten closed form disturbed node voltage,align=center,width=620]
+
+The disturbed Q node drives the opposite inverter. Read stability requires stem:[V_Q<V_M], where stem:[V_M] is that inverter's switching point. In a square-law approximation, stem:[V_M=(V_{Tn}+B(V_{DD}-|V_{Tp}|))/(1+B)] with stem:[B\approx\sqrt{\gamma\mu_p/(\beta\mu_n)}]. Since stem:[V_M] was not separately measured, the actual read-margin comparison is the butterfly result.
