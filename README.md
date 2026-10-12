@@ -52,11 +52,11 @@ using two **16 × 4** SRAM macros, a 4×4 multiplier, a 12-bit accumulator, and 
 
 | Part | Deliverable | Due | In repo |
 |------|-------------|-----|---------|
-| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | 9/29/2026 | yes |
-| **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro | 10/6/2026 | later |
-| **3** | Two SRAMs + datapath + sequencer → MAC unit | 10/20/2026 | later |
+| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | 10/13/2026 | yes |
+| **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro | 10/20/2026 | later |
+| **3** | Two SRAMs + datapath + sequencer → MAC unit | 10/27/2026 | later |
 
-Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 1.2\,\mathrm{V}$.
+Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 0.8\,\mathrm{V}$ ($F = 10\,\mathrm{nm}$).
 
 ## Repository layout
 
@@ -65,10 +65,13 @@ Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/A
 | [ESE5700_Proj1_Part1.tex](ESE5700_Proj1_Part1.tex) | Joint team Part 1 report source |
 | [ESE5700_Proj1_Part1.pdf](ESE5700_Proj1_Part1.pdf) | CI-built PDF (after the workflow runs) |
 | [docs/ese5700-project1.pdf](docs/ese5700-project1.pdf) | Official project handout |
-| [media/](media/) | Part 1 figures and README assets |
-| [scripts/](scripts/) | Local helpers: TeX container + docs builder (`build-docs.sh`) |
+| [media/](media/) | Part 1 figures and README assets (`media/part1/butterfly-read-beta*.png` clean plots, `read_snm_beta*.png` Cadence screenshots) |
+| [results/part1/read-snm/](results/part1/read-snm/) | Canonical β sweep: `beta{1,1p5,2}/raw.csv` → `q.csv`/`qb.csv`/`snm.json`/`butterfly.png/.svg` |
+| [scripts/](scripts/) | `check_snm_sweep.py` (4-col split + SNM + plot), `butterfly_snm.py` (max-square), TeX container + docs builder (`build-docs.sh`) |
 | [.github/workflows/](.github/workflows/) | LaTeX → PDF + Docs (GitHub Pages) workflows |
 | [docs/index.adoc](docs/index.adoc) | Technical manual source (Asciidoctor book) |
+
+**Part 1 schematic read-SNM at 0.8V (WL=VDD, BL=BLB=VDD):** β1 126.6mV, β1.5 145.8mV, β2 156.3mV (selected β=2, γ=1). Recompute with `python3 scripts/check_snm_sweep.py --all`.
 
 ## Build the manual locally
 
