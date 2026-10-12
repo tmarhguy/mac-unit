@@ -1,0 +1,18 @@
+{
+  "name": "MAC Unit",
+  "label": "Documentation",
+  "title": "MAC Unit documentation",
+  "description": "SRAM-based 4-bit MAC accelerator \u2014 ESE 5700, UPenn.",
+  "url": "",
+  "image": "",
+  "about": "#about",
+  "repository": "https://github.com/tmarhguy/mac-unit",
+  "website": "",
+  "source": "https://github.com/tmarhguy/mac-unit/blob/main/docs/index.adoc",
+  "groups": {
+    "0": "Documentation",
+    "9": "Author"
+  },
+  "branch": "main",
+  "hero": null
+}

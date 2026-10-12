@@ -1,0 +1,9 @@
+[#about]
+[preface]
+== About me
+
+Replace this text with your name, background, and connection to the project.
+
+=== Projects
+
+Add links to your hardware, software, or open-source work as appropriate.
