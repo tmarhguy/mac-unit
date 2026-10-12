@@ -4,12 +4,11 @@
 Honest limits. Anything here is a candidate for the next part —
 not a silent caveat.
 
-* Bitcell figures beyond the Cadence checkout screenshots are still
-placeholders (`media/part1/` holds only `.gitkeep` today).
-* Sizing, SNM, write margin, cell current, and extraction tables
-are `TBD` until Spectre benches run on the extracted netlist.
+* Bitcell Cadence screenshots, TB schematics, and clean butterfly plots live in `media/part1/`; raw CSVs and `snm.json` in `results/part1/read-snm/beta*/`.
+* Schematic read-SNM is measured (β1 126.6mV, β1.5 145.8mV, β2 156.3mV selected); hold/write/cell-current, extraction, and all post-layout tables are `TBD` until Spectre benches run on the extracted netlist.
 * Macro and MAC chapters are structural stubs for Parts 2–3.
-* Supply behaviour below 0.9 V is unknown until the §4e sweep runs.
+* Legacy 45nm `results/part1/gpdk45/`, `corrected-read-snm/`, `existing-read-snm/` and `scripts/characterize_bitcell.py` were deleted; GPDK 18nm schematic flow is `scripts/check_snm_sweep.py` + `scripts/butterfly_snm.py` (0.8V nominal).
+* Supply behaviour at 0.7 V / 0.5 V is unknown until the §4e sweep runs.
 * No corner (SS/FF, temperature) or mismatch analysis yet.
 * Area, power, and timing carry no estimates — measurement only.
 
