@@ -56,6 +56,5 @@ __pycache__/
 tmp/
 temp/
 
-# Generated static manual (make docs)
-# Source lives in docs/*.adoc + media/; output is rebuilt by CI.
+# Local build output (tectonic/latexmk byproducts staged here).
 /build/

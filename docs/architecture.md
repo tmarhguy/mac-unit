@@ -2,8 +2,7 @@
 
 Source of truth for the system design; the full requirements live in
 the course handout (`docs/ese5700-project1.pdf`). This document tracks
-what exists today and what each part adds. The report site
-(`docs/index.adoc`) links here instead of duplicating numbers.
+what exists today and what each part adds.
 
 ## Current state
 
@@ -21,6 +20,16 @@ scale to full-line loads.
 **Part 3 — MAC unit (due 10/27/2026, roadmap).**
 Two macros + 4×4 multiplier + 12-bit accumulator + sequencer
 computing `ACC = sum W[i]*X[i]` over 16 positions.
+
+```mermaid
+flowchart LR
+    W["Weight SRAM<br/>16 × 4 (4-bit W[i])"] --> M["4 × 4 multiplier<br/>(8-bit product)"]
+    X["Activation SRAM<br/>16 × 4 (4-bit X[i])"] --> M
+    M --> ADD["12-bit accumulator"]
+    ADD --> ACC["ACC[11:0]"]
+    SEQ["Counter + control<br/>(i = 0..15)"] -. "ADDR[3:0]" .-> W
+    SEQ -. "ADDR[3:0]" .-> X
+```
 
 ## Block map
 
