@@ -23,7 +23,7 @@
   \large Project~1, Part~1: The 6T Bitcell%
 }
 \author{Tyrone Marhguy \and Victor Wanjohi}
-\date{University of Pennsylvania \\ Due: 9/29/2026}
+\date{University of Pennsylvania \\ Due: 10/13/2026}
 
 \begin{document}
 \maketitle
@@ -115,12 +115,11 @@ V_M = \frac{V_{Tn}+B\,(V_{DD}-|V_{Tp}|)}{1+B},
       =\sqrt{\frac{\gamma\,\mu_p}{\beta\,\mu_n}},
 \label{eq:vm}
 \end{equation}
-with $k_P/k_N=\mu_p C_{ox}(W/L)_{\mathrm{PU}}/
-\big(\mu_n C_{ox}(W/L)_{\mathrm{PG}}\big)$,
-$\beta=(W/L)_{\mathrm{PD}}$, and $\gamma=(W/L)_{\mathrm{PG}}$ as written
-in the hand-note derivation, so $V_M$ depends on the supply, the
-threshold voltages, and the
-relative PMOS/NMOS strengths. Read stability requires $V_Q<V_M$:
+Here $k_P$ and $k_N$ are the pull-up and pull-down transconductance
+parameters. With $\beta$ defined as PD/PG and $\gamma$ as PU/PG,
+$k_P/k_N=\gamma\mu_p/(\beta\mu_n)$. Thus $V_M$ depends on the supply,
+threshold voltages, and relative PMOS/NMOS strengths. Read stability
+requires $V_Q<V_M$:
 \begin{equation}
 (V_{DD}-V_{Tn})\left(1-\sqrt{\frac{\beta}{1+\beta}}\right)
 <
@@ -249,7 +248,7 @@ required pull-up ratio in closed form:
   \label{eq:w-gamma}
 \end{equation}
  
-At $V_{DD} = 0.8\,\mathrm{V}$, with the placeholder values
+For an illustrative calculation at $V_{DD} = 0.8\,\mathrm{V}$, with the assumed values
 $V_{Tn} = |V_{Tp}| = 0.3\,\mathrm{V}$ and $\mu_n/\mu_p = 2$,
 \eqref{eq:w-gamma} gives $\gamma < 1.68$. Evaluating \eqref{eq:w-condition}
 numerically at $\beta = 2$, with the triode pull-up current beyond
@@ -277,9 +276,9 @@ would.
   \end{tabular}
 \end{table}
  
-The bound scales directly with the NMOS-to-PMOS strength ratio. FinFET kits
-often have a PMOS much closer to the NMOS than the planar assumption of 2,
-and that decides whether a one-fin pass-gate can overpower a one-fin pull-up:
+The bound scales directly with the NMOS-to-PMOS strength ratio. The
+assumed ratio must be replaced with values from the GPDK 18~nm process models
+before using this bound to choose device sizes:
  
 \begin{table}[h]
   \centering
@@ -299,7 +298,7 @@ and that decides whether a one-fin pass-gate can overpower a one-fin pull-up:
 \end{table}
  
 Reducing $\gamma$ weakens the pull-up relative to the pass-gate and lowers the
-written node, but $\gamma$ moves in whole-fin steps, a stronger pass-gate
+written node, but a stronger pass-gate
 lowers $\beta$ and loads the bitline, and $\gamma$ also moves $V_M$: the final
 pull-up ratio is not selected by minimizing $V_Q$ alone.
 
@@ -308,26 +307,28 @@ pull-up ratio is not selected by minimizing $V_Q$ alone.
 \toprule
 \textbf{Device} & $\boldsymbol{(W/L)}$ & \textbf{Notes} \\
 \midrule
-Pull-down (PD) & \todo{TBD} & \\
-Pull-up (PU) & \todo{TBD} & \\
-Pass-gate (PG) & \todo{TBD} & \\
-$\beta$ & \todo{TBD} & \\
-$\gamma$ & \todo{TBD} & \\
+Pull-down (PD) & $4\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=4$ \\
+Pull-up (PU) & $2\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=2$ \\
+Pass-gate (PG) & $2\times\,\mathrm{fin}$, $L=18\,\mathrm{nm}$ & $n_{\mathrm{fin}}=2$ \\
+$\beta$ & $2$ & PD/PG $=4/2$ \\
+$\gamma$ & $1$ & PU/PG $=2/2$ \\
 \bottomrule
 \end{tabular}
 
-\subsection*{$\beta$ sweep (schematic)}
-\begin{tabular}{@{}lll@{}}
+\subsection*{$\beta$ sweep (schematic, $V_{DD}=0.8\,\mathrm{V}$)}
+\begin{tabular}{@{}llll@{}}
 \toprule
-$\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Notes} \\
+$\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{0-node disturb} & \textbf{Source} \\
 \midrule
-\todo{1$\times$} & \todo{TBD} & \\
-\todo{1.5$\times$} & \todo{TBD} & \\
-\todo{2$\times$} & \todo{TBD} & \\
+$1\times$ (PD $2$ fin) & $126.6\,\mathrm{mV}$ & $134.3\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta1/snm.json} \\
+$1.5\times$ (PD $3$ fin) & $145.8\,\mathrm{mV}$ & $96.6\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta1p5/snm.json} \\
+$2\times$ (PD $4$ fin) & $156.3\,\mathrm{mV}$ & $77.1\,\mathrm{mV}$ & \texttt{results/part1/read-snm/beta2/snm.json} \\
 \bottomrule
 \end{tabular}
 
-\noindent Design point selected: \todo{TBD}. Cell kept symmetric.
+\noindent SNM$_{\mathrm{read}}=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$ by maximum-square fit on the read butterfly (WL$=V_{DD}$, BL$=$BLB$=V_{DD}$). Method: \texttt{scripts/check\_snm\_sweep.py} splits the 4-column Cadence export to \texttt{q.csv}/\texttt{qb.csv}, mirrors one VTC, finds three intersections on a $16001$-point grid, fits the largest square in each lobe. Convergence checked $4001$ vs $16001$ ($<0.05\,\mathrm{mV}$ for $\beta=1.5,2$; $0.04\,\mathrm{mV}$ for $\beta=1$). Cell kept symmetric.
+
+\noindent Design point selected: $\beta=2$, $\gamma=1$. Cell kept symmetric.
 
 \begin{figure}[H]
   \centering
@@ -338,7 +339,7 @@ $\boldsymbol{\beta}$ & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Notes} \\
 
 \section*{2.~Layout}
 \todo{DRC- and LVS-clean layout: wordline horizontal, bitline pair vertical,
-tileable for Part~2. Report area in $\mu\mathrm{m}^2$ and $F^2$ ($F = 45\,\mathrm{nm}$).}
+tileable for Part~2. Report area in $\mu\mathrm{m}^2$ and $F^2$ ($F = 10\,\mathrm{nm}$).}
 
 \begin{tabular}{@{}ll@{}}
 \toprule
@@ -370,13 +371,42 @@ $C_{\mathrm{WL}}$ (per cell) & \todo{TBD} \\
 \bottomrule
 \end{tabular}
 
-\section*{4.~Stability characterization (post-layout, $V_{DD}=1.2\,\mathrm{V}$)}
+\section*{4.~Stability characterization (post-layout, $V_{DD}=0.8\,\mathrm{V}$)}
 \subsection*{4a.~Hold SNM}
 \todo{Butterfly plot with WL $= 0$; report SNM$_{\mathrm{hold}} = \min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.}
 
 \subsection*{4b.~Read SNM}
-\todo{Butterfly plot with WL $= V_{DD}$, BL$=$BLB$=V_{DD}$; report SNM$_{\mathrm{read}}$
-and DC voltage of the ``0'' node vs.\ the Section~1 estimate.}
+Read butterfly with WL$=V_{DD}$, BL$=$BLB$=V_{DD}$ at $V_{DD}=0.8\,\mathrm{V}$ (schematic). Each $\beta$ uses two DC sweeps: sweep $Q$, record $\overline{Q}$; sweep $\overline{Q}$, record $Q$ (testbenches \texttt{media/part1/read\_snm\_q\_tb\_sch.png}, \texttt{media/part1/read\_snm\_qb\_tb\_sch.png}; per-$\beta$ cell schematics \texttt{read\_snm\_q\_sch\_*.png}, \texttt{read\_snm\_qb\_sch\_*.png}). The 4-column ViVA export (\texttt{results/part1/read-snm/beta*/raw.csv}) is split to \texttt{q.csv}/\texttt{qb.csv} and evaluated by \texttt{scripts/check\_snm\_sweep.py} (wrapper around \texttt{scripts/butterfly\_snm.py}): mirror one VTC across $y=x$, interpolate on a uniform $16001$-point grid, locate three intersections, fit the largest axis-aligned square in each lobe. Reported SNM$_{\mathrm{read}}=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
+
+\begin{tabular}{@{}lllll@{}}
+\toprule
+$\boldsymbol{\beta}$ & \textbf{SNM$_{L}$} & \textbf{SNM$_{R}$} & \textbf{SNM$_{\mathrm{read}}$} & \textbf{Intersections (mV)} \\
+\midrule
+$1$ & $126.6\,\mathrm{mV}$ & $126.6\,\mathrm{mV}$ & $126.6\,\mathrm{mV}$ & $134.3, 410.0, 797.9$ \\
+$1.5$ & $145.8\,\mathrm{mV}$ & $145.8\,\mathrm{mV}$ & $145.8\,\mathrm{mV}$ & $96.6, 388.0, 798.6$ \\
+$2$ & $156.3\,\mathrm{mV}$ & $156.3\,\mathrm{mV}$ & $156.3\,\mathrm{mV}$ & $77.1, 372.5, 798.8$ \\
+\bottomrule
+\end{tabular}
+
+\noindent Lobes are symmetric to $<0.1\,\mathrm{mV}$ (symmetric cell). The low-side intersection is the DC voltage of the ``0'' node: $134.3\,\mathrm{mV}$ ($\beta=1$), $96.6\,\mathrm{mV}$ ($\beta=1.5$), $77.1\,\mathrm{mV}$ ($\beta=2$), decreasing with $\beta$ as the Section~1 divider predicts ($V_Q\approx V_{DD}/(1+\beta)$ gives $400/320/267\,\mathrm{mV}$ resistive; square-law $(V_{DD}-V_{Tn})(1-\sqrt{\beta/(1+\beta)})$ is closer but still long-channel only). Full machine-readable results: \texttt{results/part1/read-snm/beta*/snm.json} with squares, grid step, and $4$k/$16$k convergence.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta1.png}
+  \caption{Read butterfly $\beta=1$: two VTCs + largest squares. SNM$_{\mathrm{read}}=126.6\,\mathrm{mV}$. Clean plot from \texttt{check\_snm\_sweep.py}; Cadence screenshot \texttt{media/part1/read\_snm\_beta1.png} in repo.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta1p5.png}
+  \caption{Read butterfly $\beta=1.5$: SNM$_{\mathrm{read}}=145.8\,\mathrm{mV}$.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\linewidth]{media/part1/butterfly-read-beta2.png}
+  \caption{Read butterfly $\beta=2$ (selected): SNM$_{\mathrm{read}}=156.3\,\mathrm{mV}$.}
+\end{figure}
 
 \subsection*{4c.~Write margin}
 \todo{Store $Q=1$, WL $= V_{DD}$, BL $= V_{DD}$; sweep BLB; report
@@ -391,18 +421,19 @@ $\mathrm{WM}_{\mathrm{BL}} = V_{\mathrm{trip}}$.}
 \toprule
 $\boldsymbol{V_{DD}}$ & \textbf{SNM$_{\mathrm{read}}$} & $\boldsymbol{\mathrm{WM}_{\mathrm{BL}}}$ \\
 \midrule
-$1.2\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
-$0.9\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
-$0.6\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
+$0.8\,\mathrm{V}$ & $156.3\,\mathrm{mV}$ ($\beta=2$ schematic) & \todo{TBD} \\
+$0.7\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
+$0.5\,\mathrm{V}$ & \todo{TBD} & \todo{TBD} \\
 \bottomrule
 \end{tabular}
 
-\noindent Still reads and writes at $0.6\,\mathrm{V}$? \todo{yes/no + notes}.
+\noindent Still reads and writes at $0.5\,\mathrm{V}$? \todo{yes/no + notes}.
 
-% Waveform / butterfly figures go under media/part1/, e.g.:
-% media/part1/butterfly-hold.png
-% media/part1/butterfly-read.png
-% media/part1/write-margin.png
+% Waveform / butterfly figures under media/part1/:
+% butterfly-read-beta1.png/.svg, butterfly-read-beta1p5.png/.svg,
+% butterfly-read-beta2.png/.svg (clean, from check_snm_sweep.py),
+% read_snm_beta*.png (Cadence screenshots),
+% read_snm_q_sch_*.png, read_snm_qb_sch_*.png, *_tb_sch.png.
 
 \section*{5.~Functional check}
 \todo{Transient test with ideal WL and precharge pulses; bitline pair loaded by
@@ -419,8 +450,14 @@ BLB, $Q$, $\overline{Q}$.}
 \todo{Short paragraph: what limits the cell, and what you would change for Part~2.}
 
 \section*{Technology note}
-All work is done in the Cadence GPDK 18 nm technology (schematic, layout, Spectre/ADE,
-DRC/LVS/PEX) at nominal $V_{DD}=1.2\,\mathrm{V}$ unless noted. Characterization above
-is post-layout unless a subsection states otherwise.
+The assignment specifies the Cadence GPDK 18~nm technology and nominal
+$V_{DD}=0.8\,\mathrm{V}$ (Part~1 characterized at $0.8\,\mathrm{V}$ with a
+$0.8/0.7/0.5\,\mathrm{V}$ supply sweep; $F=10\,\mathrm{nm}$ for area in $F^2$).
+The Cadence schematic inspected on Betty on October~10,~2026 uses devices
+labeled with $L=18\,\mathrm{nm}$, consistent with that GPDK 18~nm flow.
+All layout, extraction, and post-layout measurements must use that flow.
+Schematic read-SNM values in \S1 and \S4b are measured from Spectre DC sweeps
+(\texttt{results/part1/read-snm/beta*/raw.csv} $\rightarrow$ \texttt{snm.json});
+all other tables remain TBD until post-layout benches run.
 
 \end{document}
