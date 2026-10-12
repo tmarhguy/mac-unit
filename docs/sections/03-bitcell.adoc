@@ -23,24 +23,24 @@ The cell is kept symmetric.
 |===
 | Device | stem:[(W/L)] | Notes
 
-| Pull-down (PD) | TBD | —
-| Pull-up (PU) | TBD | —
-| Pass-gate (PG) | TBD | —
-| stem:[\beta] | TBD | —
-| stem:[\gamma] | TBD | —
+| Pull-down (PD) | 4-fin, L=18nm | nfin=4
+| Pull-up (PU) | 2-fin, L=18nm | nfin=2
+| Pass-gate (PG) | 2-fin, L=18nm | nfin=2
+| stem:[\beta] | 2 | PD/PG=4/2
+| stem:[\gamma] | 1 | PU/PG=2/2
 |===
 
-.Beta sweep (schematic SNM_read)
-[cols="1,1,2",options="header"]
+.Beta sweep (schematic SNM_read, VDD=0.8V)
+[cols="1,1,1,2",options="header"]
 |===
-| stem:[\beta] | stem:[\mathrm{SNM_{read}}] | Notes
+| stem:[\beta] | stem:[\mathrm{SNM_{read}}] | 0-node disturb | Source
 
-| 1× | TBD | —
-| 1.5× | TBD | —
-| 2× | TBD | —
+| 1× | 126.6 mV | 134.3 mV | results/part1/read-snm/beta1/snm.json
+| 1.5× | 145.8 mV | 96.6 mV | results/part1/read-snm/beta1p5/snm.json
+| 2× | 156.3 mV | 77.1 mV | results/part1/read-snm/beta2/snm.json
 |===
 
-Design point selected: TBD.
+Design point selected: β=2, γ=1. Method: `scripts/check_snm_sweep.py` splits the 4-column Cadence export to `q.csv`/`qb.csv`, mirrors one VTC, 16001-point grid, largest square per lobe, `SNM_read=min(SNM_L,SNM_R)`. Converged 4k vs 16k.
 
 .6T bitcell schematic with transistor sizes (`proj1_lib` 6t-sram)
 image::bitcell-schematic.png[6T bitcell schematic from Virtuoso,align=center,width=640]
@@ -843,7 +843,7 @@ CAUTION: the numbers below are the LaTeX hand-analysis placeholders
 at stem:[V_{DD} = 0.8\,\mathrm{V}], with
 stem:[V_{tn} = |V_{tp}| = 0.3\,\mathrm{V}] and
 stem:[\mu_n/\mu_p = 2]. They are _not_ GPDK 18 nm / post-layout results
-at the nominal stem:[V_{DD} = 1.2\,\mathrm{V}], and no bench has run yet.
+at the nominal stem:[V_{DD} = 0.8\,\mathrm{V}], and no bench has run yet.
 
 The closed-form bound gives stem:[\gamma < 1.68]. Evaluating the full
 inequality numerically at stem:[\beta = 2], with the triode pull-up
@@ -892,7 +892,7 @@ selected by minimizing stem:[V_q] alone.
 
 Wordline runs horizontal, bitline pair runs vertical, tileable for
 Part 2. Report area in μm² and in stem:[F^2] with
-stem:[F = 45\,\mathrm{nm}].
+stem:[F = 10\,\mathrm{nm}].
 
 .Layout metrics
 [cols="1,1",options="header"]
@@ -906,7 +906,7 @@ stem:[F = 45\,\mathrm{nm}].
 |===
 
 .Bitcell layout (report figure)
-image::bitcell-layout.png[6T bitcell layout placeholder,align=center,width=640]
+TBD — figure pending (unlaid draft at `media/part1/6t_sram_layout_unlaid.png`).
 
 [#bitcell-extraction]
 === Extraction
@@ -927,36 +927,49 @@ row/column count.
 [#bitcell-stability]
 === Stability characterization
 
-All benches at stem:[V_{DD} = 1.2\,\mathrm{V}] post-layout unless
-a subsection states otherwise.
+Schematic read-SNM at stem:[V_{DD} = 0.8\,\mathrm{V}]; hold/write/cell-current and post-layout remain TBD unless stated.
 
 ==== Hold SNM
 
 Butterfly with stem:[WL = 0]. Report
 latexmath:[\mathrm{SNM_{hold}} = \min(\mathrm{SNM}_L, \mathrm{SNM}_R)].
 
-image::butterfly-hold.png[Hold butterfly placeholder,align=center,width=640]
-
-Value: TBD.
+Value: TBD (no hold sweep yet).
 
 ==== Read SNM
 
 Butterfly with stem:[WL = V_{DD}], stem:[BL = BLB = V_{DD}].
-Report stem:[\mathrm{SNM_{read}}] and the DC voltage of the 0-node
-against the hand estimate in <<bitcell-read-stability,Cell Ratio and Read Stability>>.
+stem:[\mathrm{SNM_{read}}=min(SNM_L,SNM_R)] via `scripts/check_snm_sweep.py` (mirror + 16001-pt max-square). Raw: `results/part1/read-snm/beta*/raw.csv` → `q.csv`/`qb.csv` → `snm.json` + clean butterfly plot.
 
-image::butterfly-read.png[Read butterfly placeholder,align=center,width=640]
+.Read SNM vs beta (schematic, 0.8V)
+[cols="1,1,1,1",options="header"]
+|===
+| stem:[\beta] | stem:[SNM_L] | stem:[SNM_R] | stem:[SNM_{read}]
 
-Value: TBD.
+| 1 | 126.6 mV | 126.6 mV | 126.6 mV
+| 1.5 | 145.8 mV | 145.8 mV | 145.8 mV
+| 2 | 156.3 mV | 156.3 mV | 156.3 mV
+|===
+
+0-node disturb (low intersection): 134.3 mV (β1), 96.6 mV (β1.5), 77.1 mV (β2) — falls with β as predicted.
+
+.Read butterfly β=1 — SNM 126.6 mV
+image::butterfly-read-beta1.png[Read butterfly beta 1 with largest squares,align=center,width=640]
+
+.Read butterfly β=1.5 — SNM 145.8 mV
+image::butterfly-read-beta1p5.png[Read butterfly beta 1.5 with largest squares,align=center,width=640]
+
+.Read butterfly β=2 (selected) — SNM 156.3 mV
+image::butterfly-read-beta2.png[Read butterfly beta 2 with largest squares,align=center,width=640]
+
+Cadence screenshots `media/part1/read_snm_beta*.png` and TB schematics `read_snm_q_tb_sch.png` / `read_snm_qb_tb_sch.png` are archived alongside the CSVs.
 
 ==== Write margin
 
 Store stem:[Q = 1], stem:[WL = V_{DD}], stem:[BL = V_{DD}];
 sweep BLB. Report latexmath:[\mathrm{WM_{BL}} = V_{\mathrm{trip}}].
 
-image::write-margin.png[Write-margin sweep placeholder,align=center,width=640]
-
-Value: TBD.
+Value: TBD — sweep figure pending.
 
 ==== Cell current
 
@@ -965,17 +978,17 @@ stem:[WL = V_{DD}] and both bitlines at stem:[V_{DD}]. Value: TBD.
 
 ==== Supply dependence
 
-.Supply sweep
+.Supply sweep (β=2 selected; schematic read-SNM measured, rest TBD)
 [cols="1,1,1",options="header"]
 |===
 | stem:[V_{DD}] | stem:[\mathrm{SNM_{read}}] | stem:[\mathrm{WM_{BL}}]
 
-| 1.2 V | TBD | TBD
-| 0.9 V | TBD | TBD
-| 0.6 V | TBD | TBD
+| 0.8 V | 156.3 mV schematic | TBD
+| 0.7 V | TBD | TBD
+| 0.5 V | TBD | TBD
 |===
 
-Still reads and writes at 0.6 V? TBD + notes.
+Still reads and writes at 0.5 V? TBD + notes.
 
 [#bitcell-functional]
 === Functional check
@@ -984,7 +997,7 @@ Transient with ideal WL and precharge pulses; bitline pair loaded by
 15 additional per-cell bitline loads. Sequence: write 0, read;
 write 1, read. Show WL, BL, BLB, stem:[Q], stem:[\overline{Q}].
 
-image::functional-check.png[Functional write/read waveforms placeholder,align=center,width=720]
+TBD — waveforms pending.
 
 [#bitcell-discussion]
 === Discussion
