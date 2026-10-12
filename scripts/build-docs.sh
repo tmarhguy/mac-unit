@@ -74,8 +74,8 @@ fi
 
 python3 "$REPO_ROOT/scripts/prepare-docs.py" page
 python3 "$REPO_ROOT/scripts/prepare-docs.py" not-found
-if [ -f "$REPO_ROOT/docs/ese5700-project1-current.pdf" ]; then
-  cp "$REPO_ROOT/docs/ese5700-project1-current.pdf" "$OUT_DIR/ese5700-project1-current.pdf"
+if [ -f "$REPO_ROOT/docs/ese5700-project1.pdf" ]; then
+  cp "$REPO_ROOT/docs/ese5700-project1.pdf" "$OUT_DIR/ese5700-project1.pdf"
 fi
 if [ -f "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" ]; then
   cp "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" "$OUT_DIR/report.pdf"

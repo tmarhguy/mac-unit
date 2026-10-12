@@ -1,4 +1,4 @@
-# Part 1 read-SNM results (schematic, VDD=0.8V)
+# Part 1 read-SNM results (schematic, VDD = 0.8 V)
 
 Canonical β sweep. Each `beta*/` holds the verbatim Cadence export plus derived files.
 
@@ -11,8 +11,10 @@ Canonical β sweep. Each `beta*/` holds the verbatim Cadence export plus derived
 |---|---|---|---|
 | 1 (2) | 126.6 mV | 134.3 mV | 134.3, 410.0, 797.9 |
 | 1.5 (3) | 145.8 mV | 96.6 mV | 96.6, 388.0, 798.6 |
-| 2 (4, selected) | 156.3 mV | 77.1 mV | 77.1, 372.5, 798.8 |
+| 2 (4, schematic candidate) | 156.3 mV | 77.1 mV | 77.1, 372.5, 798.8 |
 
 Recompute: `python3 scripts/check_snm_sweep.py --all`
 
 Benches: WL=VDD, BL=BLB=VDD. TB schematics: `media/part1/read_snm_q_tb_sch.png`, `read_snm_qb_tb_sch.png`; per-β cells `read_snm_q_sch_*.png`, `read_snm_qb_sch_*.png`; Cadence screenshots `read_snm_beta*.png`.
+
+These values do not establish post-layout read SNM or write margin. See the [root README](../../../README.md) and [current handout](../../../docs/ese5700-project1.pdf) for the complete Part 1 scope.

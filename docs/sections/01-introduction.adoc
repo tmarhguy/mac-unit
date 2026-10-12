@@ -1,7 +1,7 @@
 [#requirements]
 == Assignment and evidence
 
-The link:ese5700-project1-current.pdf[current handout] sets Part 1 in GPDK 18 nm at nominal 0.8 V and requires one team report. It asks for a symmetric cell, hand sizing analysis, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability measurements, supply dependence and a functional write/read test. The report must also identify each member's contribution.
+The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nominal 0.8 V and requires one team report. It asks for a symmetric cell, hand sizing analysis, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability measurements, supply dependence and a functional write/read test. The report must also identify each member's contribution.
 
 === What is recorded
 
