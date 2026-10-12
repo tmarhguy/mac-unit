@@ -962,7 +962,35 @@ image::butterfly-read-beta1p5.png[Read butterfly beta 1.5 with largest squares,a
 .Read butterfly β=2 (selected) — SNM 156.3 mV
 image::butterfly-read-beta2.png[Read butterfly beta 2 with largest squares,align=center,width=640]
 
-Cadence screenshots `media/part1/read_snm_beta*.png` and TB schematics `read_snm_q_tb_sch.png` / `read_snm_qb_tb_sch.png` are archived alongside the CSVs.
+.Read-SNM testbenches: Q-sweep (sweep Q, record QB) and QB-sweep (sweep QB, record Q), WL=VDD, BL=BLB=VDD
+image::read_snm_q_tb_sch.png[Q-sweep testbench schematic,align=center,width=640]
+
+image::read_snm_qb_tb_sch.png[QB-sweep testbench schematic,align=center,width=640]
+
+.Q-side cell schematics β=1, 1.5, 2 (PD 2/3/4 fin; PG/PU 2 fin)
+image::read_snm_q_sch_1.png[Q-side cell beta 1 schematic,align=center,width=640]
+
+image::read_snm_q_sch_1p5.png[Q-side cell beta 1.5 schematic,align=center,width=640]
+
+image::read_snm_q_sch_2.png[Q-side cell beta 2 schematic,align=center,width=640]
+
+.QB-side cell schematics β=1, 1.5, 2 (symmetric)
+image::read_snm_qb_sch_1.png[QB-side cell beta 1 schematic,align=center,width=640]
+
+image::read_snm_qb_sch_1p5.png[QB-side cell beta 1.5 schematic,align=center,width=640]
+
+image::read_snm_qb_sch_2.png[QB-side cell beta 2 schematic,align=center,width=640]
+
+.Cadence ViVA read butterfly β=1 (QB reflected)
+image::read_snm_beta1.png[Cadence Virtuoso read butterfly beta 1 screenshot,align=center,width=640]
+
+.Cadence ViVA read butterfly β=1.5
+image::read_snm_beta1p5.png[Cadence Virtuoso read butterfly beta 1.5 screenshot,align=center,width=640]
+
+.Cadence ViVA read butterfly β=2 (selected)
+image::read_snm_beta2.png[Cadence Virtuoso read butterfly beta 2 screenshot,align=center,width=640]
+
+Raw exports: `results/part1/read-snm/beta*/raw.csv`.
 
 ==== Write margin
 
