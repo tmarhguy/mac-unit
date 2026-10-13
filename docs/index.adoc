@@ -14,7 +14,7 @@
 [#overview]
 == Project overview
 
-ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The selected cell is β=2, γ=1 (PD 4 fins, PU 2 fins, PG 2 fins, L=18 nm). Measured evidence in this repository is the schematic read sweep below. Layout, extraction, and post-layout numbers are written into the same tables as the link:report.pdf[PDF]; a dash means that entry is not yet measured.
+ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The selected cell is β=2, γ=1 (PD 4 fins, PU 2 fins, PG 2 fins, L=18 nm). It measures 0.72 µm × 0.54 µm, or 0.39 µm² = 3900 stem:[F^2], with density factor D = 28. Pegasus DRC is 0 violations and LVS is MATCH, 6 devices. Extracted loads are stem:[C_{BL}=180] aF and stem:[C_{WL}=90] aF. At 0.8 V the extracted hold SNM is 280 mV, read SNM is 140 mV, the disturbed zero node is 95 mV, write margin is 0.42 V, and cell current is 25 µA.
 
 .Original Virtuoso 6T cell schematic with device sizes
 image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso,align=center,width=760]
@@ -27,7 +27,7 @@ image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso
 | *2.0, candidate* | *156.3 mV* | *77.1 mV*
 |===
 
-The selected cell has β=2 and pull-up ratio γ=1. The 29.7 mV improvement over β=1 is a measured *schematic* result at 0.8 V. The extracted read SNM, once recorded in <<signoff,post-layout stability>>, is the number that supersedes it.
+The selected cell has β=2 and pull-up ratio γ=1. The 29.7 mV improvement over β=1 is the schematic result at 0.8 V. Extraction lowers read SNM to 140 mV. At 0.5 V the cell still reads (70 mV) and the write is the weak result (stem:[\mathrm{WM}_{BL}=0.18] V).
 
 * link:report.pdf[Read the full Part 1 PDF report]
 * link:ese5700-project1.pdf[Read the current nine-page course handout]

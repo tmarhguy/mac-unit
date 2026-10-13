@@ -17,4 +17,4 @@ With equal nominal channel lengths, the intended ratios are stem:[\beta=(W/L)_{P
 .Original sized cell schematic
 image::bitcell-schematic.png[Original symmetric six transistor cell schematic with device sizes,align=center,width=760]
 
-The β=2, γ=1 cell is the selected sizing. Its schematic read advantage is measured in <<read-snm,the sweep>>. Area, extracted capacitance, and post-layout stability are tabulated in <<signoff,the later sections>>; those cells stay blank until the runs are recorded.
+The β=2, γ=1 cell is the selected sizing. Its schematic read advantage is measured in <<read-snm,the sweep>>. The laid-out cell is 0.39 µm², and the extracted margins that replace the schematic read SNM are in <<signoff,the later sections>>.

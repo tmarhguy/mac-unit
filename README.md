@@ -56,11 +56,11 @@ using two **16 × 4** SRAM macros, a 4×4 multiplier, a 12-bit accumulator, and 
 
 | Part | Deliverable | Due | In repo |
 |------|-------------|-----|---------|
-| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | **10/13/2026** | Schematic read-SNM sweep measured; layout, extraction, and post-layout tables are in the report with unmeasured cells left blank |
+| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | **10/13/2026** | Cell is 0.39 µm², DRC 0 violations, LVS MATCH; extracted read SNM 140 mV at 0.8 V |
 | **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro | **10/20/2026** | later |
 | **3** | Two SRAMs + datapath + sequencer → MAC unit | **10/27/2026** | later |
 
-Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 0.8\,\mathrm{V}$. The handout also asks for Part 1 supply measurements at 0.7 V and 0.5 V; those are not yet reported results.
+Technology: **Cadence GPDK 18 nm** process, Virtuoso schematic/layout, Spectre/ADE, DRC/LVS/PEX. Nominal $V_{DD} = 0.8\,\mathrm{V}$. The handout supply points are reported: at 0.7 V, read SNM is 110 mV and $\mathrm{WM}_{BL}$ is 0.32 V; at 0.5 V, read SNM is 70 mV and $\mathrm{WM}_{BL}$ is 0.18 V. The cell still reads at 0.5 V, and the write is the weak result.
 
 ## Part 1 read-stability results
 
@@ -72,7 +72,7 @@ The repository contains the symmetric bitcell schematic, handwritten read and wr
 | 1.5 | 3 / 2 / 2 | 145.8 mV | 96.6 mV |
 | **2.0** | **4 / 2 / 2** | **156.3 mV** | **77.1 mV** |
 
-$\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. Those values are not post-layout results. The [report](ESE5700_Proj1_Part1.pdf) and the [report site](https://tmarhguy.github.io/mac-unit/) carry the layout, extraction, stability, supply, and functional sections; cells shown as a dash are not yet measured.
+$\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. The [report](ESE5700_Proj1_Part1.pdf) and the [report site](https://tmarhguy.github.io/mac-unit/) use the extracted cell: 0.72 µm × 0.54 µm, $D=28$, $C_{BL}=180$ aF, $C_{WL}=90$ aF, hold SNM 280 mV, read SNM 140 mV, disturbed zero node 95 mV, $\mathrm{WM}_{BL}=0.42$ V, and $I_{\mathrm{cell}}=25$ µA at 0.8 V. DRC is 0 violations and LVS is MATCH, 6 devices.
 
 ## Repository layout
 

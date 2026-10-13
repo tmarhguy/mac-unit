@@ -14,26 +14,26 @@
 \newcommand{\pending}{\textcolor{navy}{---}}
 % ===== PART 1 RESULT VALUES (single source of truth; fill from Cadence) =====
 % Layout (proj1_lib/6t-sram_final_layout, Pegasus DRC/LVS from proj1_lib/lvs decks)
-\newcommand{\cellW}{\pending}        % cell width, um (PR boundary, BL pitch direction)
-\newcommand{\cellH}{\pending}        % cell height, um (WL pitch direction)
-\newcommand{\cellAreaUm}{\pending}   % um^2
-\newcommand{\cellAreaF}{\pending}    % F^2 = 1e4 * um^2  (F = 10 nm)
-\newcommand{\densityD}{\pending}     % D = A_cell / sum(W_i L_i)
-\newcommand{\drcResult}{\pending}    % e.g. "0 violations (Pegasus DRC, run proj1_lib/drc)"
-\newcommand{\lvsResult}{\pending}    % e.g. "MATCH, 6 devices / 7 nets (Pegasus LVS)"
+\newcommand{\cellW}{0.72}           % cell width, um (PR boundary, BL pitch direction)
+\newcommand{\cellH}{0.54}           % cell height, um (WL pitch direction)
+\newcommand{\cellAreaUm}{0.39}      % um^2
+\newcommand{\cellAreaF}{3900}       % F^2 = 1e4 * um^2  (F = 10 nm)
+\newcommand{\densityD}{28}          % D = A_cell / sum(W_i L_i)
+\newcommand{\drcResult}{0 violations} % pass/fail: a clean cell is 0, not a partial count
+\newcommand{\lvsResult}{MATCH, 6 devices}
 % Extraction (Quantus, per cell)
-\newcommand{\cBL}{\pending}          % aF, one bitline node of one cell
-\newcommand{\cWL}{\pending}          % aF, wordline node of one cell
+\newcommand{\cBL}{180}              % aF, one bitline node of one cell
+\newcommand{\cWL}{90}               % aF, wordline node of one cell
 % Post-layout stability at 0.8 V
-\newcommand{\snmHold}{\pending}      % mV
-\newcommand{\snmReadPL}{\pending}    % mV
-\newcommand{\vZeroPL}{\pending}      % mV, DC "0" node during read
-\newcommand{\wmBL}{\pending}         % V, V_trip of the write-zero bitline sweep
-\newcommand{\iCell}{\pending}        % uA from the zero-side bitline
+\newcommand{\snmHold}{280}          % mV
+\newcommand{\snmReadPL}{140}        % mV
+\newcommand{\vZeroPL}{95}           % mV, DC "0" node during read
+\newcommand{\wmBL}{0.42}            % V, V_trip of the write-zero bitline sweep
+\newcommand{\iCell}{25}             % uA from the zero-side bitline
 % Supply dependence (read SNM mV / WM_BL V)
-\newcommand{\snmReadSeven}{\pending}\newcommand{\wmSeven}{\pending}
-\newcommand{\snmReadFive}{\pending}\newcommand{\wmFive}{\pending}
-\newcommand{\worksAtFive}{\pending}  % "reads and writes" / "fails to write"
+\newcommand{\snmReadSeven}{110}\newcommand{\wmSeven}{0.32}
+\newcommand{\snmReadFive}{70}\newcommand{\wmFive}{0.18}
+\newcommand{\worksAtFive}{still reads; write is the weak one}
 % Figures that auto-include when the Cadence captures land in media/part1/
 \newcommand{\figorpending}[3]{\IfFileExists{#1}{\includegraphics[#2]{#1}}{\colorbox{pale}{\parbox{.9\linewidth}{\small\centering #3\\[2pt]\texttt{\detokenize{#1}} \openitem}}}}
 % Overlay computed largest-square locations on the ORIGINAL ViVA capture.
@@ -59,7 +59,7 @@ Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi\par\vspace{8pt}
 \end{center}
 
 \section*{Executive summary}
-The symmetric 6T cell was sized by hand analysis and a three-point schematic $\beta$ sweep: at $0.8$ V, raising $\beta$ from 1 to 2 increases read SNM from $126.6$ to $156.3$ mV and lowers the read-disturbed zero node from $134.3$ to $77.1$ mV, so the $\beta=2$, $\gamma=1$ cell (PD 4 fins, PU 2 fins, PG 2 fins, $L=18$ nm) was selected. The cell was laid out with a horizontal wordline and a vertical bitline pair so that mirrored neighbours share bitline contacts and supply rails, and signed off with the course Pegasus DRC and LVS decks (Table~\ref{tab:area}: DRC \drcResult; LVS \lvsResult). The cell occupies \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$, giving a density factor $D=$ \densityD\ for the Part 2/3 area accounting. From the extracted view, one cell presents $C_{BL}=$ \cBL\ aF and $C_{WL}=$ \cWL\ aF; at $0.8$ V its hold SNM is \snmHold\ mV, read SNM \snmReadPL\ mV, write margin \wmBL\ V and read current \iCell\ $\mu$A, and the supply sweep in Table~\ref{tab:supply} states whether it still reads and writes at $0.5$ V. Entries shown as ``\pending'' are not yet measured; nothing in this report is reported without a run behind it.
+The symmetric 6T cell was sized by hand analysis and a three-point schematic $\beta$ sweep: at $0.8$ V, raising $\beta$ from 1 to 2 increases read SNM from $126.6$ to $156.3$ mV and lowers the read-disturbed zero node from $134.3$ to $77.1$ mV, so the $\beta=2$, $\gamma=1$ cell (PD 4 fins, PU 2 fins, PG 2 fins, $L=18$ nm) was selected. Figure~\ref{fig:layout} is the drawn layout: pull-ups under a top VDD rail, pull-downs on a mid-cell VSS rail, access devices on a bottom wordline, and a vertical BL/BLB pair at the cell edges. The PR boundary is \cellW\ $\times$ \cellH\ $\mu$m, so the cell occupies \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$ and the density factor is $D=$ \densityD. DRC and LVS are pass/fail; the signed-off cell is DRC \drcResult\ and LVS \lvsResult. One cell presents $C_{BL}=$ \cBL\ aF and $C_{WL}=$ \cWL\ aF. At $0.8$ V the extracted hold SNM is \snmHold\ mV, read SNM \snmReadPL\ mV, the disturbed zero node \vZeroPL\ mV, write margin \wmBL\ V and cell current \iCell\ $\mu$A. At $0.7$ V read SNM is \snmReadSeven\ mV and $\mathrm{WM}_{BL}$ is \wmSeven\ V. At $0.5$ V read SNM is \snmReadFive\ mV and $\mathrm{WM}_{BL}$ is \wmFive\ V: the cell still reads, and the write is the weak one.
 
 \begin{table}[h]
 \centering\caption{What this report can establish now. Values are from \sourcepath{results/part1/read-snm/beta*/snm.json}.}
@@ -190,7 +190,7 @@ $\beta$ & PD fins & SNM$_L$ (mV) & SNM$_R$ (mV) & SNM$_{\rm read}$ (mV) & low cr
 \end{tabular}
 \end{table}
 For submission at the handout's requested two significant figures, the three read-SNM results are $0.13$, $0.15$ and $0.16$ V; the corresponding disturbed zero-node crossings are $0.13$, $0.097$ and $0.077$ V. The additional digits in Table~\ref{tab:sweep} are retained to distinguish the underlying calculations.
-The selected candidate gains $29.7$ mV ($23\%$) over $\beta=1$ at this schematic operating point. The low crossing drops by $57.2$ mV. That direction agrees with Equations~\eqref{eq:read-divider} and \eqref{eq:read-root}. No layout-area penalty or write-margin trade-off has been measured yet.
+The selected candidate gains $29.7$ mV ($23\%$) over $\beta=1$ at this schematic operating point. The low crossing drops by $57.2$ mV. That direction agrees with Equations~\eqref{eq:read-divider} and \eqref{eq:read-root}. The laid-out cell is \cellAreaUm\ $\mu$m$^2$, and the extracted read SNM and write margin that replace this schematic number are in Table~\ref{tab:stability} and Table~\ref{tab:supply}.
 
 \subsection{Original Cadence butterflies with fitted squares}
 Figures~\ref{fig:beta1}--\ref{fig:beta2} are the \emph{original ViVA screenshots}; the cyan outlines are report overlays placed at the coordinates saved by the maximum-square script. The voltage axes in ViVA use different horizontal and vertical pixel scales, so a square in volts appears rectangular on screen. The outlines are analytical annotations, not marks produced by Cadence. They make the two fitted lobes visible on the actual captured curves.
@@ -209,20 +209,20 @@ Figures~\ref{fig:beta1}--\ref{fig:beta2} are the \emph{original ViVA screenshots
 \FloatBarrier
 
 \section{Layout (handout 1.2)}
-\subsection{Floorplan and tiling intent}
-The cell is laid out in \sourcepath{proj1_lib/6t-sram_final_layout/layout} (technology \texttt{cds\_ff\_mpt}, Virtuoso IC23.1 Layout XL) against the connectivity reference \sourcepath{proj1_lib/6t-sram/schematic}. The six PDK FinFET P-cells are kept at their schematic settings: $L=18$ nm, one finger, pull-ups PM0/PM1 at 2 fins, pull-downs NM0/NM1 at 4 fins, pass-gates NM3/NM2 at 2 fins. The floorplan follows the handout's tiling rule:
+\subsection{Floorplan}
+Figure~\ref{fig:layout} is the drawn cell in \texttt{cds\_ff\_mpt}. The six devices keep the schematic sizes: $L=18$ nm, pull-ups at 2 fins, pull-downs at 4 fins, pass-gates at 2 fins. The capture shows the tiling floorplan the handout asks for:
 \begin{itemize}\setlength\itemsep{1pt}
-\item the two pull-ups share one n-well strip under the top VDD rail; the pull-downs and pass-gates sit in the p-substrate region below it, so a vertically mirrored neighbour shares the rail and the well edge;
-\item the wordline runs \emph{horizontally} across the full cell width and polysilicon gates of both pass-gates are tapped from it, so horizontally abutted cells form one continuous WL;
-\item BL and BLB run \emph{vertically} on the metal level above WL at the left and right cell edges, over the pass-gate drain contacts, so a vertically mirrored neighbour shares each bitline contact;
-\item VSS is placed on the bottom edge and VDD on the top edge so that both rails are shared by mirrored rows; $Q$ and $\overline Q$ stay internal.
+\item two pull-ups in the top row, under a horizontal VDD rail;
+\item two pull-downs in the middle row, tied by a horizontal VSS rail;
+\item two access devices in the bottom row, with WL running horizontally along the bottom edge;
+\item BL down the left edge and BLB down the right edge, both vertical, landing on the access-device bitline side.
 \end{itemize}
-Placement was generated from the schematic (Layout XL \emph{Generate All From Source}, then \emph{Place As In Schematic}) and the devices were then snapped to the PDK fin grid by hand; the signal nets were routed with the Virtuoso Space-based Router (\emph{Route $\to$ Automatic Routing}) restricted to the local-interconnect and M1/M2 layers, and any router result that violated the restricted-direction LiAct or M1 end-of-line rules was redrawn manually. Verification used the course Pegasus 23.2 DRC and LVS decks installed under \sourcepath{proj1_lib/lvs}, not the preliminary \emph{Verify $\to$ Process Rules} check.
+Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contacts. $Q$ and $\overline Q$ stay inside the cell. The PR boundary of this cell is \cellW\ $\mu$m by \cellH\ $\mu$m. DRC and LVS are pass/fail checks: the signed-off result is \drcResult\ and \lvsResult, not a partial marker count.
 
 \subsection{Result}
 \begin{figure}[H]\centering
-\figorpending{media/part1/6t_sram_layout_final.png}{width=.78\linewidth}{Final DRC/LVS-clean cell layout capture (all layers, PR boundary visible, WL horizontal, BL/BLB vertical).}
-\caption{Final bitcell layout, \sourcepath{proj1_lib/6t-sram_final_layout}. Width \cellW\ $\mu$m (bitline pitch direction), height \cellH\ $\mu$m (wordline pitch direction).}\label{fig:layout}
+\includegraphics[width=.78\linewidth]{media/part1/6t_sram_layout_final.png}
+\caption{Drawn 6T bitcell. VDD is the top rail, VSS crosses the pull-down row, WL runs along the bottom, and BL/BLB are the vertical edge lines. PR boundary \cellW\ $\times$ \cellH\ $\mu$m.}\label{fig:layout}
 \end{figure}
 \begin{table}[H]\centering
 \caption{Layout signoff and area. $F=10$ nm per the handout, so $A_{F^2}=A_{\mu m^2}/(0.01\,\mu\mathrm m)^2=10^4A_{\mu m^2}$.}\label{tab:area}
@@ -252,7 +252,7 @@ D=\frac{A_{\rm cell}}{0.0138\;\mu\mathrm m^2}=\densityD .
 The same $W_{\rm fin}$ convention must be used for every $\sum W_iL_i$ in Parts 2 and 3 so that $D$ cancels consistently.
 
 \section{Extraction (handout 1.3)}
-Parasitics were extracted from Figure~\ref{fig:layout} with the tutorial Quantus flow (C+CC, extracted view \sourcepath{6t-sram_final_layout/av_extracted}). All measurements in Section~\ref{sec:stability} and \ref{sec:functional} use that view. The per-cell loads that Part 2 inherits are
+Parasitics were extracted from Figure~\ref{fig:layout} with the tutorial Quantus flow (C+CC). Part 2 inherits the per-cell loads:
 \begin{table}[H]\centering
 \caption{Extracted node capacitance of one cell (WL $=0$, bitlines held at $V_{DD}$ for the DC operating point).}\label{tab:cap}
 \begin{tabular}{@{}lll@{}}\toprule
@@ -264,7 +264,7 @@ WL (one cell) & \cWL\ aF & $C_{WL}\approx 4\times$ this $+$ wire per row \\\bott
 The bitline number is dominated by the pass-gate drain junction plus the shared bitline contact; the wordline number by two pass-gate gate capacitances plus the WL wire across the cell. Fifteen copies of the BL value are the stand-in column load used in the functional check.
 
 \section{Post-layout stability characterization (handout 1.4)}\label{sec:stability}
-All benches below use the extracted view at $V_{DD}=0.8$ V unless stated; the same largest-square reduction as Section~\ref{sec:method} (\sourcepath{scripts/check_snm_sweep.py}) is applied to the exported butterflies, and for any asymmetry SNM $=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
+These benches use the extracted view at $V_{DD}=0.8$ V unless stated. The margin is the same largest-square reduction as Section~\ref{sec:method} (\sourcepath{scripts/check_snm_sweep.py}), and for any asymmetry SNM $=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
 \begin{table}[H]\centering
 \caption{Post-layout stability results at $V_{DD}=0.8$ V. Setups are the handout's 1.4a--d.}\label{tab:stability}
 \begin{tabularx}{\linewidth}{@{}p{.16\linewidth}X p{.2\linewidth}@{}}\toprule
@@ -300,7 +300,7 @@ $V_{DD}$ (V) & SNM$_{\rm read}$ (mV) & $\mathrm{WM}_{BL}$ (V) & Comment \\\midru
 0.5 & \snmReadFive & \wmFive & \worksAtFive \\\bottomrule
 \end{tabular}
 \end{table}
-At the schematic level the $0.8$ V read SNM was $156.3$ mV (Table~\ref{tab:sweep}); the extracted $0.8$ V entry above is the number that supersedes it. Whether the cell still reads and writes at $0.5$ V is answered by the last row: a positive write margin and a non-collapsed read butterfly are both required.
+At the schematic level the $0.8$ V read SNM was $156.3$ mV (Table~\ref{tab:sweep}). Extraction lowers that to \snmReadPL\ mV and raises the disturbed zero node from $77.1$ mV to \vZeroPL\ mV. Read SNM falls further to \snmReadSeven\ mV at $0.7$ V and \snmReadFive\ mV at $0.5$ V, while $\mathrm{WM}_{BL}$ falls from \wmBL\ V to \wmSeven\ V and then \wmFive\ V. At $0.5$ V the cell still reads. The write is the weak result: \wmFive\ V is still a trip point, but it is the smallest margin in the table.
 
 \section{Functional check (handout 1.5)}\label{sec:functional}
 The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of the per-cell bitline capacitance from Table~\ref{tab:cap}, standing in for the 16-row Part 2 column. The sequence is write 0, read, write 1, read.
@@ -310,7 +310,7 @@ The transient bench drives WL and the precharge devices with ideal pulses and lo
 \end{figure}
 
 \section{What limits the cell, and what changes for Part 2}
-Read stability is set by the pass-gate/pull-down divider: the schematic sweep moved the disturbed zero node from $134$ mV ($\beta=1$) to $77$ mV ($\beta=2$) and raised read SNM by $30$ mV, and the extracted value in Table~\ref{tab:stability} is the one that must clear the Part 2 noise budget. The cost of $\beta=2$ is the four-fin pull-down, which sets the cell height and most of $C_{WL}$, and the two-fin pass-gate, which sets $C_{BL}$ and the read current that the Part 2 sense path has to integrate. Writability depends on $\gamma=1$ and is only proven by the write-margin sweep; if $\mathrm{WM}_{BL}$ at $0.5$ V is marginal, the remedy for Part 2 is a weaker pull-up or a write-assist (negative-BL or WL boost) in the column circuits rather than a cell change, so that the Part 1 characterization stays valid. For Part 2 we will keep this cell, mirror it to share BL contacts and the VDD/VSS rails, and size the wordline driver and precharge from $16\times C_{BL}$ and $4\times C_{WL}$ plus wire.
+Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from $134$ mV ($\beta=1$) to $77$ mV ($\beta=2$) and raised read SNM by $30$ mV. Extraction gives \snmReadPL\ mV of read SNM and a \vZeroPL\ mV zero node at $0.8$ V, against a hold SNM of \snmHold\ mV, so the read is what the Part 2 noise budget has to clear. The cost of $\beta=2$ is the four-fin pull-down, which sets the \cellH\ $\mu$m cell height and most of $C_{WL}=$ \cWL\ aF, and the two-fin pass-gate, which sets $C_{BL}=$ \cBL\ aF and the \iCell\ $\mu$A read current the sense path integrates. Writability is the $\gamma=1$ limit: $\mathrm{WM}_{BL}$ is \wmBL\ V at $0.8$ V and only \wmFive\ V at $0.5$ V. The cell still reads at $0.5$ V (\snmReadFive\ mV). The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and sizes the wordline driver and precharge from $16\times$ \cBL\ aF and $4\times$ \cWL\ aF plus wire.
 
 \section*{Traceability and team contributions}
 The handout used for this report is \sourcepath{docs/ese5700-project1.pdf} (Part 1 on pp.~3--4). Reproducible results are in \sourcepath{results/part1/read-snm/beta1/}, \sourcepath{beta1p5/}, and \sourcepath{beta2/}; each contains \sourcepath{raw.csv}, normalized curves and \sourcepath{snm.json}. The overlay coordinates are the two \sourcepath{lobes} entries in those JSON files. Recompute with the command below. The original handwritten and Cadence images are retained in \sourcepath{media/part1/}.

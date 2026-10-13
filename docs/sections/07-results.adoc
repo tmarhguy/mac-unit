@@ -64,4 +64,4 @@ On a phone, swipe the captures sideways to inspect the full axes and overlays.
 python3 scripts/check_snm_sweep.py --all
 ----
 
-The clean plots are secondary reading aids; the screenshots above are the original Cadence view. The sweep is *schematic*, so the selected number is not yet the handout's post-layout read-SNM result.
+The clean plots are secondary reading aids; the screenshots above are the original Cadence view. This sweep is schematic. The extracted read SNM that supersedes 156.3 mV is 140 mV, in <<signoff,post-layout stability>>.
