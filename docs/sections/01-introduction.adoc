@@ -9,10 +9,10 @@ The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nomi
 * Handwritten read-path and current-balance work; typed read and write derivations.
 * Two read-SNM DC testbench schematics, raw four-column Cadence exports, derived curves and machine-readable SNM calculations for β=1, 1.5 and 2.
 * Original ViVA butterfly screenshots. Cyan boxes in this site show the maximum-square locations computed from the CSVs.
-* A disconnected placement draft, clearly labeled as an unfinished layout.
+* The layout, extraction, and post-layout benches described in <<signoff,Layout, extraction and post-layout results>>. Their numeric cells are dashes until a Cadence run is recorded.
 
 === What is still required
 
-The repo has no completed cell boundary or DRC/LVS logs, no extracted cell or per-cell BL/WL capacitance, and no post-layout hold/read SNM, write margin, cell current, 0.7/0.5 V supply sweep, or functional waveforms. The handout's Part 2 and Part 3 specifications are project context; they are not completed results here.
+Cell width and height, area in μm² and stem:[F^2], the density factor, Pegasus DRC and LVS summaries, per-cell stem:[C_{BL}] and stem:[C_{WL}], post-layout hold and read SNM, the read-disturbed zero node, write margin, cell current, the 0.7 V and 0.5 V supply rows, the functional waveforms, and each author's contribution are not yet measured. Nothing on this site is reported without a run behind it.
 
 All numbers on this site carry their actual evidence level. A hand estimate and a schematic sweep never stand in for a post-layout measurement.

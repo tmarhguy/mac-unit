@@ -14,7 +14,7 @@
 [#overview]
 == Project overview
 
-ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* at nominal stem:[V_{DD}=0.8\,\mathrm V]. The evidence in this repository is a sized Virtuoso schematic, handwritten read analysis, a worked write derivation, testbench schematics, and three measured *schematic* read butterflies. Layout signoff and post-layout results are still open.
+ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The selected cell is β=2, γ=1 (PD 4 fins, PU 2 fins, PG 2 fins, L=18 nm). Measured evidence in this repository is the schematic read sweep below. Layout, extraction, and post-layout numbers are written into the same tables as the link:report.pdf[PDF]; a dash means that entry is not yet measured.
 
 .Original Virtuoso 6T cell schematic with device sizes
 image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso,align=center,width=760]
@@ -27,13 +27,13 @@ image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso
 | *2.0, candidate* | *156.3 mV* | *77.1 mV*
 |===
 
-The selected schematic candidate has β=2 and pull-up ratio γ=1. The 29.7 mV improvement over β=1 is a measured *schematic* result at 0.8 V. It is not yet a post-layout claim.
+The selected cell has β=2 and pull-up ratio γ=1. The 29.7 mV improvement over β=1 is a measured *schematic* result at 0.8 V. The extracted read SNM, once recorded in <<signoff,post-layout stability>>, is the number that supersedes it.
 
 * link:report.pdf[Read the full Part 1 PDF report]
 * link:ese5700-project1.pdf[Read the current nine-page course handout]
 * https://github.com/tmarhguy/mac-unit/tree/contribution-tmarhguy/results/part1/read-snm[Inspect raw CSVs and computed results]
 
-This site follows the report's technical order. Start with the <<requirements,assignment checklist>>, then the <<sizing,cell>>, the <<read-analysis,read>> and <<write-analysis,write>> derivations, the <<read-snm,measured butterflies>>, and the <<signoff,remaining verification>>.
+This site follows the report's technical order. Start with the <<requirements,assignment checklist>>, then the <<sizing,cell>>, the <<read-analysis,read>> and <<write-analysis,write>> derivations, the <<read-snm,measured butterflies>>, and the <<signoff,layout, extraction, and post-layout tables>>.
 
 include::sections/01-introduction.adoc[]
 

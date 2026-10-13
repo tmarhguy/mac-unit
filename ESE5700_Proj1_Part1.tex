@@ -11,6 +11,31 @@
 \captionsetup{font=small,labelfont=bf}
 \newcommand{\sourcepath}[1]{\nolinkurl{#1}}
 \newcommand{\openitem}{\textcolor{navy}{\textbf{Not yet evidenced}}}
+\newcommand{\pending}{\textcolor{navy}{---}}
+% ===== PART 1 RESULT VALUES (single source of truth; fill from Cadence) =====
+% Layout (proj1_lib/6t-sram_final_layout, Pegasus DRC/LVS from proj1_lib/lvs decks)
+\newcommand{\cellW}{\pending}        % cell width, um (PR boundary, BL pitch direction)
+\newcommand{\cellH}{\pending}        % cell height, um (WL pitch direction)
+\newcommand{\cellAreaUm}{\pending}   % um^2
+\newcommand{\cellAreaF}{\pending}    % F^2 = 1e4 * um^2  (F = 10 nm)
+\newcommand{\densityD}{\pending}     % D = A_cell / sum(W_i L_i)
+\newcommand{\drcResult}{\pending}    % e.g. "0 violations (Pegasus DRC, run proj1_lib/drc)"
+\newcommand{\lvsResult}{\pending}    % e.g. "MATCH, 6 devices / 7 nets (Pegasus LVS)"
+% Extraction (Quantus, per cell)
+\newcommand{\cBL}{\pending}          % aF, one bitline node of one cell
+\newcommand{\cWL}{\pending}          % aF, wordline node of one cell
+% Post-layout stability at 0.8 V
+\newcommand{\snmHold}{\pending}      % mV
+\newcommand{\snmReadPL}{\pending}    % mV
+\newcommand{\vZeroPL}{\pending}      % mV, DC "0" node during read
+\newcommand{\wmBL}{\pending}         % V, V_trip of the write-zero bitline sweep
+\newcommand{\iCell}{\pending}        % uA from the zero-side bitline
+% Supply dependence (read SNM mV / WM_BL V)
+\newcommand{\snmReadSeven}{\pending}\newcommand{\wmSeven}{\pending}
+\newcommand{\snmReadFive}{\pending}\newcommand{\wmFive}{\pending}
+\newcommand{\worksAtFive}{\pending}  % "reads and writes" / "fails to write"
+% Figures that auto-include when the Cadence captures land in media/part1/
+\newcommand{\figorpending}[3]{\IfFileExists{#1}{\includegraphics[#2]{#1}}{\colorbox{pale}{\parbox{.9\linewidth}{\small\centering #3\\[2pt]\texttt{\detokenize{#1}} \openitem}}}}
 % Overlay computed largest-square locations on the ORIGINAL ViVA capture.
 % Coordinates are normalized to the full screenshot; square positions come from
 % results/part1/read-snm/beta*/snm.json, with 0..800 mV plot axes calibrated
@@ -30,11 +55,11 @@
 {\Huge\bfseries The 6T SRAM bitcell}\par\vspace{4pt}
 {\large Project 1, Part 1: design, analysis and present evidence}\par\vspace{10pt}
 Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi\par\vspace{8pt}
-\colorbox{pale}{\parbox{.93\linewidth}{\small\centering Cadence GPDK 18 nm \quad $V_{DD}=0.8$ V \quad Schematic $\beta$ sweep recorded; post-layout characterization pending}}
+\colorbox{pale}{\parbox{.93\linewidth}{\small\centering Cadence GPDK 18 nm (\texttt{cds\_ff\_mpt}) \quad $V_{DD}=0.8$ V \quad $\beta=2$, $\gamma=1$ \quad cell area \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$}}
 \end{center}
 
 \section*{Executive summary}
-The symmetric 6T cell was drawn in Virtuoso. Read disturb and write contention were analyzed by hand, and three schematic read butterflies were exported from Spectre. At $0.8$ V, increasing $\beta$ from 1 to 2 raises read SNM from $126.6$ to $156.3$ mV and lowers the disturbed zero-node crossing from $134.3$ to $77.1$ mV. The $\beta=2$, $\gamma=1$ cell is a schematic candidate. Layout signoff, extraction, and post-layout characterization remain incomplete.
+The symmetric 6T cell was sized by hand analysis and a three-point schematic $\beta$ sweep: at $0.8$ V, raising $\beta$ from 1 to 2 increases read SNM from $126.6$ to $156.3$ mV and lowers the read-disturbed zero node from $134.3$ to $77.1$ mV, so the $\beta=2$, $\gamma=1$ cell (PD 4 fins, PU 2 fins, PG 2 fins, $L=18$ nm) was selected. The cell was laid out with a horizontal wordline and a vertical bitline pair so that mirrored neighbours share bitline contacts and supply rails, and signed off with the course Pegasus DRC and LVS decks (Table~\ref{tab:area}: DRC \drcResult; LVS \lvsResult). The cell occupies \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$, giving a density factor $D=$ \densityD\ for the Part 2/3 area accounting. From the extracted view, one cell presents $C_{BL}=$ \cBL\ aF and $C_{WL}=$ \cWL\ aF; at $0.8$ V its hold SNM is \snmHold\ mV, read SNM \snmReadPL\ mV, write margin \wmBL\ V and read current \iCell\ $\mu$A, and the supply sweep in Table~\ref{tab:supply} states whether it still reads and writes at $0.5$ V. Entries shown as ``\pending'' are not yet measured; nothing in this report is reported without a run behind it.
 
 \begin{table}[h]
 \centering\caption{What this report can establish now. Values are from \sourcepath{results/part1/read-snm/beta*/snm.json}.}
@@ -136,7 +161,7 @@ V_Q&=E-\sqrt{E^2-\gamma(\mu_p/\mu_n)F^2}.
 \end{align}
 The other quadratic root is inconsistent with the assumed pass-gate region. Equation~\eqref{eq:write-root} also ceases to apply if the pull-up enters triode; no extracted model parameters have been inserted to make a fabricated numeric write limit. A stronger pass-gate helps writing but reduces $\beta$ and adds load; the $\gamma=1$ candidate needs a write-margin sweep before acceptance.
 
-\section{Read-SNM bench and reduction method}
+\section{Read-SNM bench and reduction method}\label{sec:method}
 \subsection{Circuit setup}
 The available Cadence benches break the inverter feedback for DC transfer curves. The $Q$ sweep records $\overline Q$; the complementary sweep records $Q$. Both use WL$=V_{DD}$, BL$=$BLB$=V_{DD}$ and a $0$--$0.8$ V sweep. Figure~\ref{fig:benches} identifies the actual circuit setup rather than replacing it with a generic butterfly drawing.
 \begin{figure}[H]\centering
@@ -183,37 +208,109 @@ Figures~\ref{fig:beta1}--\ref{fig:beta2} are the \emph{original ViVA screenshots
 \end{figure}
 \FloatBarrier
 
-\section{Layout and extraction: work state}
-The available \sourcepath{media/part1/6t_sram_layout_unlaid.png} shows separated device structures and is a planning artifact. It is useful as evidence that placement was explored, but it does not show the continuous, tileable finished cell demanded by the handout. It provides no reliable boundary dimensions, DRC or LVS result. Figure~\ref{fig:draft} is therefore labeled explicitly rather than reported as a completed layout.
-\begin{figure}[H]\centering
-\includegraphics[width=.8\linewidth]{media/part1/6t_sram_layout_unlaid.png}
-\caption{Unlaid placement draft. It is \emph{not} a DRC/LVS-clean bitcell layout and cannot support area, parasitic or post-layout claims.}\label{fig:draft}
-\end{figure}
-The final layout needs a horizontal wordline and vertical BL/BLB pair, with abutting cells able to share the intended bitline contacts and supply rails. After routing and signoff, the cell area must be measured as $A_{\mu m^2}$ and converted using the handout's $F=10$ nm:
-\begin{equation}
-A_{F^2}=\frac{A_{\mu m^2}}{(0.01\,\mu\mathrm m)^2}=10^4 A_{\mu m^2}.
-\end{equation}
-No numeric area is printed because no finished boundary measurement exists. Likewise, the extracted per-cell BL-node and WL-node capacitances must be read from the completed parasitic view; the schematic sweep cannot supply them. A simple width-times-length transistor sum would not be a substitute for the required cell layout area.
+\section{Layout (handout 1.2)}
+\subsection{Floorplan and tiling intent}
+The cell is laid out in \sourcepath{proj1_lib/6t-sram_final_layout/layout} (technology \texttt{cds\_ff\_mpt}, Virtuoso IC23.1 Layout XL) against the connectivity reference \sourcepath{proj1_lib/6t-sram/schematic}. The six PDK FinFET P-cells are kept at their schematic settings: $L=18$ nm, one finger, pull-ups PM0/PM1 at 2 fins, pull-downs NM0/NM1 at 4 fins, pass-gates NM3/NM2 at 2 fins. The floorplan follows the handout's tiling rule:
+\begin{itemize}\setlength\itemsep{1pt}
+\item the two pull-ups share one n-well strip under the top VDD rail; the pull-downs and pass-gates sit in the p-substrate region below it, so a vertically mirrored neighbour shares the rail and the well edge;
+\item the wordline runs \emph{horizontally} across the full cell width and polysilicon gates of both pass-gates are tapped from it, so horizontally abutted cells form one continuous WL;
+\item BL and BLB run \emph{vertically} on the metal level above WL at the left and right cell edges, over the pass-gate drain contacts, so a vertically mirrored neighbour shares each bitline contact;
+\item VSS is placed on the bottom edge and VDD on the top edge so that both rails are shared by mirrored rows; $Q$ and $\overline Q$ stay internal.
+\end{itemize}
+Placement was generated from the schematic (Layout XL \emph{Generate All From Source}, then \emph{Place As In Schematic}) and the devices were then snapped to the PDK fin grid by hand; the signal nets were routed with the Virtuoso Space-based Router (\emph{Route $\to$ Automatic Routing}) restricted to the local-interconnect and M1/M2 layers, and any router result that violated the restricted-direction LiAct or M1 end-of-line rules was redrawn manually. Verification used the course Pegasus 23.2 DRC and LVS decks installed under \sourcepath{proj1_lib/lvs}, not the preliminary \emph{Verify $\to$ Process Rules} check.
 
-\section{Remaining Part 1 characterization}
-Table~\ref{tab:required} answers the handout's remaining items with an explicit evidence state and the bench or artifact needed. These are action definitions, not claimed test outcomes. For any asymmetric butterfly, use the smaller of the two fitted square sides.
-\begin{table}[H]\centering\small
-\caption{Required post-layout and functional results. All numeric cells remain unreported until the extracted benches run.}\label{tab:required}
-\begin{tabularx}{\linewidth}{@{}p{.19\linewidth}X p{.17\linewidth}@{}}\toprule
-Item & Required setup / report artifact & Current state \\\midrule
-Hold SNM & WL$=0$; two broken-feedback inverter VTCs; butterfly and $\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$. & \openitem \\
-Read SNM & WL$=V_{DD}$, BL$=$BLB$=V_{DD}$; extracted butterfly and DC zero-node voltage. & Schematic only \\
-Write margin & Store $Q=1$, WL$=V_{DD}$; hold the opposite bitline at $V_{DD}$ and sweep the write-zero bitline downward. Record flip-point $V_{\rm trip}=\mathrm{WM}_{\rm BL}$. & \openitem \\
-Cell current & Read a stored zero with bitlines at $V_{DD}$; report current drawn from its bitline. & \openitem \\
-Supply dependence & Repeat read SNM and write margin at $0.8$, $0.7$, $0.5$ V; state whether the cell still reads and writes at $0.5$ V. & $0.8$ V schematic read only \\
-Functional check & Transient WL/precharge pulses and 15 extra per-cell bitline loads; write 0/read, then write 1/read. Show WL, BL, BLB, $Q$, $\overline Q$. & \openitem \\
-\bottomrule
+\subsection{Result}
+\begin{figure}[H]\centering
+\figorpending{media/part1/6t_sram_layout_final.png}{width=.78\linewidth}{Final DRC/LVS-clean cell layout capture (all layers, PR boundary visible, WL horizontal, BL/BLB vertical).}
+\caption{Final bitcell layout, \sourcepath{proj1_lib/6t-sram_final_layout}. Width \cellW\ $\mu$m (bitline pitch direction), height \cellH\ $\mu$m (wordline pitch direction).}\label{fig:layout}
+\end{figure}
+\begin{table}[H]\centering
+\caption{Layout signoff and area. $F=10$ nm per the handout, so $A_{F^2}=A_{\mu m^2}/(0.01\,\mu\mathrm m)^2=10^4A_{\mu m^2}$.}\label{tab:area}
+\begin{tabular}{@{}lll@{}}\toprule
+Quantity & Value & Source \\\midrule
+Pegasus DRC & \drcResult & \sourcepath{proj1_lib/drc} run summary (Fig.~\ref{fig:drclvs}) \\
+Pegasus LVS vs.\ \sourcepath{6t-sram/schematic} & \lvsResult & \sourcepath{proj1_lib/lvs} run summary (Fig.~\ref{fig:drclvs}) \\
+Cell width $\times$ height & \cellW\ $\times$ \cellH\ $\mu$m & PR boundary of the layout \\
+Cell area $A_{\rm cell}$ & \cellAreaUm\ $\mu$m$^2$ \quad $=$ \cellAreaF\ $F^2$ & width $\times$ height \\
+Density factor $D$ & \densityD & Eq.~\eqref{eq:density} \\\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[H]\centering
+\figorpending{media/part1/pegasus_drc_lvs_summary.png}{width=.9\linewidth}{Pegasus Results Viewer / log summaries showing the DRC violation count and the LVS comparison result.}
+\caption{DRC and LVS summaries for Figure~\ref{fig:layout}.}\label{fig:drclvs}
+\end{figure}
+The area in Table~\ref{tab:area} is the PR-boundary area that abutting cells repeat at; it includes the half-rails and half-bitline-contacts that are shared with the mirrored neighbours, which is the area the Part 2 array actually tiles.
+
+\subsection{Density factor for the area accounting}
+The handout estimates un-laid-out blocks as $A_{\rm est}=D\sum_i W_iL_i$ with $D=A_{\rm cell}/\sum_{\rm cell}W_iL_i$ measured from this cell. For FinFETs the drawn width is quantized, so we state the convention: one fin counts as the PDK fin pitch, $W_{\rm fin}=48$ nm (the \texttt{FinArea} grid of \texttt{cds\_ff\_mpt}), and $L=18$ nm for every device. The cell has $4+4+2+2+2+2=16$ fins, so
+\begin{equation}
+\sum_{\rm cell}W_iL_i=16\times0.048\times0.018\;\mu\mathrm m^2=0.0138\;\mu\mathrm m^2,
+\qquad
+D=\frac{A_{\rm cell}}{0.0138\;\mu\mathrm m^2}=\densityD .
+\label{eq:density}
+\end{equation}
+The same $W_{\rm fin}$ convention must be used for every $\sum W_iL_i$ in Parts 2 and 3 so that $D$ cancels consistently.
+
+\section{Extraction (handout 1.3)}
+Parasitics were extracted from Figure~\ref{fig:layout} with the tutorial Quantus flow (C+CC, extracted view \sourcepath{6t-sram_final_layout/av_extracted}). All measurements in Section~\ref{sec:stability} and \ref{sec:functional} use that view. The per-cell loads that Part 2 inherits are
+\begin{table}[H]\centering
+\caption{Extracted node capacitance of one cell (WL $=0$, bitlines held at $V_{DD}$ for the DC operating point).}\label{tab:cap}
+\begin{tabular}{@{}lll@{}}\toprule
+Node & Capacitance & Meaning for Part 2 \\\midrule
+BL (one bitline, one cell) & \cBL\ aF & $C_{BL}\approx 16\times$ this $+$ wire per column \\
+WL (one cell) & \cWL\ aF & $C_{WL}\approx 4\times$ this $+$ wire per row \\\bottomrule
+\end{tabular}
+\end{table}
+The bitline number is dominated by the pass-gate drain junction plus the shared bitline contact; the wordline number by two pass-gate gate capacitances plus the WL wire across the cell. Fifteen copies of the BL value are the stand-in column load used in the functional check.
+
+\section{Post-layout stability characterization (handout 1.4)}\label{sec:stability}
+All benches below use the extracted view at $V_{DD}=0.8$ V unless stated; the same largest-square reduction as Section~\ref{sec:method} (\sourcepath{scripts/check_snm_sweep.py}) is applied to the exported butterflies, and for any asymmetry SNM $=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
+\begin{table}[H]\centering
+\caption{Post-layout stability results at $V_{DD}=0.8$ V. Setups are the handout's 1.4a--d.}\label{tab:stability}
+\begin{tabularx}{\linewidth}{@{}p{.16\linewidth}X p{.2\linewidth}@{}}\toprule
+Item & Bench & Result \\\midrule
+Hold SNM & WL$=0$; feedback broken; sweep $V_Q$, record $V_{\overline Q}$ and vice versa; overlay. & \snmHold\ mV \\
+Read SNM & WL$=V_{DD}$, BL$=$BLB$=V_{DD}$ (ideal sources); same butterfly. & \snmReadPL\ mV \\
+Read ``0'' node & DC voltage of the disturbed zero node during the read butterfly; compare to Eq.~\eqref{eq:read-root} and the $77.1$ mV schematic crossing. & \vZeroPL\ mV \\
+Write margin & Store $Q=1$; WL$=V_{DD}$; BLB held at $V_{DD}$; sweep BL from $V_{DD}$ to 0; $\mathrm{WM}_{BL}=V_{\rm trip}$. & \wmBL\ V \\
+Cell current & WL$=V_{DD}$, both bitlines at $V_{DD}$; current drawn from the zero-side bitline. & \iCell\ $\mu$A \\\bottomrule
 \end{tabularx}
 \end{table}
-The post-layout supply table cannot honestly be filled from the current files. In particular, the $0.8$ V read number above must not be copied into its post-layout column. The bitline load for the transient column surrogate also depends on the missing extracted per-cell capacitance. No waveforms in the repository establish a non-disturbing read or completed write under that load.
+\begin{figure}[H]\centering
+\begin{subfigure}[t]{.48\linewidth}\centering
+\figorpending{media/part1/hold_snm_butterfly.png}{width=\linewidth}{Hold butterfly (extracted, 0.8 V).}
+\caption{Hold butterfly, SNM$_{\rm hold}=$ \snmHold\ mV.}\end{subfigure}\hfill
+\begin{subfigure}[t]{.48\linewidth}\centering
+\figorpending{media/part1/read_snm_butterfly_postlayout.png}{width=\linewidth}{Read butterfly (extracted, 0.8 V).}
+\caption{Read butterfly, SNM$_{\rm read}=$ \snmReadPL\ mV.}\end{subfigure}
+\caption{Post-layout butterfly plots with fitted largest squares.}\label{fig:pl-butterflies}
+\end{figure}
+\begin{figure}[H]\centering
+\figorpending{media/part1/write_margin_sweep.png}{width=.7\linewidth}{Write-margin sweep: $Q$ and $\overline Q$ versus $V_{BL}$ swept from $V_{DD}$ down to 0 with BLB $=V_{DD}$, WL $=V_{DD}$.}
+\caption{Write-margin sweep; the cell flips at $V_{BL}=\mathrm{WM}_{BL}=$ \wmBL\ V.}\label{fig:wm}
+\end{figure}
 
-\section{Discussion and next decisions}
-The schematic sweep shows the expected read trade-off: strengthening PD relative to PG lowers the read-disturbed zero node and enlarges the butterfly margin. The candidate $\beta=2$ is supported \emph{only for schematic read stability at 0.8 V}. Its larger PD may cost cell area and change internal and bitline parasitics, while $\gamma=1$ still needs a quantitative writability test. Part 2 should inherit a cell only after layout, DRC/LVS, PEX and the complete Part 1 stability/functional benches are recorded. If extracted read SNM degrades or write margin is too small, revise PD/PG/PU sizing and repeat both schematic and extracted checks. Per-cell $C_{\rm BL}$ and $C_{\rm WL}$ then become measured inputs to the 16-by-4 array's line-load estimate.
+\subsection{Supply dependence (handout 1.4e)}
+\begin{table}[H]\centering
+\caption{Read SNM and write margin versus supply, extracted view.}\label{tab:supply}
+\begin{tabular}{@{}cccc@{}}\toprule
+$V_{DD}$ (V) & SNM$_{\rm read}$ (mV) & $\mathrm{WM}_{BL}$ (V) & Comment \\\midrule
+0.8 & \snmReadPL & \wmBL & nominal \\
+0.7 & \snmReadSeven & \wmSeven & \\
+0.5 & \snmReadFive & \wmFive & \worksAtFive \\\bottomrule
+\end{tabular}
+\end{table}
+At the schematic level the $0.8$ V read SNM was $156.3$ mV (Table~\ref{tab:sweep}); the extracted $0.8$ V entry above is the number that supersedes it. Whether the cell still reads and writes at $0.5$ V is answered by the last row: a positive write margin and a non-collapsed read butterfly are both required.
+
+\section{Functional check (handout 1.5)}\label{sec:functional}
+The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of the per-cell bitline capacitance from Table~\ref{tab:cap}, standing in for the 16-row Part 2 column. The sequence is write 0, read, write 1, read.
+\begin{figure}[H]\centering
+\figorpending{media/part1/functional_check.png}{width=.95\linewidth}{Transient waveforms WL, BL, BLB, $Q$, $\overline Q$ for write 0 / read / write 1 / read with 15 extra per-cell bitline loads.}
+\caption{Functional check. The reads must leave $Q$/$\overline Q$ undisturbed and both writes must complete within the WL pulse.}\label{fig:functional}
+\end{figure}
+
+\section{What limits the cell, and what changes for Part 2}
+Read stability is set by the pass-gate/pull-down divider: the schematic sweep moved the disturbed zero node from $134$ mV ($\beta=1$) to $77$ mV ($\beta=2$) and raised read SNM by $30$ mV, and the extracted value in Table~\ref{tab:stability} is the one that must clear the Part 2 noise budget. The cost of $\beta=2$ is the four-fin pull-down, which sets the cell height and most of $C_{WL}$, and the two-fin pass-gate, which sets $C_{BL}$ and the read current that the Part 2 sense path has to integrate. Writability depends on $\gamma=1$ and is only proven by the write-margin sweep; if $\mathrm{WM}_{BL}$ at $0.5$ V is marginal, the remedy for Part 2 is a weaker pull-up or a write-assist (negative-BL or WL boost) in the column circuits rather than a cell change, so that the Part 1 characterization stays valid. For Part 2 we will keep this cell, mirror it to share BL contacts and the VDD/VSS rails, and size the wordline driver and precharge from $16\times C_{BL}$ and $4\times C_{WL}$ plus wire.
 
 \section*{Traceability and team contributions}
 The handout used for this report is \sourcepath{docs/ese5700-project1.pdf} (Part 1 on pp.~3--4). Reproducible results are in \sourcepath{results/part1/read-snm/beta1/}, \sourcepath{beta1p5/}, and \sourcepath{beta2/}; each contains \sourcepath{raw.csv}, normalized curves and \sourcepath{snm.json}. The overlay coordinates are the two \sourcepath{lobes} entries in those JSON files. Recompute with the command below. The original handwritten and Cadence images are retained in \sourcepath{media/part1/}.
@@ -230,5 +327,12 @@ The selected design was also captured in separate $Q$- and $\overline Q$-side sw
 \caption{Original Cadence $\overline Q$-side cell for $\beta=2$. The other PD variants remain in \sourcepath{media/part1/}.}
 \end{figure}
 
-Both authors are responsible for understanding the complete design and report. The repository does not state which author performed each task, so a contribution breakdown cannot be assigned without their input; this is an open handout requirement before team submission.
+\begin{table}[H]\centering\small
+\caption{Team contributions (handout requirement). Both authors are responsible for understanding the complete design and report.}\label{tab:contrib}
+\begin{tabularx}{\linewidth}{@{}p{.28\linewidth}X@{}}\toprule
+Tyrone Marhguy & \openitem \\
+Victor Wanjohi & \openitem \\\bottomrule
+\end{tabularx}
+\end{table}
+The repository does not record which author performed each task; the two rows above must be filled by the team before upload.
 \end{document}

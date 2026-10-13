@@ -2,7 +2,7 @@
   "name": "6T SRAM",
   "label": "Project report",
   "title": "6T SRAM bitcell | ESE 5700",
-  "description": "ESE 5700 Part 1: 18 nm 6T SRAM sizing, hand analysis, Cadence read-SNM evidence, and verification status.",
+  "description": "ESE 5700 Part 1: 18 nm 6T SRAM sizing, schematic read-SNM evidence, and layout, extraction, and post-layout tables with unmeasured cells left blank.",
   "url": "",
   "image": "",
   "about": "#about",

@@ -56,7 +56,7 @@ using two **16 × 4** SRAM macros, a 4×4 multiplier, a 12-bit accumulator, and 
 
 | Part | Deliverable | Due | In repo |
 |------|-------------|-----|---------|
-| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | **10/13/2026** | Schematic and read-SNM sweep measured; layout signoff and post-layout work open |
+| **1** | 6T SRAM bitcell: schematic, custom layout, post-layout stability | **10/13/2026** | Schematic read-SNM sweep measured; layout, extraction, and post-layout tables are in the report with unmeasured cells left blank |
 | **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro | **10/20/2026** | later |
 | **3** | Two SRAMs + datapath + sequencer → MAC unit | **10/27/2026** | later |
 
@@ -72,7 +72,7 @@ The repository contains the symmetric bitcell schematic, handwritten read and wr
 | 1.5 | 3 / 2 / 2 | 145.8 mV | 96.6 mV |
 | **2.0** | **4 / 2 / 2** | **156.3 mV** | **77.1 mV** |
 
-$\beta=2$, $\gamma=1$ is the **schematic candidate**. Its read SNM is 29.7 mV higher than the $\beta=1$ case. These values are not post-layout results. The handout still requires a tileable layout and area, DRC/LVS, extracted BL/WL capacitances, post-layout hold/read SNM, write margin and cell current, a supply table, and functional waveforms. The [report](ESE5700_Proj1_Part1.pdf) separates that open work from completed measurements.
+$\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. Those values are not post-layout results. The [report](ESE5700_Proj1_Part1.pdf) and the [report site](https://tmarhguy.github.io/mac-unit/) carry the layout, extraction, stability, supply, and functional sections; cells shown as a dash are not yet measured.
 
 ## Repository layout
 

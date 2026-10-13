@@ -5,4 +5,4 @@ This site mirrors the link:report.pdf[full Part 1 PDF]. The assignment source is
 
 The cyan overlay coordinates come from the two `lobes` entries in each `snm.json`; the report draws the same coordinates on the original screenshots. The fitted margin is the smaller side. The script uses 16,001 voltage samples and checks against 4,001 samples.
 
-Tyrone Marhguy and Victor Wanjohi are the report authors. Both are responsible for the whole report. The repository does not record who performed each task, so the individual contribution breakdown remains an open requirement for the team to complete before submission.
+Tyrone Marhguy and Victor Wanjohi are the report authors. Both are responsible for the whole report. The contribution rows in <<signoff,team contributions>> stay blank until the team fills them; the repository does not record who performed each task.

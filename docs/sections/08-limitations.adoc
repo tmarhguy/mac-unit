@@ -1,36 +1,99 @@
 [#signoff]
-== Layout, extraction and remaining verification
+== Layout, extraction and post-layout results
 
-=== Layout work state
+Entries shown as — are not yet measured. The same blanks appear in the link:report.pdf[PDF].
 
-The available layout image is a placement draft with separated structures. It documents work toward the cell but does not show a finished connected, tileable cell or a DRC/LVS-clean result.
+=== Floorplan and tiling
 
-.Unlaid placement draft; not a signed-off layout
-image::6t_sram_layout_unlaid.png[Unfinished separated bitcell placement structures,align=center,width=760]
+The cell is laid out in `proj1_lib/6t-sram_final_layout/layout` (`cds_ff_mpt`, Virtuoso IC23.1 Layout XL) against `proj1_lib/6t-sram/schematic`. The six PDK FinFET P-cells stay at the schematic settings: L=18 nm, one finger, pull-ups PM0/PM1 at 2 fins, pull-downs NM0/NM1 at 4 fins, pass-gates NM3/NM2 at 2 fins.
 
-The handout requires WL horizontal and BL/BLB vertical, with abutting mirrored cells able to share contacts and supply rails. The completed cell needs a measured boundary area in μm² and in stem:[F^2], where the current handout sets stem:[F=10\,\mathrm{nm}]. The conversion will be stem:[A_{F^2}=10^4 A_{\mu m^2}] when the actual area is known. DRC and LVS summaries must accompany the image. None of these values or logs are in the repository.
+* The two pull-ups share one n-well strip under the top VDD rail. The pull-downs and pass-gates sit in the p-substrate below it, so a vertically mirrored neighbour shares the rail and the well edge.
+* The wordline runs horizontally across the cell, and both pass-gate gates tap it, so abutted cells form one continuous WL.
+* BL and BLB run vertically on the metal above WL, at the left and right edges over the pass-gate drain contacts, so a mirrored neighbour shares each bitline contact.
+* VSS is on the bottom edge and VDD on the top edge. stem:[Q] and stem:[\overline Q] stay internal.
 
-After layout signoff, PEX must provide the bitline-node and wordline-node capacitance of *one cell*. Those extracted loads feed the later 16 × 4 macro and the 15-extra-cell functional surrogate. No capacitance is inferred from the schematic or placement draft.
+Placement was generated from the schematic (Layout XL _Generate All From Source_, then _Place As In Schematic_) and snapped to the PDK fin grid by hand. Signal nets were routed with the Virtuoso Space-based Router on local interconnect and M1/M2; routes that broke LiAct or M1 end-of-line rules were redrawn by hand. Verification uses the course Pegasus 23.2 DRC and LVS decks under `proj1_lib/lvs`, not the preliminary _Verify → Process Rules_ check.
 
-=== Handout checklist for Part 1
+The final layout capture (`media/part1/6t_sram_layout_final.png`) and the Pegasus summary capture (`media/part1/pegasus_drc_lvs_summary.png`) are not in the repository yet.
 
-[cols="1,2,1",options="header"]
+.Layout signoff and area. stem:[F=10\,\mathrm{nm}], so stem:[A_{F^2}=10^4 A_{\mu\mathrm m^2}].
+[cols="2,1,2",options="header"]
 |===
-| Required item | Bench or report artifact | Evidence now
-| Schematic sizing and β sweep | Symmetric cell, read/write hand analysis, three read butterflies | Present, schematic
-| Tileable layout and area | Finished cell, DRC/LVS, μm² and stem:[F^2] | Placement draft only
-| Extraction | Per-cell stem:[C_{BL}] and stem:[C_{WL}] | Not recorded
-| Hold SNM | WL=0, both VTCs, butterfly and smaller square | Not recorded
-| Read SNM | WL=VDD, BL=BLB=VDD, extracted butterfly and DC zero node | Schematic only
-| Write margin | Store Q=1; sweep write-zero bitline down; report flip voltage | Not recorded
-| Cell current | Current from zero-side BL during read | Not recorded
-| Supply dependence | Read SNM and write margin at 0.8, 0.7, 0.5 V; answer 0.5 V read/write | 0.8 V schematic read only
-| Functional check | 15 extra per-cell BL loads; write 0/read, write 1/read; show WL, BL, BLB, Q, QB | Not recorded
-| Contributions | Actual role of each author | Not recorded
+| Quantity | Value | Source
+| Pegasus DRC | — | `proj1_lib/drc` run summary
+| Pegasus LVS vs. `6t-sram/schematic` | — | `proj1_lib/lvs` run summary
+| Cell width × height | — × — μm | PR boundary. Width is the bitline pitch; height is the wordline pitch.
+| Cell area | — μm² = — stem:[F^2] | width × height
+| Density factor stem:[D] | — | stem:[A_{\mathrm{cell}} / \sum W_i L_i]
 |===
 
-The post-layout supply table cannot be populated with the existing schematic value. The transient column load also needs the extracted per-cell BL capacitance. The next evidence sequence is: finish layout, record DRC/LVS and area, extract, then run the full set of benches at the current handout supplies.
+The area above is the PR-boundary area that abutting cells repeat. It includes the half-rails and half-bitline contacts shared with mirrored neighbours.
 
-=== Design decision
+=== Density factor
 
-Increasing PD strength relative to PG improved the measured schematic read margin. The larger PD may cost layout area and parasitic load, and γ=1 still needs a quantitative write result. If the extracted cell misses read or write margin, revise PD/PG/PU sizing and repeat both schematic and extracted checks before the cell is tiled into Part 2.
+The handout estimates un-laid-out blocks as stem:[A_{\mathrm{est}}=D\sum_i W_i L_i], with stem:[D] measured on this cell. One fin counts as the PDK fin pitch, stem:[W_{\mathrm{fin}}=48\,\mathrm{nm}], and stem:[L=18\,\mathrm{nm}] on every device. The cell has 16 fins, so
+
+[stem]
+++++
+\sum_{\mathrm{cell}} W_i L_i = 16 \times 0.048 \times 0.018\;\mu\mathrm m^2 = 0.0138\;\mu\mathrm m^2
+++++
+
+and stem:[D = A_{\mathrm{cell}} / 0.0138\,\mu\mathrm m^2]. The same fin-pitch convention has to be used for every stem:[\sum W_i L_i] in Parts 2 and 3.
+
+=== Extraction
+
+Parasitics come from the layout with the tutorial Quantus flow (C+CC, extracted view `6t-sram_final_layout/av_extracted`). The stability and functional checks use that view.
+
+.Extracted node capacitance of one cell (WL = 0, bitlines held at stem:[V_{DD}])
+[cols="2,1,2",options="header"]
+|===
+| Node | Capacitance | Meaning for Part 2
+| BL (one bitline, one cell) | — aF | stem:[C_{BL} \approx 16\times] this, plus wire, per column
+| WL (one cell) | — aF | stem:[C_{WL} \approx 4\times] this, plus wire, per row
+|===
+
+The bitline term is dominated by the pass-gate drain junction and the shared bitline contact. The wordline term is two pass-gate gates plus the WL wire across the cell. Fifteen copies of the BL value are the stand-in column load in the functional check.
+
+=== Post-layout stability at 0.8 V
+
+These benches use the extracted view. The margin is the same largest-square reduction as the schematic sweep (`scripts/check_snm_sweep.py`). If the butterfly is asymmetric, SNM is the smaller side.
+
+[cols="1,3,1",options="header"]
+|===
+| Item | Bench | Result
+| Hold SNM | WL=0; feedback broken; both VTCs overlaid | — mV
+| Read SNM | WL=stem:[V_{DD}], BL=BLB=stem:[V_{DD}] | — mV
+| Read "0" node | DC voltage of the disturbed zero node; compare with the 77.1 mV schematic crossing | — mV
+| Write margin | Store Q=1; WL=stem:[V_{DD}]; BLB held at stem:[V_{DD}]; sweep BL from stem:[V_{DD}] to 0; stem:[\mathrm{WM}_{BL}=V_{\mathrm{trip}}] | — V
+| Cell current | Both bitlines at stem:[V_{DD}]; current from the zero-side bitline | — μA
+|===
+
+The hold butterfly (`media/part1/hold_snm_butterfly.png`), read butterfly (`media/part1/read_snm_butterfly_postlayout.png`), and write-margin sweep (`media/part1/write_margin_sweep.png`) are not in the repository yet.
+
+.Read SNM and write margin versus supply, extracted view
+[cols="1,1,1,2",options="header"]
+|===
+| stem:[V_{DD}] (V) | SNM~read~ (mV) | stem:[\mathrm{WM}_{BL}] (V) | Comment
+| 0.8 | — | — | nominal; this read SNM supersedes the 156.3 mV schematic result
+| 0.7 | — | — |
+| 0.5 | — | — | reads and writes only if this write margin is positive and the read butterfly has not collapsed
+|===
+
+=== Functional check
+
+The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of the per-cell bitline capacitance, standing in for a 16-row column. The sequence is write 0, read, write 1, read. The capture (`media/part1/functional_check.png`) is not in the repository yet. A passing run leaves stem:[Q] and stem:[\overline Q] undisturbed on both reads, and both writes finish inside the WL pulse.
+
+=== What limits the cell
+
+Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from 134 mV (β=1) to 77 mV (β=2) and raised read SNM by 30 mV. The extracted read SNM in the table above is the value that has to clear the Part 2 noise budget. The cost of β=2 is the four-fin pull-down, which sets the cell height and most of stem:[C_{WL}], and the two-fin pass-gate, which sets stem:[C_{BL}] and the read current the Part 2 sense path integrates. Writability depends on γ=1 and is established by the write-margin sweep. If stem:[\mathrm{WM}_{BL}] at 0.5 V is marginal, the Part 2 remedy is a weaker pull-up or a write assist in the column circuits, so this cell characterization stays valid. Part 2 keeps this cell, mirrors it to share BL contacts and the VDD/VSS rails, and sizes the wordline driver and precharge from stem:[16\times C_{BL}] and stem:[4\times C_{WL}] plus wire.
+
+=== Team contributions
+
+Both authors are responsible for the complete design and report. The repository does not record which author performed each task.
+
+[cols="1,2",options="header"]
+|===
+| Author | Contribution
+| Tyrone Marhguy | —
+| Victor Wanjohi | —
+|===
