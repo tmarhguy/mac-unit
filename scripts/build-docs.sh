@@ -71,6 +71,9 @@ fi
 if [ -d "$REPO_ROOT/media/part1" ]; then
   cp "$REPO_ROOT/media/part1/"*.png "$OUT_DIR/images/" 2>/dev/null || true
 fi
+if [ -d "$REPO_ROOT/media/part1/current" ]; then
+  cp "$REPO_ROOT/media/part1/current/"*.png "$OUT_DIR/images/" 2>/dev/null || true
+fi
 
 python3 "$REPO_ROOT/scripts/prepare-docs.py" page
 python3 "$REPO_ROOT/scripts/prepare-docs.py" not-found

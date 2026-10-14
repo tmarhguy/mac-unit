@@ -13,6 +13,6 @@ The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nomi
 
 === What is still required
 
-The Pegasus Results Viewer capture, the extracted butterfly and write-margin plots, and the functional waveforms are not in the repository. Each author's contribution row is still blank. Nothing else on this site stands in for those missing captures.
+The LVS Results Viewer capture is in <<signoff,the layout section>>. A separate DRC Results Viewer capture, the extracted butterfly and write-margin plots, and the functional waveforms are not in the repository. Each author's contribution row is still blank.
 
 All numbers on this site carry their actual evidence level. A hand estimate and a schematic sweep never stand in for a post-layout measurement.

@@ -7,28 +7,31 @@ The numbers below are the same ones in the link:report.pdf[PDF]. DRC and LVS are
 
 The drawn cell keeps the schematic sizes: L=18 nm, pull-ups at 2 fins, pull-downs at 4 fins, pass-gates at 2 fins.
 
-* Two pull-ups in the top row, under a horizontal VDD rail.
-* Two pull-downs in the middle row, tied by a horizontal VSS rail.
-* Two access devices in the bottom row, with WL running horizontally along the bottom edge.
-* BL down the left edge and BLB down the right edge, both vertical.
+* Two pull-ups in the top row, each contacted to a horizontal VDD rail.
+* Two pull-downs in the bottom row, tied by a horizontal VSS rail.
+* stem:[Q] and stem:[\overline Q] running horizontally between the cross-coupled devices.
+* WL along the bottom edge and up both sides of the cell.
 
-Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contacts. stem:[Q] and stem:[\overline Q] stay inside the cell. The PR boundary is 0.72 µm by 0.54 µm.
+Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contacts. The PR boundary is 0.72 µm by 0.54 µm.
 
-.Drawn 6T bitcell. VDD is the top rail, VSS crosses the pull-down row, WL runs along the bottom, and BL/BLB are the vertical edge lines.
-image::6t_sram_layout_final.png[Drawn 6T bitcell layout,align=center,width=760]
+.Drawn 6T bitcell. Pull-ups are at the top on VDD, pull-downs are at the bottom on VSS, and WL runs along the bottom and up both sides.
+image::layout_.png[Drawn 6T bitcell layout,align=center,width=760]
 
 .Layout signoff and area. stem:[F=10\,\mathrm{nm}], so stem:[A_{F^2}=10^4 A_{\mu\mathrm m^2}].
 [cols="2,1,2",options="header"]
 |===
 | Quantity | Value | Source
 | Pegasus DRC | 0 violations | `proj1_lib/drc`
-| Pegasus LVS vs. `6t-sram/schematic` | MATCH, 6 devices | `proj1_lib/lvs`
+| Pegasus LVS vs. `sram_6t/schematic` | Clean, comparison match | `media/part1/current/lvs_clean.png`
 | Cell width × height | 0.72 × 0.54 µm | PR boundary. Width is the bitline pitch; height is the wordline pitch.
 | Cell area | 0.39 µm² = 3900 stem:[F^2] | 0.72 × 0.54
 | Density factor stem:[D] | 28 | stem:[A_{\mathrm{cell}} / \sum W_i L_i]
 |===
 
-The area is the PR-boundary area that abutting cells repeat. It includes the half-rails and half-bitline contacts shared with mirrored neighbours. The Pegasus Results Viewer capture (`media/part1/pegasus_drc_lvs_summary.png`) is not in the repository yet.
+The area is the PR-boundary area that abutting cells repeat. It includes the half-rails and half-bitline contacts shared with mirrored neighbours.
+
+.Pegasus 23.20 LVS Results Viewer. ISL clean, SCD with no conflicts, ERC empty, extraction clean, comparison match.
+image::lvs_clean.png[Pegasus LVS results viewer showing a clean match,align=center,width=520]
 
 === Density factor
 

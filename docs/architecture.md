@@ -1,6 +1,6 @@
 # Architecture and build order
 
-The current project basis is Cadence GPDK 18 nm (`cds_ff_mpt`) at nominal 0.8 V. The [report](../ESE5700_Proj1_Part1.tex) records a 0.72 µm × 0.54 µm cell (0.39 µm², 3900 F², D = 28), Pegasus DRC with 0 violations, LVS MATCH on 6 devices, and the extracted stability numbers. Schematic read-SNM exports remain in the [results directory](../results/part1/read-snm/).
+The current project basis is Cadence GPDK 18 nm (`cds_ff_mpt`) at nominal 0.8 V. The [report](../ESE5700_Proj1_Part1.tex) records a 0.72 µm × 0.54 µm cell (0.39 µm², 3900 F², D = 28), Pegasus DRC with 0 violations, LVS clean with comparison match, and the extracted stability numbers. Schematic read-SNM exports remain in the [results directory](../results/part1/read-snm/).
 
 ## Planned hierarchy
 

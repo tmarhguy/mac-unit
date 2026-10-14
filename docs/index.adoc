@@ -14,7 +14,7 @@
 [#overview]
 == Project overview
 
-ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The selected cell is β=2, γ=1 (PD 4 fins, PU 2 fins, PG 2 fins, L=18 nm). It measures 0.72 µm × 0.54 µm, or 0.39 µm² = 3900 stem:[F^2], with density factor D = 28. Pegasus DRC is 0 violations and LVS is MATCH, 6 devices. Extracted loads are stem:[C_{BL}=180] aF and stem:[C_{WL}=90] aF. At 0.8 V the extracted hold SNM is 280 mV, read SNM is 140 mV, the disturbed zero node is 95 mV, write margin is 0.42 V, and cell current is 25 µA.
+ESE 5700 Project 1 begins with a 6T SRAM cell for a later 16 × 4 SRAM macro and 4-bit multiply-accumulate unit. The current assignment uses *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The selected cell is β=2, γ=1 (PD 4 fins, PU 2 fins, PG 2 fins, L=18 nm). It measures 0.72 µm × 0.54 µm, or 0.39 µm² = 3900 stem:[F^2], with density factor D = 28. Pegasus DRC is 0 violations and LVS is clean, with comparison match. Extracted loads are stem:[C_{BL}=180] aF and stem:[C_{WL}=90] aF. At 0.8 V the extracted hold SNM is 280 mV, read SNM is 140 mV, the disturbed zero node is 95 mV, write margin is 0.42 V, and cell current is 25 µA.
 
 .Original Virtuoso 6T cell schematic with device sizes
 image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso,align=center,width=760]
