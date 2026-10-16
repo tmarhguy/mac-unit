@@ -282,6 +282,50 @@ hr {
   color:var(--accent);
   font-weight:600;
 }
+.chapter-folder { margin:2px 0 6px; }
+.chapter-row { display:flex; align-items:center; gap:0; }
+.chapter-row .chapter-link { flex:1; min-width:0; }
+.chapter-row .chapter-link span { overflow:hidden; text-overflow:ellipsis; }
+.folder-toggle {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  margin-left:2px;
+  padding:0;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+}
+.folder-toggle:hover { background:var(--line); color:var(--ink); }
+.folder-toggle .ui-icon { width:14px; height:14px; transition:transform .15s linear; }
+.chapter-folder.open .folder-toggle .ui-icon { transform:rotate(90deg); }
+.chapter-children {
+  margin:0 8px 4px 22px;
+  padding-left:8px;
+  border-left:1px solid var(--line);
+  max-height:42vh;
+  overflow:auto;
+}
+.chapter-child {
+  display:block;
+  padding:5px 8px;
+  border-radius:6px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+}
+.chapter-child:hover { background:var(--line); color:var(--ink); text-decoration:none; }
+.chapter-child.active { color:var(--accent); font-weight:600; background:var(--soft); }
+.log-entry { font-size:14px; line-height:1.7; }
+.log-entry img, .log-entry video { display:block; max-width:min(100%,820px); height:auto; margin:16px auto; border:1px solid var(--line); border-radius:8px; background:var(--paper); }
+.log-entry pre { overflow:auto; padding:12px 14px; background:var(--code); border:1px solid var(--line); border-radius:8px; }
+.log-entry table { width:100%; border-collapse:collapse; margin:16px 0; }
+.log-entry th, .log-entry td { border:1px solid var(--line); padding:6px 8px; text-align:left; }
+.log-entry blockquote { margin:16px 0; padding-left:12px; border-left:3px solid var(--accent); color:var(--muted); }
 
 
 .sidebar-foot {

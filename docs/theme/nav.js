@@ -49,7 +49,32 @@
   const search=button('Search documentation','search-trigger');search.append(make('kbd','','⌘ K'));search.id='search-trigger';search.setAttribute('data-search-trigger','');
   const nav=make('nav','sidebar-nav');nav.setAttribute('aria-label','Chapters');
   const chapterLinks=[];
-  pages.forEach((p,i)=>{if(config.groups?.[i])nav.append(make('div','sidebar-label',config.groups[i]));const a=link('','#'+p.heading.id,'chapter-link');a.append(make('span','',i===0?'Overview':title(p.heading)));nav.append(a);chapterLinks.push(a);});
+  const nestedIds=new Set(config.nested||[]);
+  pages.forEach((p,i)=>{
+    const group=config.groups?.[i]??config.groups?.[String(i)];
+    if(group)nav.append(make('div','sidebar-label',typeof group==='string'?group:group.label));
+    const label=i===0?'Overview':title(p.heading);
+    const a=link('','#'+p.heading.id,'chapter-link');
+    a.append(make('span','',label));
+    const subs=[...p.el.querySelectorAll('h3[id]')];
+    const nest=nestedIds.has(p.heading.id)||title(p.heading).toLowerCase()==='engineering log';
+    if(nest&&subs.length){
+      const folder=make('div','chapter-folder');
+      const row=make('div','chapter-row');
+      const toggle=button('','folder-toggle','Show log entries');
+      toggle.innerHTML='<svg viewBox="0 0 24 24" class="ui-icon" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const kids=make('div','chapter-children');
+      kids.hidden=true;
+      toggle.setAttribute('aria-expanded','false');
+      toggle.setAttribute('aria-controls',p.heading.id+'-entries');
+      kids.id=p.heading.id+'-entries';
+      toggle.onclick=()=>{const open=kids.hidden;kids.hidden=!open;toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Hide log entries':'Show log entries');folder.classList.toggle('open',open);};
+      subs.forEach(h=>{const child=link('','#'+h.id,'chapter-child');child.append(make('span','',title(h)));kids.append(child);});
+      row.append(toggle,a);folder.append(row,kids);nav.append(folder);
+      p.folder={kids,toggle,folder};
+    }else nav.append(a);
+    chapterLinks.push(a);
+  });
   const foot=make('div','sidebar-foot');foot.append(make('strong','',config.label));
   const version=document.querySelector('#revnumber')?.textContent || 'Local edition';foot.append(make('span','',version));
   if(config.repository)foot.append(link('GitHub repository',config.repository,'sidebar-external'));
@@ -68,6 +93,7 @@
   let current=-1, railLinks=[], activeHeadings=[];
   function showPage(index){
     current=index;const page=pages[index];pages.forEach((p,i)=>{p.el.hidden=i!==index;chapterLinks[i].classList.toggle('active',i===index);if(i===index)chapterLinks[i].setAttribute('aria-current','page');else chapterLinks[i].removeAttribute('aria-current');});
+    const preamble=content.querySelector('#preamble');if(preamble)preamble.hidden=index!==0;
     crumbName.textContent=title(page.heading);document.title=title(page.heading)+' · '+config.name;
     rail.replaceChildren(make('p','rail-title','On this page'));
     const local=make('nav');activeHeadings=[...page.el.querySelectorAll('h3[id]')];railLinks=activeHeadings.map(h=>link(title(h),'#'+h.id));local.append(...railLinks);rail.append(local);
@@ -76,6 +102,9 @@
     const progress=make('div','reading-progress');progress.append(make('span'));rail.append(progress,make('div','rail-note','Your place in this chapter'));
     pagination.replaceChildren();
     for(const [i,label] of [[index-1,'Previous'],[index+1,'Next']]){if(!pages[i])continue;const a=link('','#'+pages[i].heading.id,i<index?'previous':'next');a.append(make('small','',label),make('span','',title(pages[i].heading)));pagination.append(a);}
+    if(page.folder){page.folder.kids.hidden=false;page.folder.toggle.setAttribute('aria-expanded','true');page.folder.toggle.setAttribute('aria-label','Hide log entries');page.folder.folder.classList.add('open');}
+    let hashId='';try{hashId=decodeURIComponent(location.hash.slice(1));}catch{hashId='';}
+    document.querySelectorAll('.chapter-child').forEach(child=>{const on=child.getAttribute('href')==='#'+hashId;child.classList.toggle('active',on);if(on)child.setAttribute('aria-current','location');else child.removeAttribute('aria-current');});
     setMenu(false);updateProgress();
   }
   function route(scroll=true){let id;try{id=decodeURIComponent(location.hash.slice(1));}catch{id='';}const target=document.getElementById(id);const index=pages.findIndex(p=>p.el.contains(target));showPage(index<0?0:index);if(scroll){requestAnimationFrame(()=>{if(target&&target!==pages[current].heading)target.scrollIntoView();else window.scrollTo(0,0);const focusTarget=target&&target.offsetParent!==null?target:content;focusTarget.tabIndex=-1;focusTarget.focus({preventScroll:true});});}}

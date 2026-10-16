@@ -1,8 +1,8 @@
 {
   "name": "6T SRAM",
   "label": "Project report",
-  "title": "6T SRAM bitcell | ESE 5700",
-  "description": "ESE 5700 Part 1: 18 nm 6T SRAM, 0.39 µm², DRC clean, LVS match, extracted read SNM 140 mV at 0.8 V.",
+  "title": "A six-transistor memory cell",
+  "description": "The six-transistor circuit that stores one bit, drawn in an 18 nm process. The cell is 0.39 µm², DRC-clean, and the extracted read margin is 140 mV at 0.8 V.",
   "url": "",
   "image": "",
   "about": "#about",
