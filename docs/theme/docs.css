@@ -997,3 +997,34 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
   .enhanced #content { margin:0; padding:0; }
   .cadence-capture rect { stroke:#00a6b5; }
 }
+
+/* Phone fit: the page stays inside the screen, and the type stays readable. */
+@media(max-width:900px) {
+  :root { font-size:16px; }
+  html, body { overflow-x:clip; }
+  .topbar { height:52px; padding:0 max(10px, env(safe-area-inset-right)) 0 max(10px, env(safe-area-inset-left)); }
+  .enhanced #content { margin:52px 0 0 !important; padding:16px 16px calc(28px + env(safe-area-inset-bottom)) !important; }
+  .sidebar { top:52px; width:min(88vw, 320px); }
+  .nav-open .nav-backdrop { inset:52px 0 0; }
+  h2 { font-size:1.45rem !important; letter-spacing:-0.3px; line-height:1.25; }
+  h3 { font-size:1.15rem; line-height:1.3; }
+  p, li, dd, .paragraph, figcaption, .imageblock .title { overflow-wrap:anywhere; }
+  .docs-hero>a, .imageblock .content, .log-entry { max-width:100%; overflow-x:auto; overscroll-behavior-inline:contain; }
+  .docs-diagram, .docs-hero .docs-diagram, .docs-hero svg, #content .inline-chart {
+    display:block; width:auto !important; min-width:0 !important; max-width:none !important; height:auto !important;
+  }
+  .imageblock img, .log-entry img, .log-entry video, .docs-hero img, .docs-hero-media img {
+    min-width:0 !important; max-width:100% !important; width:auto !important; height:auto !important; max-height:52vh;
+  }
+  .cadence-capture { min-width:0 !important; }
+  table, #content table.tableblock { min-width:0 !important; }
+  #content table.tableblock tbody td { grid-template-columns:minmax(0,1fr); gap:3px; }
+  .listingblock pre, .literalblock pre, pre { font-size:13px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .mobile-toc nav { max-height:46vh; overflow-y:auto; overscroll-behavior:contain; }
+  .pagination { flex-direction:column; }
+  .pagination a { width:100%; min-height:48px; }
+}
+@media(max-width:560px) {
+  #content .hero .cta-row { flex-direction:column; align-items:stretch; }
+  #content .hero .cta { width:100%; white-space:normal; }
+}
