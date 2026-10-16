@@ -1,73 +1,18 @@
-[#introduction]
-== Introduction
+[#requirements]
+== Assignment and evidence
 
-This chapter defines what the system is, what this site covers,
-and how to navigate the rest of the document.
+The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nominal 0.8 V and requires one team report. It asks for a symmetric cell, hand sizing analysis, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability measurements, supply dependence and a functional write/read test. The report must also identify each member's contribution.
 
-=== Purpose
+=== What is recorded
 
-This project builds an SRAM-based 4-bit multiply-accumulate (MAC)
-accelerator in the ESE 5700 Cadence GPDK 18 nm Virtuoso / Spectre flow.
-Two 16 × 4 SRAM macros feed a 4×4 multiplier, a 12-bit accumulator,
-and a sequencer that computes a 16-element dot product of 4-bit
-unsigned weights and activations.
+* Virtuoso cell schematic with PD/PG/PU fin counts and equal halves.
+* Handwritten read-path and current-balance work; typed read and write derivations.
+* Two read-SNM DC testbench schematics, raw four-column Cadence exports, derived curves and machine-readable SNM calculations for β=1, 1.5 and 2.
+* Original ViVA butterfly screenshots. Cyan boxes in this site show the maximum-square locations computed from the CSVs.
+* Layout area, DRC/LVS, extracted capacitance, and post-layout stability in <<signoff,Layout, extraction and post-layout results>>.
 
-This site is the running report for that system.
-It records design intent, interfaces, verification strategy,
-layout detail, and measured behaviour in one numbered document.
+=== What is still required
 
-The fastest way to see the working environment: the Cadence hero
-figure at the top of this site.
+The LVS Results Viewer capture is in <<signoff,the layout section>>. A separate DRC Results Viewer capture, the extracted butterfly and write-margin plots, and the functional waveforms are not in the repository. Each author's contribution row is still blank.
 
-=== Scope
-
-The site covers:
-
-* project specification and three-part build order (see <<spec,Specification>>)
-* 6T bitcell design, layout, and post-layout stability (see <<bitcell,Bitcell>>)
-* 16 × 4 SRAM macro tiling and timing (see <<macro,SRAM Macro>>)
-* full MAC datapath, sequencer, and integration (see <<mac-system,MAC System>>)
-* correctness strategy (see <<verification,Verification>>)
-* measured results (see <<results,Results>>)
-* honest limits (see <<limitations,Known Limitations>>)
-
-It does not replace:
-
-* `README.md` — quick start and repository map
-* `ESE5700_Proj1_Part1.tex` — Gradescope-canonical Part 1 report source
-* `docs/ese5700-project1.pdf` — official project handout
-* Virtuoso/Spectre run data — tool logs and waveforms behind individual claims
-
-=== How to read this site
-
-Read chapters in order the first time.
-Chapters 1–2 give context; chapters 3–5 give the working design;
-chapters 6–8 give the evidence that the hardware behaves as claimed.
-
-Each chapter is self-contained enough to be entered directly from the
-sidebar once the overview in <<spec,Specification>> is familiar.
-
-=== Conventions
-
-.Normal cross-reference and link usage
-* Internal references look like this: <<verification,Verification>>.
-* External links look like this: https://github.com/tmarhguy/mac-unit[project repository].
-* Inline code uses monospace, e.g. `proj1_lib`, `sample_inv`, `VDD`, `WL`.
-* File paths are repository-relative, e.g. `media/cadence/inv_layout.png`.
-
-.List conventions
-* Unordered lists state properties or inventories.
-* Ordered lists state procedures where sequence matters:
-
-. Open the library in Virtuoso.
-. Check and save the schematic.
-. Run DRC, then LVS, then PEX.
-
-NOTE: Honest status is a project rule.
-Roadmap items stay labelled roadmap; unverified claims stay out of
-this site. Where a number has not been measured it is written
-`TBD`.
-
-TIP: The sidebar on the left is collapsible.
-Select a chapter title to navigate; select its arrow control to
-expand or collapse its subsections without leaving the page.
+All numbers on this site carry their actual evidence level. A hand estimate and a schematic sweep never stand in for a post-layout measurement.

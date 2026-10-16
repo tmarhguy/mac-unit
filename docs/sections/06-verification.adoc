@@ -23,7 +23,7 @@ stem:[BL = BLB = V_{DD}]) → SNM via maximum-square method.
 * Write margin: store stem:[Q = 1], sweep BLB, record
 stem:[V_{\mathrm{trip}}].
 * Cell current: 0-side bitline, stem:[WL = V_{DD}].
-* Supply sweep: 1.2 V, 0.9 V, 0.6 V for SNM_read and WM_BL.
+* Supply sweep: 0.8 V, 0.7 V, 0.5 V for SNM_read and WM_BL.
 * Functional transient: ideal WL + precharge, 15-load bitlines,
 write-0/read, write-1/read on WL, BL, BLB, stem:[Q],
 stem:[\overline{Q}].
@@ -41,7 +41,7 @@ stem:[\overline{Q}].
 | `PEX(post-layout) == simulated`
 | Extracted Spectre netlists, not schematic
 
-| `SNM_read > 0` at 1.2 V and 0.9 V
+| `SNM_read > 0` at 0.8 V and 0.7 V
 | Butterfly benches (§4a–4b)
 
 | `WM_BL` recorded with trip voltage
@@ -60,6 +60,13 @@ stem:[\overline{Q}].
 . Check-and-save each schematic; run DRC then LVS then PEX.
 . Launch ADE with the documented bench states and compare against
 the tables in <<bitcell,Bitcell>> and <<results,Results>>.
+. Recompute read SNM without Cadence:
++
+[source,bash]
+----
+python3 scripts/check_snm_sweep.py --all
+# per-beta: results/part1/read-snm/beta*/raw.csv -> q.csv, qb.csv, snm.json, butterfly.png/.svg
+----
 
 Tool logs and export settings behind each figure are recorded with
-the figure in `media/` so a teammate can reproduce it.
+the figure in `media/` so a teammate can reproduce it. Raw 4-col exports live in `results/part1/read-snm/beta*/raw.csv`; clean plots in `media/part1/butterfly-read-beta*.png`.

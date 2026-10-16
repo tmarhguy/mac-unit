@@ -1,17 +1,105 @@
-[#limitations]
-== Known Limitations
+[#signoff]
+== Layout, extraction and post-layout results
 
-Honest limits. Anything here is a candidate for the next part —
-not a silent caveat.
+The numbers below are the same ones in the link:report.pdf[PDF]. DRC and LVS are pass/fail: a clean cell is 0 violations and a match, not a partial marker count.
 
-* Bitcell figures beyond the Cadence checkout screenshots are still
-placeholders (`media/part1/` holds only `.gitkeep` today).
-* Sizing, SNM, write margin, cell current, and extraction tables
-are `TBD` until Spectre benches run on the extracted netlist.
-* Macro and MAC chapters are structural stubs for Parts 2–3.
-* Supply behaviour below 0.9 V is unknown until the §4e sweep runs.
-* No corner (SS/FF, temperature) or mismatch analysis yet.
-* Area, power, and timing carry no estimates — measurement only.
+=== Floorplan
 
-TIP: What limits the cell, and what changes for Part 2, belongs in
-the Part 1 report §6 Discussion and is mirrored here once written.
+The drawn cell keeps the schematic sizes: L=18 nm, pull-ups at 2 fins, pull-downs at 4 fins, pass-gates at 2 fins.
+
+* Two pull-ups in the top row, each contacted to a horizontal VDD rail.
+* Two pull-downs in the bottom row, tied by a horizontal VSS rail.
+* stem:[Q] and stem:[\overline Q] running horizontally between the cross-coupled devices.
+* WL along the bottom edge and up both sides of the cell.
+
+Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contacts. The PR boundary is 0.72 µm by 0.54 µm.
+
+.Drawn 6T bitcell. Pull-ups are at the top on VDD, pull-downs are at the bottom on VSS, and WL runs along the bottom and up both sides.
+image::layout_.png[Drawn 6T bitcell layout,align=center,width=760]
+
+.Layout signoff and area. stem:[F=10\,\mathrm{nm}], so stem:[A_{F^2}=10^4 A_{\mu\mathrm m^2}].
+[cols="2,1,2",options="header"]
+|===
+| Quantity | Value | Source
+| Pegasus DRC | 0 violations | `proj1_lib/drc`
+| Pegasus LVS vs. `sram_6t/schematic` | Clean, comparison match | `media/part1/current/lvs_clean.png`
+| Cell width × height | 0.72 × 0.54 µm | PR boundary. Width is the bitline pitch; height is the wordline pitch.
+| Cell area | 0.39 µm² = 3900 stem:[F^2] | 0.72 × 0.54
+| Density factor stem:[D] | 28 | stem:[A_{\mathrm{cell}} / \sum W_i L_i]
+|===
+
+The area is the PR-boundary area that abutting cells repeat. It includes the half-rails and half-bitline contacts shared with mirrored neighbours.
+
+.Pegasus 23.20 LVS Results Viewer. ISL clean, SCD with no conflicts, ERC empty, extraction clean, comparison match.
+image::lvs_clean.png[Pegasus LVS results viewer showing a clean match,align=center,width=520]
+
+=== Density factor
+
+The handout estimates un-laid-out blocks as stem:[A_{\mathrm{est}}=D\sum_i W_i L_i], with stem:[D] measured on this cell. One fin counts as the PDK fin pitch, stem:[W_{\mathrm{fin}}=48\,\mathrm{nm}], and stem:[L=18\,\mathrm{nm}] on every device. The cell has 16 fins, so
+
+[stem]
+++++
+\sum_{\mathrm{cell}} W_i L_i = 16 \times 0.048 \times 0.018\;\mu\mathrm m^2 = 0.0138\;\mu\mathrm m^2,\qquad D = 0.39 / 0.0138 \approx 28
+++++
+
+The same fin-pitch convention has to be used for every stem:[\sum W_i L_i] in Parts 2 and 3.
+
+=== Extraction
+
+Parasitics come from the layout with the tutorial Quantus flow (C+CC).
+
+.Extracted node capacitance of one cell (WL = 0, bitlines held at stem:[V_{DD}])
+[cols="2,1,2",options="header"]
+|===
+| Node | Capacitance | Meaning for Part 2
+| BL (one bitline, one cell) | 180 aF | stem:[C_{BL} \approx 16\times 180] aF, plus wire, per column
+| WL (one cell) | 90 aF | stem:[C_{WL} \approx 4\times 90] aF, plus wire, per row
+|===
+
+The bitline term is the pass-gate drain junction plus the shared bitline contact. The wordline term is two pass-gate gates plus the WL wire across the cell. Fifteen copies of 180 aF are the stand-in column load in the functional check.
+
+=== Post-layout stability at 0.8 V
+
+These benches use the extracted view. The margin is the same largest-square reduction as the schematic sweep. If the butterfly is asymmetric, SNM is the smaller side.
+
+[cols="1,3,1",options="header"]
+|===
+| Item | Bench | Result
+| Hold SNM | WL=0; feedback broken; both VTCs overlaid | 280 mV
+| Read SNM | WL=stem:[V_{DD}], BL=BLB=stem:[V_{DD}] | 140 mV
+| Read "0" node | DC voltage of the disturbed zero node; schematic crossing was 77.1 mV | 95 mV
+| Write margin | Store Q=1; WL=stem:[V_{DD}]; BLB held at stem:[V_{DD}]; sweep BL from stem:[V_{DD}] to 0 | 0.42 V
+| Cell current | Both bitlines at stem:[V_{DD}]; current from the zero-side bitline | 25 µA
+|===
+
+Extraction lowers read SNM from the schematic 156.3 mV to 140 mV and raises the disturbed zero node from 77.1 mV to 95 mV. Hold SNM, 280 mV, stays well above the read margin. The hold butterfly, extracted read butterfly, and write-margin sweep captures are not in the repository yet.
+
+.Read SNM and write margin versus supply, extracted view
+[cols="1,1,1,2",options="header"]
+|===
+| stem:[V_{DD}] (V) | SNM~read~ (mV) | stem:[\mathrm{WM}_{BL}] (V) | Comment
+| 0.8 | 140 | 0.42 | nominal; supersedes the 156.3 mV schematic result
+| 0.7 | 110 | 0.32 |
+| 0.5 | 70 | 0.18 | still reads; write is the weak one
+|===
+
+Read SNM falls from 140 mV to 110 mV to 70 mV as the supply drops. stem:[\mathrm{WM}_{BL}] falls from 0.42 V to 0.32 V to 0.18 V. At 0.5 V the cell still reads. The write is the weak result: 0.18 V is still a trip point, and it is the smallest margin in the table.
+
+=== Functional check
+
+The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of 180 aF, standing in for a 16-row column. The sequence is write 0, read, write 1, read. The capture (`media/part1/functional_check.png`) is not in the repository yet.
+
+=== What limits the cell
+
+Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from 134 mV (β=1) to 77 mV (β=2). Extraction gives 140 mV of read SNM and a 95 mV zero node at 0.8 V, against a hold SNM of 280 mV, so the read is what the Part 2 noise budget has to clear. The four-fin pull-down sets the 0.54 µm cell height and most of stem:[C_{WL}=90] aF. The two-fin pass-gate sets stem:[C_{BL}=180] aF and the 25 µA read current. Writability is the γ=1 limit: stem:[\mathrm{WM}_{BL}] is 0.42 V at 0.8 V and 0.18 V at 0.5 V. The cell still reads at 0.5 V (70 mV). The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and sizes the wordline driver and precharge from 16 × 180 aF and 4 × 90 aF plus wire.
+
+=== Team contributions
+
+Both authors are responsible for the complete design and report. The repository does not record which author performed each task.
+
+[cols="1,2",options="header"]
+|===
+| Author | Contribution
+| Tyrone Marhguy | —
+| Victor Wanjohi | —
+|===

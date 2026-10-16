@@ -1,37 +1,67 @@
-[#results]
-== Results
+[#read-snm]
+== Read-SNM experiment and evidence
 
-NOTE: Only Part 1 has analysis so far — and no bench has run yet, so
-every entry below is TBD. Parts 2–3 have no hardware; their sections
-are structural stubs. Nothing on this page is measured or estimated.
+=== Actual testbenches
 
-Measured numbers only. Every entry here must trace to a bench or
-tool log named in <<verification,Verification>>. Unmeasured stays
-`TBD` — never silently estimated.
+For each β, the read bench holds WL, BL and BLB at VDD=0.8 V. One DC bench sweeps Q and records QB; the other sweeps QB and records Q with feedback broken. The two original Virtuoso testbench captures below document the biasing and signals used.
 
-=== Part 1 — bitcell (post-layout, 1.2 V)
+.Q-sweep read-SNM bench
+image::read_snm_q_tb_sch.png[Original Virtuoso Q sweep testbench with read biases,align=center,width=700]
 
-.Bitcell summary
-[cols="1,1",options="header"]
+.QB-sweep read-SNM bench
+image::read_snm_qb_tb_sch.png[Original Virtuoso QB sweep testbench with read biases,align=center,width=700]
+
+The four-column ViVA `raw.csv` for each β is split into `q.csv` and `qb.csv`; one curve is reflected about stem:[y=x]. `scripts/check_snm_sweep.py` finds the three intersections and fits the largest voltage square in each butterfly lobe. The smaller lobe side is stem:[SNM_{read}]. Its final 16,001-point computation differs from a 4,001-point check by at most 0.05 mV.
+
+[cols="1,1,1,1,1",options="header"]
 |===
-| Metric | Measured
-
-| stem:[\beta] / stem:[\gamma] | TBD
-| Area | TBD μm² (TBD stem:[F^2])
-| stem:[C_{\mathrm{BL}}] / stem:[C_{\mathrm{WL}}] (per cell) | TBD / TBD
-| stem:[\mathrm{SNM_{hold}}] | TBD
-| stem:[\mathrm{SNM_{read}}] | TBD
-| stem:[\mathrm{WM_{BL}}] | TBD
-| stem:[I_{\mathrm{cell}}] | TBD
-| DRC / LVS | TBD / TBD
+| β | PD fins | SNM left/right | Read SNM | Low crossing
+| 1.0 | 2 | 126.6 / 126.6 mV | 126.6 mV | 134.3 mV
+| 1.5 | 3 | 145.8 / 145.8 mV | 145.8 mV | 96.6 mV
+| *2.0* | *4* | *156.3 / 156.3 mV* | *156.3 mV* | *77.1 mV*
 |===
 
-Supply behaviour (0.6 V readability/writability): TBD.
+At the handout's two-significant-figure precision, read SNM is 0.13, 0.15 and 0.16 V; the disturbed zero-node crossings are 0.13, 0.097 and 0.077 V. The table retains extra digits to trace the calculations.
 
-=== Part 2 — macro (roadmap)
+The low-voltage crossing is the reported DC zero-node read-disturb operating point. The β=2 schematic improves read SNM by 29.7 mV (23%) over β=1 at 0.8 V, while lowering that crossing by 57.2 mV.
 
-Access time, write margin at macro level, power, area: TBD.
+=== Original ViVA butterflies with measured-square overlays
 
-=== Part 3 — MAC (roadmap)
+These are the *original Cadence screenshots*. Cyan outlines are drawn by this report/site at the square positions stored in each `snm.json`. The ViVA x and y axes have unequal pixel scales, so a square in volts appears rectangular on the screenshot. The outlines are computed annotations, not an indication that Cadence directly reported SNM. All three captures preserve the original trace colors and axes.
 
-Functional vectors, cycle count, f_max estimate, power, area: TBD.
+On a phone, swipe the captures sideways to inspect the full axes and overlays.
+
+.β=1: original ViVA butterfly, SNM 126.6 mV
+++++
+<figure class="cadence-figure"><div class="cadence-capture">
+<img src="images/read_snm_beta1.png" alt="Original Cadence read butterfly at beta one, with two computed square outlines">
+<svg viewBox="0 0 1718 792" role="img" aria-labelledby="b1-title b1-desc"><title id="b1-title">Computed squares for beta one</title><desc id="b1-desc">Cyan outlines mark the two largest fitted voltage squares from the recorded DC curves.</desc><rect x="761.8" y="199.9" width="190.2" height="79.3"/><rect x="1364.8" y="451.4" width="190.2" height="79.3"/></svg>
+</div><figcaption>Original ViVA capture. Overlay coordinates: <code>beta1/snm.json</code>; smaller fitted side 126.6 mV.</figcaption></figure>
+++++
+
+.β=1.5: original ViVA butterfly, SNM 145.8 mV
+++++
+<figure class="cadence-figure"><div class="cadence-capture">
+<img src="images/read_snm_beta1p5.png" alt="Original Cadence read butterfly at beta one point five, with two computed square outlines">
+<svg viewBox="0 0 1722 796" role="img" aria-labelledby="b15-title b15-desc"><title id="b15-title">Computed squares for beta one point five</title><desc id="b15-desc">Cyan outlines mark the two largest fitted voltage squares from the recorded DC curves.</desc><rect x="698.4" y="202.5" width="218.7" height="91.5"/><rect x="1328.8" y="467.4" width="218.6" height="91.5"/></svg>
+</div><figcaption>Original ViVA capture. Overlay coordinates: <code>beta1p5/snm.json</code>; smaller fitted side 145.8 mV.</figcaption></figure>
+++++
+
+.β=2: original ViVA butterfly, SNM 156.3 mV
+++++
+<figure class="cadence-figure"><div class="cadence-capture">
+<img src="images/read_snm_beta2.png" alt="Original Cadence read butterfly at beta two, with two computed square outlines">
+<svg viewBox="0 0 1720 792" role="img" aria-labelledby="b2-title b2-desc"><title id="b2-title">Computed squares for beta two</title><desc id="b2-desc">Cyan outlines mark the two largest fitted voltage squares from the recorded DC curves.</desc><rect x="660.8" y="204.5" width="234.5" height="98.1"/><rect x="1301.5" y="474.4" width="234.5" height="98.1"/></svg>
+</div><figcaption>Original ViVA capture for the selected schematic candidate. Overlay coordinates: <code>beta2/snm.json</code>; smaller fitted side 156.3 mV.</figcaption></figure>
+++++
+
+=== Data trail
+
+`results/part1/read-snm/beta*/raw.csv` is the verbatim ViVA export. The normalized `q.csv` and `qb.csv`, computed `snm.json` and clean butterfly PNG/SVG are reproducible derivatives. Run:
+
+[source,bash]
+----
+python3 scripts/check_snm_sweep.py --all
+----
+
+The clean plots are secondary reading aids; the screenshots above are the original Cadence view. This sweep is schematic. The extracted read SNM that supersedes 156.3 mV is 140 mV, in <<signoff,post-layout stability>>.

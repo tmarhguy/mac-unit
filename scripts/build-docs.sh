@@ -25,7 +25,17 @@ if [ ! -f "$SRC" ]; then
   exit 1
 fi
 
+# Rebuild from a clean output directory so removed pages and assets cannot ship.
+rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR/theme" "$OUT_DIR/images"
+python3 "$REPO_ROOT/scripts/ingest-logs.py"
+if [ -d "$REPO_ROOT/docs/diagrams" ]; then
+  python3 "$REPO_ROOT/scripts/render-docs-diagrams.py"
+fi
+if [ -d "$REPO_ROOT/docs/charts" ]; then
+  python3 "$REPO_ROOT/scripts/render-docs-charts.py"
+fi
+python3 "$REPO_ROOT/scripts/prepare-docs.py" head
 
 # Version stamp, RISC-V-spec style ("Version <sha>, <date>" under the
 # title). Derived from git at build time; falls back to the build date
@@ -35,15 +45,33 @@ REVNUM="$(git -C "$REPO_ROOT" rev-parse --short HEAD 2>/dev/null || echo unversi
 
 # Single-page manual. docinfo=shared + docinfodir pulls docs/theme/docinfo.html
 # (CSS/JS injection) without editing generated HTML afterwards.
-asciidoctor \
-  --backend html5 \
-  --safe-mode safe \
-  --attribute docinfo=shared \
-  --attribute docinfodir="$REPO_ROOT/docs/theme" \
-  --attribute revdate="$REVDATE" \
-  --attribute revnumber="$REVNUM" \
-  --out-file "$OUT_FILE" \
-  "$SRC"
+HAS_LOGS=0
+if [ -f "$REPO_ROOT/docs/sections/generated/engineering-log.adoc" ]; then
+  HAS_LOGS=1
+fi
+
+if [ "$HAS_LOGS" -eq 1 ]; then
+  asciidoctor \
+    --backend html5 \
+    --safe-mode unsafe \
+    --attribute docinfo=shared \
+    --attribute docinfodir="$OUT_DIR/theme" \
+    --attribute revdate="$REVDATE" \
+    --attribute revnumber="$REVNUM" \
+    --attribute has-logs \
+    --out-file "$OUT_FILE" \
+    "$SRC"
+else
+  asciidoctor \
+    --backend html5 \
+    --safe-mode unsafe \
+    --attribute docinfo=shared \
+    --attribute docinfodir="$OUT_DIR/theme" \
+    --attribute revdate="$REVDATE" \
+    --attribute revnumber="$REVNUM" \
+    --out-file "$OUT_FILE" \
+    "$SRC"
+fi
 
 # Theme assets live next to the HTML so relative paths in docinfo.html resolve.
 cp "$REPO_ROOT/docs/theme/docs.css" "$OUT_DIR/theme/docs.css"
@@ -68,11 +96,18 @@ fi
 if [ -d "$REPO_ROOT/media/part1" ]; then
   cp "$REPO_ROOT/media/part1/"*.png "$OUT_DIR/images/" 2>/dev/null || true
 fi
+if [ -d "$REPO_ROOT/media/part1/current" ]; then
+  cp "$REPO_ROOT/media/part1/current/"*.png "$OUT_DIR/images/" 2>/dev/null || true
+fi
 
-# Handout PDF lives in docs/; stage it next to the manual so the
-# link:ese5700-project1.pdf[] reference resolves in the built site.
+python3 "$REPO_ROOT/scripts/prepare-docs.py" page
+python3 "$REPO_ROOT/scripts/prepare-docs.py" not-found
 if [ -f "$REPO_ROOT/docs/ese5700-project1.pdf" ]; then
   cp "$REPO_ROOT/docs/ese5700-project1.pdf" "$OUT_DIR/ese5700-project1.pdf"
 fi
+if [ -f "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" ]; then
+  cp "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" "$OUT_DIR/report.pdf"
+fi
+python3 "$REPO_ROOT/scripts/export-docs-template.py"
 
 echo "Built $OUT_FILE"
