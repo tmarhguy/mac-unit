@@ -1,0 +1,13 @@
+point,pw_w1,CBL,t_wr0,t_wr1,bl_low,q_wr0,q_wr1,q_min_wr0,q_wr0_spec,q_wr1_spec,q_wr0_result,q_wr1_result
+1,40p,3.5f,eval err,eval err,-2.272m,799.7m,799.8m,621.7m,< 0.08,> 0.72,fail,pass
+2,40p,4.2f,eval err,eval err,32.03m,799.8m,799.7m,661.9m,< 0.08,> 0.72,fail,pass
+3,60p,3.5f,eval err,eval err,-22.68m,799.8m,799.8m,461.6m,< 0.08,> 0.72,fail,pass
+4,60p,4.2f,eval err,eval err,-6.679m,799.7m,799.8m,510.2m,< 0.08,> 0.72,fail,pass
+5,80p,3.5f,eval err,eval err,-28.02m,799.8m,799.7m,267.2m,< 0.08,> 0.72,fail,pass
+6,80p,4.2f,eval err,eval err,-15.14m,799.7m,799.7m,336.3m,< 0.08,> 0.72,fail,pass
+7,100p,3.5f,96.22p,96.29p,-49.52m,33.65u,799.8m,-18.94u,< 0.08,> 0.72,pass,pass
+8,100p,4.2f,102p,102.1p,-29.79m,31.16u,799.8m,-8.149u,< 0.08,> 0.72,pass,pass
+9,120p,3.5f,96.22p,96.32p,-68.55m,34.14u,799.8m,-4.8m,< 0.08,> 0.72,pass,pass
+10,120p,4.2f,102p,102.1p,-56.15m,30.24u,799.8m,-1.885m,< 0.08,> 0.72,pass,pass
+11,150p,3.5f,96.24p,96.3p,-75.15m,33.7u,799.8m,-14.13m,< 0.08,> 0.72,pass,pass
+12,150p,4.2f,102p,102.1p,-67.81m,30.78u,,,< 0.08,> 0.72,pass,pass
