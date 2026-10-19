@@ -31,6 +31,25 @@ Unrounded values from the run: `t_en_r` 87.27 ps, `t_en_f` 74.47 ps, `hold1` 799
 
 DOUT is written only while EN is high and holds its value while RD toggles with EN low. Before the first EN pulse DOUT sits near 450 mV, the unwritten start-up state.
 
+## EN pulse-width sweep
+
+`pw_en` swept over 10p, 20p, 40p, 80p and 150p with `cdout` = 1 fF and the same windows as above. Data: `out_latch_pw_en_sweep.csv`.
+
+| pw_en | t_en_r | t_en_f | hold1 | hold0 | Result |
+|---|---|---|---|---|---|
+| 10p | eval err | eval err | -58 uV (fail) | 77 uV | Fail: latch never captures the 1 |
+| 20p | 99.5 ps | 76.0 ps | 799.8 mV | 88 uV | Pass |
+| 40p | 88.7 ps | 74.8 ps | 799.8 mV | 89 uV | Pass |
+| 80p | 87.2 ps | 74.5 ps | 799.8 mV | 125 uV | Pass |
+| 150p | 87.3 ps | 74.5 ps | 799.2 mV | 1.25 mV | Pass |
+
+- Minimum working EN pulse is between 10p and 20p. At 10p DOUT never rises (`hold1` is about 0 V, both delays fail to evaluate).
+- At 20p the latch captures correctly but `t_en_r` is slower (about 100 ps, against 87 ps once the pulse is 80p or wider). Delays are settled from 40p up.
+- `hold0` grows with the pulse width, from 77 uV at 10p to 1.25 mV at 150p, but stays far below the 80 mV spec. `hold1` is unaffected once the write succeeds.
+- `pw_en` = 150p (the design pulse) has about 130 ps of margin over the 20p minimum.
+
+Plots: `out_latch_pw_en_sweep_hold.png`, `out_latch_pw_en_sweep_delays.png`, `out_latch_pw_en_sweep_tran.png`, `out_latch_pw_en_sweep_combined.png`. Sweep setup: `out_latch_ade_setup_pw_en_sweep.png`.
+
 ## Related files
 
 - Schematic: `media/out_latch/out_latch_schematic.png`
