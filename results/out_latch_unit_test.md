@@ -35,10 +35,12 @@ DOUT is written only while EN is high and holds its value while RD toggles with 
 
 - Schematic: `media/out_latch/out_latch_schematic.png`
 - Testbench: `media/out_latch/tb_out_latch_schematic.png`
-- ADE setup (earlier run): `media/out_latch/out_latch_ade_setup.png`
+- ADE outputs for this run (current windows): `media/out_latch/out_latch_ade_outputs_en300p.png`
+- ADE setup (earlier run, old windows): `media/out_latch/out_latch_ade_setup.png`
 - EN source properties: `media/out_latch/out_latch_en_source_props.png`
 
 ## Notes for the report
 
 - All devices are minimum size (l = 18n, nfin = 2). The load is a stand-in 1 fF; rerun with the extracted load for Part 2.
-- The ADE setup screenshot is from before the EN delay changed to 300 ps. Its `hold1` and `hold0` windows (1.1-1.79 ns and 2.1-2.79 ns) cannot produce the values above with EN pulsing at 1.3 ns, so confirm the current windows before citing them.
+- Measurement windows for this run (from the ADE outputs): `t_en_r` over 1.2-2.0 ns, `t_en_f` over 2.2-3.0 ns, `hold1` = ymin of DOUT over 1.5-2.29 ns, `hold0` = ymax of DOUT over 2.5-3.29 ns. Delays are measured at the 0.4 V crossing of DOUT against the EN crossing.
+- The earlier ADE setup screenshot (`out_latch_ade_setup.png`) is from before the EN delay changed to 300 ps and uses different windows (hold1 1.1-1.79 ns, hold0 2.1-2.79 ns). Do not cite it for these results.
