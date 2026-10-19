@@ -25,7 +25,7 @@ Conditions: VDD = 0.8 V, tt, 27 °C. C_BL = 3.5 fF is a stand-in load; rerun wit
 | 120p | ~140 ps | Pass, 96 ps | Pass, 102 ps |
 | 150p | ~170 ps | Pass, 96 ps | Pass, 102 ps |
 
-Source: `write_driver_sweep.csv`.
+Source: `write_driver_sweep.csv` (12-point sweep, run at nfin = 8).
 
 ## Conclusions
 
@@ -45,4 +45,4 @@ Source: `write_driver_sweep.csv`.
 ## Files
 
 - `media/write_driver/`: schematics (nfin 5, 6, 8), transients (nfin 2, 4, 5, 6, 8), results tables, sweep table.
-- `results/write_driver_sweep.csv`: 12-point pw_w1 x C_BL sweep.
+- `results/write_driver_sweep.csv`: 12-point pw_w1 x C_BL sweep at nfin = 8.
