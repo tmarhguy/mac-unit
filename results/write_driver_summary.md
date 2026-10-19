@@ -1,4 +1,4 @@
-# Write driver: summary record (vwanjohi)
+# Write driver and read path: summary record (vwanjohi)
 
 Conditions: VDD = 0.8 V, tt, 27 °C. C_BL = 3.5 fF is a stand-in load; rerun with extracted C_BL for Part 2.
 
@@ -46,3 +46,18 @@ Source: `write_driver_sweep.csv` (12-point sweep, run at nfin = 8).
 
 - `media/write_driver/`: schematics (nfin 5, 6, 8), transients (nfin 2, 4, 5, 6, 8), results tables, sweep table.
 - `results/write_driver_sweep.csv`: 12-point pw_w1 x C_BL sweep at nfin = 8.
+
+## Read path (inverter on BLB, output RD)
+
+Conditions: VDD = 0.8 V, tt, 27 C. VM is the input voltage where RD = BLB (DC sweep, 0 to 0.8 V).
+
+| PM0 : NM0 fins | Switching point (VM) | BLB drop needed to flip RD | Est. read time (3.5 fF, 25 uA) |
+|---|---|---|---|
+| 2 : 2 | 0.376 V | 0.42 V | ~59 ps |
+| 4 : 2 | 0.415 V | 0.39 V | ~54 ps |
+
+Read time is estimated as C_BL x (VDD - VM) / I_read = 3.5 fF x drop / 25 uA. It is a hand estimate, not a simulated read.
+
+PMOS strength: three measured switching points show a PMOS fin drives roughly half the current of an NMOS fin in this PDK. VM is 0.376 V at 2:2 (below VDD/2, so the NMOS wins), 0.415 V at 4:2 (close to VDD/2), and the cell's own inverter at 2:4 gives 0.335 V (the 2:4 figure is from the cell, not from this testbench). Doubling the PMOS to 4:2 therefore balances the inverter instead of skewing it. The small remaining offset (+15 mV from 0.4 V) means the PMOS is slightly stronger than a perfect match.
+
+Files: `media/read_path/`: symbol, schematic (4:2), VTC and ADE outputs for 4:2 (`vm` = 415.1 mV), and the same three for 2:2 (`*_2to2.png`, `vm` = 376.3 mV).
