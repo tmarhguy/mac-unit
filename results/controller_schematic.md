@@ -10,7 +10,7 @@ Blocks, read from the schematic (no simulation yet):
 | A<3:0>, D<3:0>, WE_L | `out_latch` cells LA, LD, LWE with EN = CLKB and RD = ADDR, DIN, WE. Transparent while CLK is low, holding while CLK is high |
 | AB<3:0> | `inv_u` on A<3:0> |
 | WE_LB | `inv_u` (I3) on WE_L |
-| PRE_B | `inv_2x` (I4) on CLK, so PRE_B is the inverted clock |
+| PRE_B | `inv_2x` (I4) on CLKB (updated version): CLKB is the inverted clock, so PRE_B follows CLK. Earlier version drove I4 from CLK directly, giving an inverted clock (`controller_schematic_v1_prebinverted.png`) |
 | CLKD_B | CLKBUF through DLY1, a chain of 7 `inv_u` (inverting) |
 | WL_EN | `nand2_u` (I6) of CLKBUF and CLKD_B, then `inv_2x` (I7). A one-shot: a pulse on each rising edge, width set by the DLY1 delay |
 | WR_EN | `nand2_u` (I8) of WL_EN and WE_L, then `inv_2x` (I9): write cycles only |
@@ -21,5 +21,6 @@ Matches the read-column result: RD_EN rises one chain delay after WL_EN and fall
 
 Open items:
 - Simulate: WL_EN width (target about 140 ps at 50%), RD_EN lead over WL, WR_EN width, and the margin on each edge.
-- Check PRE_B polarity. PRE_B is the inverted CLK, so if the precharge devices conduct while PRE_B is low, precharge is on while CLK is high, the same time the WL_EN pulse fires after the rising edge. The handout (2.2c) needs the wordline to rise after precharge releases. If the precharge is active-low, PRE_B probably needs to follow CLK (low while CLK is low, rising with it).
+- PRE_B polarity: the updated schematic makes PRE_B follow CLK (low while CLK is low, rising with it), which fixes the overlap flagged in the first version if precharge is active-low. Still confirm against the `precharge` cell's polarity and that PRE_B rises before WL_EN fires, with margin.
+- Updated captures: `controller_schematic.png` (full), `controller_schematic_zoom_left.png`, `controller_schematic_zoom_right.png`; the full view also shows an extra `A<3:0>` and a vertical `PRE_B` label near the top-left pins.
 - Margin recovery if C_BL is 20% larger (longer DLY chains or a replica).
