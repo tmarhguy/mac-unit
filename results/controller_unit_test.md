@@ -25,6 +25,8 @@ Checks against targets:
 - WL_EN width 133.5 ps at 0.4 V crossings vs the write minimum of 100 to 120 ps at 50%: passes with about 13 ps over the upper end. The design value was 140 ps. WL<0> width itself is not measured.
 - RD_EN-to-PRE_B margin is only 30 ps (m_rd_pre). That is the thinnest edge. At +20% C_BL the read delays grow, so this margin needs recovery (shorter RD_EN, earlier clock phase, or a longer clock half period).
 
+Second run (plot timestamp 06:05:50, earlier run 05:59:26), `media/controller/tb_controller_tran_run2_0605.png`: same WE sequence and enables, but every wordline-side pulse is earlier. Read off the plot, WL_EN rises at about 0.70 ns (against about 0.78 ns before) and RD_EN at about 1.9 ns (against about 1.95 ns). No scalar values were captured for this run, and what changed between the runs (delay chain, load, or a schematic edit) is not recorded, so the table above still describes the first run only.
+
 Open items:
 - Confirm PRE_B active-low polarity against the `precharge` cell. The margins above assume PRE_B low means precharge on.
 - Margin analysis at +20% C_BL (rerun with cwl and bitline loads scaled).
