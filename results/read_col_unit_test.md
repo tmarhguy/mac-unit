@@ -50,6 +50,18 @@ Single-run check at the chosen point (`rd_dly` = 1.48n, `pw_rden` = 120p), from 
 
 Caption: WL, BLB, RD, RD_EN, DOUT, Q and QB over 6 ns at `rd_dly` = 1.48n, `pw_rden` = 120p. Reads at about 1.5, 3.5 and 5.5 ns; RD_EN opens about 80 ps after each WL rise. DOUT follows the stored data each read (1, 0, 1), including the third read, which fails at `pw_rden` = 40p. Q and QB are undisturbed by the reads.
 
+Cleaner version for the report (best): `../media/read_col/read_col_tran_1p48n_120p_1to6ns_BEST.png`. Same run, plotted from 1.0 to 6.0 ns so the start-up state before the first read is not shown. Cropped to the plot area.
+
+![read_col transient, 1 to 6 ns](../media/read_col/read_col_tran_1p48n_120p_1to6ns_BEST.png)
+
+### Zoom on the third read (5.3-5.8 ns)
+
+Stacked, one trace per panel (best for the report): `../media/read_col/read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png`. Overlay of all signals on one axis, for reference: `../media/read_col/read_col_tran_1p48n_120p_zoom_read3_overlay.png`.
+
+![read_col third read, zoom](../media/read_col/read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png)
+
+From the zoom: WL starts rising at about 5.40 ns, BLB falls through the read inverter's trip point within about 80 ps, RD_EN starts rising at about 5.48 ns (about 80 ps after WL) and closes at about 5.64 ns, and DOUT is high by about 5.67 ns. RD dips briefly when RD_EN opens (the latch loading RD), then recovers while the latch finishes the transition. Q stays at 0.8 V and QB near 0 throughout. Times are read off the plot.
+
 ## Does the read limit the wordline?
 
 No. The bitline needs only about 83 ps of wordline time, so a read pulse of about 110 ps at 50% leaves margin. Scaling `t_blb` by +20% C_BL gives roughly 100 ps, which still fits (an estimate, not a simulation). The write's 140 ps pulse still sets WL_EN, so the nfin 6 vs 8 driver decision rests on write speed and T_CLK alone.
@@ -69,7 +81,7 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 ## Related files
 
 - Data: `results/read_col_sweep.csv`, `results/read_col_dout_c6_sweep.csv` (subset)
-- Waveform at the chosen point: `media/read_col/read_col_tran_1p48n_120p.png`
+- Waveforms at the chosen point: `read_col_tran_1p48n_120p_1to6ns_BEST.png`, `read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png`, `read_col_tran_1p48n_120p_zoom_read3_overlay.png`, `read_col_tran_1p48n_120p.png` (full 0-6 ns with scalar-free view)
 - Results at the chosen point: `media/read_col/read_col_ade_results_1p48n_120p.png`
 - Setup: `media/read_col/read_col_ade_setup_dout_g2.png` (current), `read_col_ade_setup_pw_rden.png`, `read_col_ade_setup.png`
 - Schematics and waveforms: `media/read_path/`, `media/read_col/`
