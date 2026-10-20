@@ -22,9 +22,17 @@ Headline at address 0: WL_EN to WL is about 97 ps rising and 101 ps falling (two
 
 Source: `media/decoder_predec/tb_dec_pre_ade_results_addr0.png`.
 
+## Waveform at address 0
+
+![decoder_predec transient at address 0: WL_EN and all 16 wordlines](../media/decoder_predec/tb_dec_pre_tran_addr0.png)
+
+Caption: WL_EN and WL<15:0> for address 0 (nominal, `cwl` = 0.5 fF). Only WL<0> rises (about 300 ps, 97 ps after WL_EN crosses 0.4 V) and falls (about 620 ps after WL_EN falls at 520 ps). The other 15 rows stay at 0 V with only small coupling glitches: tens to about 150 uV on twelve rows and about 2 mV on WL<4>, WL<8> and WL<12>. Those three share PA<0> with WL<0> (rows 4m + 0), which is the expected place for a glitch. Scalar outputs on the plot: `t_en_r` 97.42 ps, `t_en_f` 101.02 ps, `wl_one` and `wl_hi` 823.96 mV. Times are read off the plot except the scalar outputs. The y-axis range shown for WL<0> is auto-scaled and larger than the 824 mV peak.
+
+This confirms the right row fires at address 0. The other 15 addresses are not yet checked.
+
 ## Open items
 
 - Only address 0 has been run. Sweep `a0` to `a3` over {0, 0.8} for all 16 addresses and record the worst-case `t_en_r` and `t_en_f` (the path through `nand3_u` differs by address, so delays will differ).
-- The sum-of-wordlines measurement cannot show which row went high. Confirm from the WL<k> waveforms that WL<address> is the one that fires at each address.
+- The sum-of-wordlines measurement cannot show which row went high. Address 0 is confirmed from the waveform (WL<0> only); confirm WL<address> is the one that fires at the other 15 addresses.
 - `cwl` = 0.5 fF is a stand-in; rerun with the extracted wordline load.
 - Delay is to the 0.4 V crossing of the wordline, not to the cell. The cell sees WL rise through `inv_drv`; use the WL waveform at the cell for read and write timing.
