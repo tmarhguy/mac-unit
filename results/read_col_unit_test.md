@@ -42,6 +42,8 @@ Every check passes except `dout_c6` at `pw_rden` = 40p, and that failure is the 
 
 `t_rd` is 113 ps for `rd_dly` 1.52n and later. At 1.48n it measures 140 ps because the latch is already loading RD.
 
+Single-run check at the chosen point (`rd_dly` = 1.48n, `pw_rden` = 120p), from `media/read_col/read_col_ade_results_1p48n_120p.png`: `t_acc1` 225.6 ps, `t_acc0` 165.1 ps, `t_rd` 140 ps, `t_blb` 83.16 ps, `dout_c2` 799.9 mV, `dout_c4` 9.126 uV, `dout_c6` 799.9 mV, `q_rd1` 799.7 mV, `q_rd0` 38.75 uV, `dout_g2` 796.9 mV. All specs pass and the values match point 3 of `read_col_sweep.csv`.
+
 ## Does the read limit the wordline?
 
 No. The bitline needs only about 83 ps of wordline time, so a read pulse of about 110 ps at 50% leaves margin. Scaling `t_blb` by +20% C_BL gives roughly 100 ps, which still fits (an estimate, not a simulation). The write's 140 ps pulse still sets WL_EN, so the nfin 6 vs 8 driver decision rests on write speed and T_CLK alone.
@@ -62,5 +64,6 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 ## Related files
 
 - Data: `results/read_col_sweep.csv`, `results/read_col_dout_c6_sweep.csv` (subset)
+- Results at the chosen point: `media/read_col/read_col_ade_results_1p48n_120p.png`
 - Setup: `media/read_col/read_col_ade_setup_dout_g2.png` (current), `read_col_ade_setup_pw_rden.png`, `read_col_ade_setup.png`
 - Schematics and waveforms: `media/read_path/`, `media/read_col/`
