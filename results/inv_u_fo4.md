@@ -17,4 +17,4 @@ Notes:
 - The crossing level is 0.4 V (VDD/2), not the 0.376 V of the read_path inverter.
 - Single run, nominal corner, no wire load. Layout parasitics will make real FO4 slower.
 
-Files: `media/inv_u/tb_fo4_ade_setup.png` (outputs setup, values not shown), `media/inv_u/tb_fo4_tran.png` (IN, N1, N2 with the scalar outputs), `media/inv_u/inv_u_schematic.png`.
+Files: `media/inv_u/tb_fo4_ade_results.png` (outputs table with values: tphl 54.66p, tplh 50.59p), `media/inv_u/tb_fo4_ade_setup.png` (earlier capture, values not shown), `media/inv_u/tb_fo4_tran.png` (IN, N1, N2 with the scalar outputs), `media/inv_u/inv_u_schematic.png`.
