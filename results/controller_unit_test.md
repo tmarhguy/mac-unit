@@ -24,6 +24,31 @@ Combined access estimate (v3): 238.2 ps + 226 ps (t_acc1, read-column test) = ab
 
 The thinnest margin is now m_rd_pre = 70 ps (was 30 ps), so the +20% C_BL case has more room; it still needs to be run.
 
+## Report table: before and after the latch-enable change (2.4)
+
+| Output | Before | After | Note |
+|---|---|---|---|
+| t_clk_wl | 356 ps | 238 ps | CLK edge to wordline |
+| m_rd_pre | 30 ps | 70 ps | Smallest margin, so it sets T_CLK,min (to be confirmed in the full-macro test) |
+| m_wl_pre | 118 ps | 157 ps | Wordline ends well before precharge starts |
+| gap_pre_wr | 178 ps | 155 ps | Precharge is off well before the write driver turns on |
+| t_wl_rden | 96 ps | 96 ps | Column test needs >= 80 |
+| rden_w | 136 ps | 136 ps | Column test needs >= 100 |
+| wlen_w | 134 ps | 134 ps | Write needs about 120 to 140 ps |
+
+## Margin on each edge (after)
+
+| Edge | Requirement | Measured | Margin |
+|---|---|---|---|
+| WL_EN width | >= about 120 ps (write, 50% width) | 133.5 ps | about +14 ps (widths at 0.4 V, not 50%) |
+| RD_EN rises after WL | >= 80 ps | 95.8 ps | +16 ps |
+| RD_EN width | >= 100 ps | 135.8 ps | +36 ps |
+| RD_EN falls before PRE_B falls | > 0 | 70.3 ps | +70 ps |
+| WL falls before PRE_B falls | > 0 | 157.4 ps | +157 ps |
+| PRE_B rises before WR_EN rises | > 0 | 155.1 ps | +155 ps |
+
+Plot: `media/controller/tb_controller_tran_run2_0605.png`. The three width/lead margins are small (13 to 36 ps) and are the ones that shrink or grow with a longer delay chain.
+
 ## Earlier results (v2: latches enabled from CLKB)
 
 | Output | Meaning | Value | Spec | Result |
