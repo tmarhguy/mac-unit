@@ -1,0 +1,7 @@
+DEFINE     analogLib       $(compute:THIS_TOOL_INST_ROOT)/tools/dfII/etc/cdslib/artist/analogLib
+DEFINE     basic           $(compute:THIS_TOOL_INST_ROOT)/tools/dfII/etc/cdslib/basic
+DEFINE     sheets          $(compute:THIS_TOOL_INST_ROOT)/tools/dfII/etc/cdslib/sheets
+DEFINE     cds_ff_mpt      /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt
+DEFINE     wsp_cds_ff_mpt  /vast/projects/radway/cad-tools/pdks/gpdk018/wsp_cds_ff_mpt
+DEFINE     cds_ff_mpt_scl  /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt_scl
+DEFINE     proj1_lib       ./proj1_lib

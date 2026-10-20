@@ -1,0 +1,12 @@
+text_depth -primary;
+virtual_connect -colon no;
+virtual_connect -semicolon_as_colon yes;
+virtual_connect -noname;
+virtual_connect -report no;
+virtual_connect -depth -primary;
+report_summary -drc "sram_6t.sum" -replace;
+max_results -drc 1000;
+results_db -drc "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/test/sram_6t.drc_errors.ascii" -ascii;
+abort_on_layout_error yes;
+layout_format gdsii;
+layout_path "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/test/sram_6t.gds.gz";
