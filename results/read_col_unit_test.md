@@ -60,6 +60,8 @@ Stacked, one trace per panel (best for the report): `../media/read_col/read_col_
 
 ![read_col third read, zoom](../media/read_col/read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png)
 
+Report caption: "Cycle 6 read of a 1, CBL = 3.5 fF, rd_dly = 1.48n, pw_rden = 120p: BLB crosses the read inverter's 0.376 V switching point 83 ps after WL rises; DOUT is valid 226 ps after WL rises."
+
 From the zoom: WL starts rising at about 5.40 ns, BLB falls through the read inverter's trip point within about 80 ps, RD_EN starts rising at about 5.48 ns (about 80 ps after WL) and closes at about 5.64 ns, and DOUT is high by about 5.67 ns. RD dips briefly when RD_EN opens (the latch loading RD), then recovers while the latch finishes the transition. Q stays at 0.8 V and QB near 0 throughout. Times are read off the plot.
 
 ## Does the read limit the wordline?
@@ -75,6 +77,7 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 
 ## Open items
 
+- Switching-point value: `t_blb` crosses BLB at 0.376 V, which is the measured VM of the 2:2 read inverter. The read_path in use is 4:2 (VM = 0.415 V, see `read_path_ade_outputs_vm.png`). Crossing 0.415 V instead would make `t_blb` slightly shorter (BLB is falling at that point), so 83 ps is conservative, but the caption's "read inverter's 0.376 V switching point" is only correct if the 2:2 inverter is the one in `read_col`. Confirm which inverter `read_col` instantiates, or change the caption to "0.376 V".
 - Rerun with the extracted C_BL, and at +20% C_BL, to replace the 83 ps scaling estimate.
 - Check the 1.44n and earlier `rd_dly` values to find where early opening stops working.
 
