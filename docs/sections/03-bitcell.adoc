@@ -1,0 +1,20 @@
+[#sizing]
+== Cell schematic and dimensions
+
+The 6T cell consists of two cross-coupled inverters and two pass-gates. During a read, asserted WL connects both storage nodes to precharged BL/BLB. During a write, the bitline drivers force complementary values through the pass-gates. The schematic keeps both halves symmetric.
+
+.Candidate device settings in the original Virtuoso capture
+[cols="1,1,1",options="header"]
+|===
+| Device | Each side | Role
+| Pull-down NMOS (PD) | 4 fins, L=18 nm | Holds a stored zero against read disturb
+| Pull-up PMOS (PU) | 2 fins, L=18 nm | Holds a stored one; opposes a write-zero
+| Pass-gate NMOS (PG) | 2 fins, L=18 nm | Connects the storage node to its bitline
+|===
+
+With equal nominal channel lengths, the intended ratios are stem:[\beta=(W/L)_{PD}/(W/L)_{PG}\simeq 4/2=2] and stem:[\gamma=(W/L)_{PU}/(W/L)_{PG}\simeq2/2=1]. Fin count is a sizing proxy; model currents determine effective strength. The three-point sweep keeps PU and PG at two fins and varies PD through two, three and four fins.
+
+.Original sized cell schematic
+image::bitcell-schematic.png[Original symmetric six transistor cell schematic with device sizes,align=center,width=760]
+
+The β=2, γ=1 cell is the selected sizing. Its schematic read advantage is measured in <<read-snm,the sweep>>. The laid-out cell is 0.39 µm², and the extracted margins that replace the schematic read SNM are in <<signoff,the later sections>>.

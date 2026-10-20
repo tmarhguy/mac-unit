@@ -1,0 +1,23 @@
+[#authors]
+== Authors
+
+The reports and this site are produced by the two-person team behind
+the design. Both members are responsible for understanding the full
+design and report for every part.
+
+=== Victor Wanjohi
+
+Class of 2028, Computer Engineering, University of Pennsylvania.
+
+* https://github.com/vwanjohi[GitHub,window=_blank]
+* https://www.linkedin.com/in/victorwanjohi1/[LinkedIn,window=_blank]
+* mailto:vwanjohi@engineering.upenn.edu[Email]
+
+=== Tyrone Marhguy
+
+Class of 2028, Computer Engineering, University of Pennsylvania.
+
+* https://tmarhguy.com[Website,window=_blank]
+* https://github.com/tmarhguy[GitHub,window=_blank]
+* https://www.linkedin.com/in/tmarhguy/[LinkedIn,window=_blank]
+* mailto:tmarhguy@engineering.upenn.edu[Email]
