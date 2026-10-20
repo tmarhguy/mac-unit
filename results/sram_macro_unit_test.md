@@ -11,6 +11,15 @@ Check outputs (results: `media/sram_macro/tb_sram_macro_ade_results_err.png`):
 | err1 (first read pass, checkerboard) | 173.8 uV | < 0.1 V | pass |
 | err2 (second read pass, complement) | 173.8 uV | < 0.1 V | pass |
 
+Access time, from the added outputs (`media/sram_macro/tb_sram_macro_ade_results_access.png`):
+
+| Output | Definition | Value |
+|---|---|---|
+| t_acc_f | DOUT<1> falling through 0.4 V (1st falling crossing) minus the 17th rising CLK crossing at 0.4 V | 463.7 ps |
+| t_acc_r | DOUT<1> rising through 0.4 V (1st rising crossing) minus the 18th rising CLK crossing | 484.2 ps |
+
+The 463.7 ps falling value agrees with the 464 ps built up from the controller (238.2 ps) plus the column (226 ps). The rising value is about 20 ps longer. These are DOUT<1> only, at one specific read each (the 17th and 18th clock edges, i.e. addresses 0 and 1 of the first read pass), at stand-in loads; the worst case over all four bits and all 16 addresses is not measured yet.
+
 Design variables in this run: `tclk` = 1 ns, `cbw` = 0.62 fF. `cbw` is not defined anywhere I have seen; it is probably the bitline wire capacitance added to the 16 cells per column, because 16 x 180 aF + 0.62 fF = 3.50 fF, the stand-in C_BL used in every earlier test. Confirm.
 
 Definitions:
@@ -28,4 +37,4 @@ Observed from the DOUT waveforms (coarse, 66 ns on screen):
 
 Now recorded: err1 and err2 both pass with 173.8 uV against the 0.1 V limit (the two values are identical, which is plausible for a symmetric pattern and its complement but worth a glance). Not covered: 2.5(iii), the worst-case row read right after a write to the opposite value, and a minimum-period (T_CLK,min) search.
 
-Open: add 2.5(iii); measure the worst-case access time and T_CLK,min from a period sweep.
+Open: worst-case access over all bits and addresses; add 2.5(iii); measure the worst-case access time and T_CLK,min from a period sweep.
