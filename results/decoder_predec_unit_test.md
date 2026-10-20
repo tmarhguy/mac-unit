@@ -30,9 +30,17 @@ Caption: WL_EN and WL<15:0> for address 0 (nominal, `cwl` = 0.5 fF). Only WL<0> 
 
 This confirms the right row fires at address 0. The other 15 addresses are not yet checked.
 
+## All 16 addresses: level checks
+
+Sweep of `a0` to `a3` over {0, 0.8 V} (16 points, a3 varying fastest; address = a0 + 2 a1 + 4 a2 + 8 a3), same testbench and `cwl` = 0.5 fF. Data: `decoder_predec_address_sweep.csv`.
+
+Result: at all 16 addresses `wl_one` = 824 mV (spec < 1 V) and `wl_hi` = 824 mV (spec > 0.72 V), both pass. So exactly one wordline goes high at every address and none overlap. Source: the ADE results table filtered to "pass" (32 of 336 rows: 2 outputs x 16 points).
+
+What this does not show: (1) which row fires at each address, since the checks use the sum of the wordlines; (2) the delays, because `t_en_r` and `t_en_f` have no spec and are not in the pass-filtered view. Both are still needed.
+
 ## Open items
 
-- Only address 0 has been run. Sweep `a0` to `a3` over {0, 0.8} for all 16 addresses and record the worst-case `t_en_r` and `t_en_f` (the path through `nand3_u` differs by address, so delays will differ).
+- The 16-address sweep has run (level checks pass). Record the per-address `t_en_r` and `t_en_f` and the worst case; the path through `nand3_u` differs by address, so delays will differ.
 - The sum-of-wordlines measurement cannot show which row went high. Address 0 is confirmed from the waveform (WL<0> only); confirm WL<address> is the one that fires at the other 15 addresses.
 - `cwl` = 0.5 fF is a stand-in; rerun with the extracted wordline load.
 - Delay is to the 0.4 V crossing of the wordline, not to the cell. The cell sees WL rise through `inv_drv`; use the WL waveform at the cell for read and write timing.
