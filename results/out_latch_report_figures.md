@@ -24,13 +24,14 @@ Source files: sweep data `out_latch_pw_en_sweep.csv`; full record `out_latch_uni
 
 ## All pw_en traces (optional figure)
 
-Best one for the report: `../media/out_latch/out_latch_pw_en_family_full_BEST.png`. It stacks RD, EN and DOUT for all five pw_en values (10p, 20p, 40p, 80p, 150p) over 0-4.2 ns with readable axes and labels. The 10p DOUT trace stays near 0 V and never captures the 1. The tool's VNC toolbar overlaps the left edge, so crop it out before use.
+Best one for the report: `../media/out_latch/out_latch_pw_en_family_full_BEST.png`. It stacks RD, EN and DOUT for all five pw_en values (10p, 20p, 40p, 80p, 150p) over 0-4.2 ns with readable axes and labels. The 10p DOUT trace stays near 0 V and never captures the 1. This version has no toolbar overlay, so it can be used as is.
 
 Other captures, kept in case they are needed (all in `media/out_latch/`):
 
 | File | What it is |
 |---|---|
-| `out_latch_pw_en_family_full_BEST.png` | Full stack, readable (use this one) |
+| `out_latch_pw_en_family_full_BEST.png` | Full stack, readable, no overlay (use this one) |
+| `out_latch_pw_en_family_full_vnc_overlay.png` | Same stack, but a VNC toolbar covers the left edge |
 | `out_latch_pw_en_family_full_dark_unreadable.png` | Same full stack, dark with very small text |
 | `out_latch_pw_en_family_partial_dout.png` | Scrolled view: EN (80p, 150p) and DOUT for all five values |
 | `out_latch_pw_en_family_partial_rd_en.png` | Scrolled view: RD (80p, 150p) and EN for all five values |
