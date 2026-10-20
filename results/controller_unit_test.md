@@ -1,6 +1,6 @@
 # controller unit test (2.4)
 
-Testbench `proj1_lib/tb_controller`: controller driving `decoder_predec` (cwl = 0.5 fF per wordline), loads of 500 aF on PRE_B, 600 aF on RD_EN, 1.3 fF on WR_EN (stand-ins; read from a small schematic label). Transient 0 to 4.5 ns, nominal, 27 C, VDD = 0.8 V, clock period 1 ns (CLK rises at 0.5, 1.5, 2.5, 3.5 ns). Address held at 0, DIN all ones. WE high in cycle 1 and 3 (write), low in cycle 2 and 4 (read), as read from the waveform. Images: `media/controller/tb_controller_ade_results.png`, `tb_controller_tran.png` (clean waveform, best for the report), `tb_controller_tran_with_scalar_box.png` (same run with the scalar-outputs box and plot markers), schematic `tb_controller_schematic.png`.
+Testbench `proj1_lib/tb_controller`: controller driving `decoder_predec` (cwl = 0.5 fF per wordline), loads of 500 aF on PRE_B, 600 aF on RD_EN, 1.3 fF on WR_EN (stand-ins; read from a small schematic label). Transient 0 to 4.5 ns, nominal, 27 C, VDD = 0.8 V, clock period 1 ns (CLK rises at 0.5, 1.5, 2.5, 3.5 ns). Address held at 0, DIN all ones. WE high in cycle 1 and 3 (write), low in cycle 2 and 4 (read), as read from the waveform. Images: `media/controller/tb_controller_ade_results.png`, `tb_controller_tran_v2_clkb_latches.png` (earlier v2 clean waveform), `tb_controller_tran_with_scalar_box.png` (v2 run with the scalar-outputs box and plot markers), schematic `tb_controller_schematic.png`.
 
 ## Current results (v3: latch enable on its own `inv_2x`)
 
@@ -47,7 +47,7 @@ The thinnest margin is now m_rd_pre = 70 ps (was 30 ps), so the +20% C_BL case h
 | WL falls before PRE_B falls | > 0 | 157.4 ps | +157 ps |
 | PRE_B rises before WR_EN rises | > 0 | 155.1 ps | +155 ps |
 
-Plot: `media/controller/tb_controller_tran_run2_0605.png`. The three width/lead margins are small (13 to 36 ps) and are the ones that shrink or grow with a longer delay chain.
+Plot: `media/controller/tb_controller_tran.png` (v3, plot timestamp 06:18:56; clean, no overlay; same pulse timing as the 06:05:50 capture `tb_controller_tran_run2_0605.png` and as the 06:12:17 capture whose scalar box matches the table). The three width/lead margins are small (13 to 36 ps) and are the ones that shrink or grow with a longer delay chain.
 
 ## Earlier results (v2: latches enabled from CLKB)
 
