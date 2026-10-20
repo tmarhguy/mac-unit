@@ -36,11 +36,13 @@ Sweep of `a0` to `a3` over {0, 0.8 V} (16 points, a3 varying fastest; address = 
 
 Result: at all 16 addresses `wl_one` = 824 mV (spec < 1 V) and `wl_hi` = 824 mV (spec > 0.72 V), both pass. So exactly one wordline goes high at every address and none overlap. Source: the ADE results table filtered to "pass" (32 of 336 rows: 2 outputs x 16 points).
 
-What this does not show: (1) which row fires at each address, since the checks use the sum of the wordlines; (2) the delays, because `t_en_r` and `t_en_f` have no spec and are not in the pass-filtered view. Both are still needed.
+Delays: `t_en_r` = 97.42 ps and `t_en_f` = 101 ps at all 16 addresses (the table shows no variation). That is expected for this bench: WL_EN is pulsed while the address is static, and WL_EN always enters the same pin of the same `nand3_u`, so the switching path is the same for every address.
+
+What this does not show: (1) which row fires at each address, since the checks use the sum of the wordlines; (2) the delay from an address input to the wordline (the path the handout's 2.2a asks about). That path enters `nand3_u` on pins B and C, which can differ from pin A, and needs a bench where the address changes with WL_EN already high or with the enable tied high.
 
 ## Open items
 
-- The 16-address sweep has run (level checks pass). Record the per-address `t_en_r` and `t_en_f` and the worst case; the path through `nand3_u` differs by address, so delays will differ.
+- The 16-address sweep has run: level checks pass and the WL_EN-to-WL delay is the same at every address. Still needed: the address-input-to-WL delay (address changing, enable already high).
 - The sum-of-wordlines measurement cannot show which row went high. Address 0 is confirmed from the waveform (WL<0> only); confirm WL<address> is the one that fires at the other 15 addresses.
 - `cwl` = 0.5 fF is a stand-in; rerun with the extracted wordline load.
 - Delay is to the 0.4 V crossing of the wordline, not to the cell. The cell sees WL rise through `inv_drv`; use the WL waveform at the cell for read and write timing.
