@@ -21,3 +21,16 @@ Pass specs: `hold1` > 0.72 V, `hold0` < 0.08 V. Headline: `t_en_r` = 87 ps, `t_e
 Caption: RD, EN and DOUT over 4.2 ns with a 150 ps EN pulse every 1 ns. DOUT is written only while EN is high (captures 0 at 0.3 ns, 1 at 1.3 ns, 0 at 2.3 ns, 1 at 3.3 ns) and holds its value while RD toggles with EN low. Scalar outputs on the plot: `t_en_r` 87.27 ps, `t_en_f` 74.47 ps, `hold1` 799.185 mV, `hold0` 1.250 mV.
 
 Source files: sweep data `out_latch_pw_en_sweep.csv`; full record `out_latch_unit_test.md`.
+
+## All pw_en traces (optional figure)
+
+Best one for the report: `../media/out_latch/out_latch_pw_en_family_full_BEST.png`. It stacks RD, EN and DOUT for all five pw_en values (10p, 20p, 40p, 80p, 150p) over 0-4.2 ns with readable axes and labels. The 10p DOUT trace stays near 0 V and never captures the 1. The tool's VNC toolbar overlaps the left edge, so crop it out before use.
+
+Other captures, kept in case they are needed (all in `media/out_latch/`):
+
+| File | What it is |
+|---|---|
+| `out_latch_pw_en_family_full_BEST.png` | Full stack, readable (use this one) |
+| `out_latch_pw_en_family_full_dark_unreadable.png` | Same full stack, dark with very small text |
+| `out_latch_pw_en_family_partial_dout.png` | Scrolled view: EN (80p, 150p) and DOUT for all five values |
+| `out_latch_pw_en_family_partial_rd_en.png` | Scrolled view: RD (80p, 150p) and EN for all five values |
