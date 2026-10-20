@@ -18,7 +18,7 @@ Change from the earlier version: a new `inv_2x` (I13) makes CLKBL from CLK, and 
 | no_rd_wr | peak RD_EN in a write cycle (0.5 to 1.5 ns) | 3.327 mV | 3.398 mV | < 0.08 V | pass |
 | no_wr_rd | peak WR_EN in a read cycle (1.5 to 2.5 ns) | 410.6 uV | 411.7 uV | < 0.08 V | pass |
 
-Matching waveform for v3: `tb_controller_tran_v3_with_scalar_box.png` (plot timestamp 06:12:17, scalar box shows t_clk_wl 238.169p, gap_pre_wr 155.099p, rden_w 135.843p, m_wl_pre 157.353p, m_rd_pre 70.3262p, no_wr_rd 410.649u, matching the table). The clean waveform `tb_controller_tran_run2_0605.png` (06:05:50) shows the same pulse timing, so it is the same design; use it as the report figure (no overlay). The box and a data-point tooltip appear in the 06:12 capture.
+Matching waveform for v3 (a capture with plot timestamp 06:12:17; the image file was not available to save, so only its readings are recorded here; scalar box shows t_clk_wl 238.169p, gap_pre_wr 155.099p, rden_w 135.843p, m_wl_pre 157.353p, m_rd_pre 70.3262p, no_wr_rd 410.649u, matching the table). The clean waveform `tb_controller_tran_run2_0605.png` (06:05:50) shows the same pulse timing, so it is the same design; use it as the report figure (no overlay). 
 
 Combined access estimate (v3): 238.2 ps + 226 ps (t_acc1, read-column test) = about 464 ps from CLK to valid DOUT. Sum of two simulations at stand-in loads.
 
