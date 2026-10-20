@@ -60,6 +60,18 @@ Conditions: VDD = 0.8 V, tt, 27 C. VM is the input voltage where RD = BLB (DC sw
 
 Read time is estimated as C_BL x (VDD - VM) / I_read = 3.5 fF x drop / 25 uA. It is a hand estimate, not a simulated read.
 
-PMOS strength: three measured switching points show a PMOS fin drives roughly half the current of an NMOS fin in this PDK. VM is 0.376 V at 2:2 (below VDD/2, so the NMOS wins), 0.415 V at 4:2 (close to VDD/2), and the cell's own inverter at 2:4 gives 0.335 V (the 2:4 figure is from the cell, not from this testbench). Doubling the PMOS to 4:2 therefore balances the inverter instead of skewing it. The small remaining offset (+15 mV from 0.4 V) means the PMOS is slightly stronger than a perfect match.
+PMOS strength: three measured switching points show a PMOS fin drives roughly half the current of an NMOS fin in this PDK. VM is 0.376 V at 2:2 (below VDD/2, so the NMOS wins), 0.415 V at 4:2 (close to VDD/2), and the cell's own inverter at 2:4 gives 0.335 V (the 2:4 figure is from the cell, not from this testbench). Doubling the PMOS to 4:2 therefore puts the switching point near VDD/2 (a balanced inverter); this is the measured basis for the 4:2 unit inverter used for logical-effort sizing, not an argument for read_path. The small remaining offset (+15 mV from 0.4 V) means the PMOS is slightly stronger than a perfect match.
+
+### Why read_path stays at 2:2
+
+1. Smaller: 4:2 would add 2 PMOS fins per column, 8 fins over 4 columns: 8 x 0.048 um x 0.018 um x 28 = ~0.19 um2, under 1% of the 24.9 um2 array. Area multiplies directly into the FOM.
+2. Meets timing with margin: BLB reaches the 2:2 switching point (0.376 V) 83 ps after WL rises, inside the 140 ps write-limited wordline pulse (57 ps margin). At +20% C_BL, about 100 ps (scaled estimate, not simulated), which still fits.
+3. 4:2 would barely help: its 0.415 V switching point means the bitline swings about 9% less, saving roughly 7 ps (linear estimate). This changes neither T_CLK (the write sets the wordline pulse) nor the FOM (t_access is not in it).
+4. The read-1 failure was not a pull-up problem: it was fixed by widening RD_EN to 120p with the same 2:2 inverter. RD_EN width is not critical.
+5. The lower switching point is a small plus on a read of 0: BLB sags slightly (about 50 mV dip near 3.45 ns, read off the plot) and would have to fall further before RD flips by mistake.
+
+Report wording: "read_path keeps PM0:NM0 = 2:2 (VM = 0.376 V). The bitline reaches VM 83 ps after WL rises, inside the 140 ps write-limited wordline pulse, so the 4:2 option (VM = 0.415 V, about 7 ps faster) would add 8 fins without improving T_CLK. The 4:2 measurement instead sets the balanced unit inverter used for the decoder's logical-effort sizing."
+
+Unverified inputs to this argument: the 180 ps gap between RD_EN closing and precharge starting, the decoder using 4:2 as its unit size, and t_access being absent from the FOM. Check these against the Part 2 spec and the controller timing before submitting.
 
 Files: `media/read_path/`: symbol, schematic (4:2), VTC and ADE outputs for 4:2 (`vm` = 415.1 mV), and the same three for 2:2 (`*_2to2.png`, `vm` = 376.3 mV).
