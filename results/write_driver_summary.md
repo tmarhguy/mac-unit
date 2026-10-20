@@ -49,6 +49,8 @@ Source: `write_driver_sweep.csv` (12-point sweep, run at nfin = 8).
 
 ## Read path (inverter on BLB, output RD)
 
+**Design in use: 2:2** (2-fin PMOS, 2-fin NMOS, VM = 0.376 V). All `tb_read_col` results (t_acc1 = 226 ps, t_acc0 = 165 ps, t_blb = 83 ps) were measured with it. The 4:2 row below is the alternative that was compared, not the final design.
+
 Conditions: VDD = 0.8 V, tt, 27 C. VM is the input voltage where RD = BLB (DC sweep, 0 to 0.8 V).
 
 | PM0 : NM0 fins | Switching point (VM) | BLB drop needed to flip RD | Est. read time (3.5 fF, 25 uA) |

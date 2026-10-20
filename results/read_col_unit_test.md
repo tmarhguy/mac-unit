@@ -2,6 +2,8 @@
 
 Testbench `proj1_lib/tb_read_col`: transient, 0 to 6 ns, nominal corner, 27 C. VDD = 0.8 V, `CBL` = 3.5 fF (stand-in bitline load), `cdout` = 1 fF, `pw_w1` = 120p. Swept `rd_dly` (RD_EN delay, 1.48n to 1.68n in 40p steps) and `pw_rden` (RD_EN pulse width, 40p, 80p, 120p, 160p), 24 points. Full data: `read_col_sweep.csv` (all outputs, all points).
 
+Read path in use: `read_path` is a 2-fin PMOS and 2-fin NMOS inverter (2:2, VM = 0.376 V). Every result below was measured with it.
+
 Sequence per run: write 1, read, write 0, read, write 1, read. Specs: `dout_c2`, `dout_c6`, `q_rd1`, `dout_g2` > 0.72 V (a stored 1); `dout_c4`, `q_rd0` < 0.08 V (a stored 0).
 
 ## Result
