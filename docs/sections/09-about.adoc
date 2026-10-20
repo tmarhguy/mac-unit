@@ -1,29 +1,8 @@
 [#about]
-== About This Site
+== Sources, reproducibility and authors
 
-Meta information about this report — deliberately placed after the
-work itself.
+This site mirrors the link:report.pdf[full Part 1 PDF]. The assignment source is the link:ese5700-project1.pdf[current nine-page handout], with Part 1 on pp. 3–4. Raw Cadence exports and calculations are under `results/part1/read-snm/beta1/`, `beta1p5/` and `beta2/`. Each directory holds `raw.csv`, the normalized transfer curves and `snm.json`. The images in `media/part1/` retain the original handwritten work, testbench captures and ViVA views.
 
-This site is the running report for the project — figures, derivations,
-and measured numbers as they land. It is the companion to the concise,
-GitHub-facing `README.md` and the Gradescope-bound LaTeX reports:
+The cyan overlay coordinates come from the two `lobes` entries in each `snm.json`; the report draws the same coordinates on the original screenshots. The fitted margin is the smaller side. The script uses 16,001 voltage samples and checks against 4,001 samples.
 
-* `README.md` — project identity, status, and quick start.
-* `ESE5700_Proj1_Part1.tex` — joint team Part 1 report source (Gradescope canonical).
-* `docs/ese5700-project1.pdf` — official project handout (in-repo).
-* `docs/` (this site) — spec, design, verification, and
-results in report style.
-
-=== Conventions
-
-Conventions used throughout:
-
-* `monospace` marks commands, file paths, identifiers, and literals.
-* Unmeasured values are written as `TBD` — never silently estimated.
-* Nominal supply is stem:[V_{DD} = 1.2\,\mathrm{V}] unless noted.
-* Characterization is post-layout unless a subsection states otherwise.
-* Normative detail lives alongside this site as Markdown
-(`docs/*.md`, `docs/adr/`) and is linked, not duplicated.
-
-TIP: New here? Start with <<introduction,Introduction>> for scope and
-reading order, then <<spec,Specification>> for the system overview.
+Tyrone Marhguy and Victor Wanjohi are the report authors. Both are responsible for the whole report. The contribution rows in <<signoff,team contributions>> stay blank until the team fills them; the repository does not record who performed each task.

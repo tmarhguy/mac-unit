@@ -1,39 +1,11 @@
-# MAC Unit Architecture
+# Architecture and build order
 
-Source of truth for the system design; the full requirements live in
-the course handout (`docs/ese5700-project1.pdf`). This document tracks
-what exists today and what each part adds. The report site
-(`docs/index.adoc`) links here instead of duplicating numbers.
+The current project basis is Cadence GPDK 18 nm (`cds_ff_mpt`) at nominal 0.8 V. The [report](../ESE5700_Proj1_Part1.tex) records a 0.72 µm × 0.54 µm cell (0.39 µm², 3900 F², D = 28), Pegasus DRC with 0 violations, LVS clean with comparison match, and the extracted stability numbers. Schematic read-SNM exports remain in the [results directory](../results/part1/read-snm/).
 
-## Current state
+## Planned hierarchy
 
-**Part 1 — 6T bitcell (due 9/29/2026).**
-Sizing (beta/gamma), custom layout, PEX loads, post-layout SNM / WM /
-I_cell, functional transient. Report source:
-`ESE5700_Proj1_Part1.tex`. Figures land in `media/part1/`.
+1. Keep this cell: 0.39 µm², $C_{BL}=180$ aF, $C_{WL}=90$ aF. The 0.5 V write margin, 0.18 V, is the weak result.
+2. File the functional write/read waveforms, then tile the cell into a 16 × 4 SRAM macro with decoder, precharge, write and sense circuitry.
+3. Feed two macros into a 4 × 4 multiplier and 12-bit accumulator. A sequencer addresses the 16 word pairs.
 
-**Part 2 — 16 × 4 SRAM macro (due 10/6/2026, roadmap).**
-Part 1 cell tiled with WL horizontal / BL vertical, plus decoder,
-precharge, sense/write periphery. Per-cell `C_BL` / `C_WL` from Part 1
-scale to full-line loads.
-
-**Part 3 — MAC unit (due 10/20/2026, roadmap).**
-Two macros + 4×4 multiplier + 12-bit accumulator + sequencer
-computing `ACC = sum W[i]*X[i]` over 16 positions.
-
-## Block map
-
-| Block | Owns | Part |
-|---|---|---|
-| 6T bitcell | PD/PU/PG sizing, SNM, WM, layout, PEX | 1 |
-| 16 × 4 macro | tiling, decoder, precharge, sense, timing | 2 |
-| multiplier | 4×4 unsigned products | 3 |
-| accumulator | 12-bit sum (max 3600 < 4096) | 3 |
-| sequencer | 16-step control FSM | 3 |
-
-## Non-negotiables
-
-- Post-layout numbers only in results; schematic-only stays in design.
-- DRC and LVS clean at every level before signoff.
-- Unmeasured values are `TBD`.
-- Gradescope PDFs are canonical for grading; this repo archives sources.
+Part 1 area, DRC/LVS, extraction, and the supply table are recorded on this cell. Part 2 and Part 3 are not built yet, so their performance, area, and timing stay unreported.
