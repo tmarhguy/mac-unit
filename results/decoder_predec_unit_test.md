@@ -38,11 +38,12 @@ Result: at all 16 addresses `wl_one` = 824 mV (spec < 1 V) and `wl_hi` = 824 mV 
 
 Delays: `t_en_r` = 97.42 ps and `t_en_f` = 101 ps at all 16 addresses (the table shows no variation). That is expected for this bench: WL_EN is pulsed while the address is static, and WL_EN always enters the same pin of the same `nand3_u`, so the switching path is the same for every address.
 
-What this does not show: (1) which row fires at each address, since the checks use the sum of the wordlines; (2) the delay from an address input to the wordline (the path the handout's 2.2a asks about). That path enters `nand3_u` on pins B and C, which can differ from pin A, and needs a bench where the address changes with WL_EN already high or with the enable tied high.
+Row identity: the added output `wl_idx` is the sum over k of k times the peak of WL<k>, divided by the 0.824 V peak, i.e. the index of the row that fired. It rounds to the applied address at all 16 points (values 0.059, 8.009, 4.034, 11.98, 2.063, 10.01, 6.037, 13.99, 1.061, 9.01, 5.035, 12.98, 3.064, 11.01, 7.039, 14.99 for addresses 0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15). The worst deviation is 0.06, from coupling glitches on the other rows. So the correct row fires at every address. Screenshots: `media/decoder_predec/tb_dec_pre_ade_wl_idx_results.png`, `tb_dec_pre_ade_wl_idx_setup.png`. The expression is read from a screenshot where it is truncated; check it in ADE.
+
+What this does not show: (1) which row fires: resolved by `wl_idx` above; (2) the delay from an address input to the wordline (the path the handout's 2.2a asks about). That path enters `nand3_u` on pins B and C, which can differ from pin A, and needs a bench where the address changes with WL_EN already high or with the enable tied high.
 
 ## Open items
 
 - The 16-address sweep has run: level checks pass and the WL_EN-to-WL delay is the same at every address. Still needed: the address-input-to-WL delay (address changing, enable already high).
-- The sum-of-wordlines measurement cannot show which row went high. Address 0 is confirmed from the waveform (WL<0> only); confirm WL<address> is the one that fires at the other 15 addresses.
 - `cwl` = 0.5 fF is a stand-in; rerun with the extracted wordline load.
 - Delay is to the 0.4 V crossing of the wordline, not to the cell. The cell sees WL rise through `inv_drv`; use the WL waveform at the cell for read and write timing.
