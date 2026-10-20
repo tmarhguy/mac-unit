@@ -44,6 +44,12 @@ Every check passes except `dout_c6` at `pw_rden` = 40p, and that failure is the 
 
 Single-run check at the chosen point (`rd_dly` = 1.48n, `pw_rden` = 120p), from `media/read_col/read_col_ade_results_1p48n_120p.png`: `t_acc1` 225.6 ps, `t_acc0` 165.1 ps, `t_rd` 140 ps, `t_blb` 83.16 ps, `dout_c2` 799.9 mV, `dout_c4` 9.126 uV, `dout_c6` 799.9 mV, `q_rd1` 799.7 mV, `q_rd0` 38.75 uV, `dout_g2` 796.9 mV. All specs pass and the values match point 3 of `read_col_sweep.csv`.
 
+## Figure: read_col transient at the chosen point
+
+![read_col transient at rd_dly = 1.48n, pw_rden = 120p](../media/read_col/read_col_tran_1p48n_120p.png)
+
+Caption: WL, BLB, RD, RD_EN, DOUT, Q and QB over 6 ns at `rd_dly` = 1.48n, `pw_rden` = 120p. Reads at about 1.5, 3.5 and 5.5 ns; RD_EN opens about 80 ps after each WL rise. DOUT follows the stored data each read (1, 0, 1), including the third read, which fails at `pw_rden` = 40p. Q and QB are undisturbed by the reads.
+
 ## Does the read limit the wordline?
 
 No. The bitline needs only about 83 ps of wordline time, so a read pulse of about 110 ps at 50% leaves margin. Scaling `t_blb` by +20% C_BL gives roughly 100 ps, which still fits (an estimate, not a simulation). The write's 140 ps pulse still sets WL_EN, so the nfin 6 vs 8 driver decision rests on write speed and T_CLK alone.
@@ -57,13 +63,13 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 
 ## Open items
 
-- Capture the waveform at `rd_dly` = 1.48n, `pw_rden` = 120p for the report. The saved `media/read_col/read_col_tran.png` is the 1.48n run at 40p (it shows the failing third read), and the `read_col_rd_dly_sweep_*` plots are also 40p.
 - Rerun with the extracted C_BL, and at +20% C_BL, to replace the 83 ps scaling estimate.
 - Check the 1.44n and earlier `rd_dly` values to find where early opening stops working.
 
 ## Related files
 
 - Data: `results/read_col_sweep.csv`, `results/read_col_dout_c6_sweep.csv` (subset)
+- Waveform at the chosen point: `media/read_col/read_col_tran_1p48n_120p.png`
 - Results at the chosen point: `media/read_col/read_col_ade_results_1p48n_120p.png`
 - Setup: `media/read_col/read_col_ade_setup_dout_g2.png` (current), `read_col_ade_setup_pw_rden.png`, `read_col_ade_setup.png`
 - Schematics and waveforms: `media/read_path/`, `media/read_col/`
