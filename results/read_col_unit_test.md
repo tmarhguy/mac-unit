@@ -77,7 +77,7 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 
 ## Open items
 
-- Switching-point value: `t_blb` crosses BLB at 0.376 V, which is the measured VM of the 2:2 read inverter. The read_path in use is 4:2 (VM = 0.415 V, see `read_path_ade_outputs_vm.png`). Crossing 0.415 V instead would make `t_blb` slightly shorter (BLB is falling at that point), so 83 ps is conservative, but the caption's "read inverter's 0.376 V switching point" is only correct if the 2:2 inverter is the one in `read_col`. Confirm which inverter `read_col` instantiates, or change the caption to "0.376 V".
+- Switching-point value: resolved. The `read_path` schematic in `proj1_lib` currently has PM0 and NM0 both at nfin = 2 (`media/read_path/read_path_schematic_library_view_2to2.png`), i.e. the 2:2 inverter with VM = 0.376 V, so the caption's 0.376 V is correct. The earlier 4:2 version (VM = 0.415 V) is a different design point; make sure the report's read path section says which one `read_col` and the final design use.
 - Rerun with the extracted C_BL, and at +20% C_BL, to replace the 83 ps scaling estimate.
 - Check the 1.44n and earlier `rd_dly` values to find where early opening stops working.
 
@@ -87,4 +87,5 @@ No. The bitline needs only about 83 ps of wordline time, so a read pulse of abou
 - Waveforms at the chosen point: `read_col_tran_1p48n_120p_1to6ns_BEST.png`, `read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png`, `read_col_tran_1p48n_120p_zoom_read3_overlay.png`, `read_col_tran_1p48n_120p.png` (full 0-6 ns with scalar-free view)
 - Results at the chosen point: `media/read_col/read_col_ade_results_1p48n_120p.png`
 - Setup: `media/read_col/read_col_ade_setup_dout_g2.png` (current), `read_col_ade_setup_pw_rden.png`, `read_col_ade_setup.png`
+- Testbench schematic: `media/read_col/tb_read_col_schematic.png` (instances: precharge, write_driver, sram_6t, read_path, out_latch, with CBL on BL and BLB and `cdout` on DOUT)
 - Schematics and waveforms: `media/read_path/`, `media/read_col/`
