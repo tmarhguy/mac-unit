@@ -1,0 +1,25 @@
+point,rd_dly,pw_rden,t_acc1,t_acc0,t_rd,dout_c2,dout_c4,dout_c6,q_rd1,q_rd0,t_blb,dout_c2_result,dout_c4_result,dout_c6_result,q_rd1_result,q_rd0_result
+1,1.48n,40p,eval err,164.4p,141.1p,799.9m,9.111u,33.63u,799.7m,38.63u,83.17p,pass,pass,fail,pass,pass
+2,1.48n,80p,247.4p,165.1p,140p,799.9m,9.108u,799.9m,799.7m,38.85u,83.17p,pass,pass,pass,pass,pass
+3,1.48n,120p,225.6p,165.1p,140p,799.9m,9.126u,799.9m,799.7m,38.75u,83.16p,pass,pass,pass,pass,pass
+4,1.48n,160p,225.8p,165.1p,140p,799.9m,9.095u,799.9m,799.7m,38.76u,83.16p,pass,pass,pass,pass,pass
+5,1.52n,40p,eval err,204.5p,112.5p,799.9m,9.054u,32.31u,799.7m,38.87u,82.92p,pass,pass,fail,pass,pass
+6,1.52n,80p,235.1p,205.2p,112.5p,799.9m,9.055u,799.9m,799.7m,38.87u,82.92p,pass,pass,pass,pass,pass
+7,1.52n,120p,235p,205.2p,112.5p,799.9m,9.044u,799.9m,799.7m,38.89u,82.92p,pass,pass,pass,pass,pass
+8,1.52n,160p,235p,205.2p,112.4p,799.9m,9.04u,799.9m,799.7m,38.87u,82.84p,pass,pass,pass,pass,pass
+9,1.56n,40p,eval err,244.7p,113.6p,799.9m,9.048u,34.01u,799.7m,38.82u,82.91p,pass,pass,fail,pass,pass
+10,1.56n,80p,271.2p,245.4p,113.6p,799.9m,9.061u,799.9m,799.7m,38.85u,82.91p,pass,pass,pass,pass,pass
+11,1.56n,120p,271.4p,245.4p,113.7p,799.9m,9.082u,799.9m,799.7m,38.89u,82.93p,pass,pass,pass,pass,pass
+12,1.56n,160p,271.4p,245.4p,113.6p,799.9m,9.133u,799.9m,799.7m,38.89u,82.85p,pass,pass,pass,pass,pass
+13,1.6n,40p,eval err,284.7p,113.7p,799.9m,9.072u,41.72u,799.7m,38.91u,82.93p,pass,pass,fail,pass,pass
+14,1.6n,80p,311.2p,285.4p,113.6p,799.9m,9.047u,799.9m,799.7m,38.89u,82.91p,pass,pass,pass,pass,pass
+15,1.6n,120p,311.4p,285.4p,113.6p,799.9m,9.052u,799.9m,799.7m,38.88u,82.91p,pass,pass,pass,pass,pass
+16,1.6n,160p,311.3p,285.4p,113.7p,799.9m,9.078u,799.9m,799.7m,38.91u,82.93p,pass,pass,pass,pass,pass
+17,1.64n,40p,eval err,324.7p,113.6p,799.9m,9.016u,146u,799.7m,38.92u,82.91p,pass,pass,fail,pass,pass
+18,1.64n,80p,351.2p,325.4p,113.6p,799.9m,9.049u,799.9m,799.7m,38.96u,82.91p,pass,pass,pass,pass,pass
+19,1.64n,120p,351.3p,325.4p,113.7p,799.9m,9.072u,799.9m,799.7m,38.96u,82.93p,pass,pass,pass,pass,pass
+20,1.64n,160p,351.3p,325.4p,113.6p,799.9m,9.055u,799.9m,799.7m,38.92u,82.91p,pass,pass,pass,pass,pass
+21,1.68n,40p,eval err,364.7p,113.7p,799.9m,9.069u,3.377m,799.7m,38.52u,82.93p,pass,pass,fail,pass,pass
+22,1.68n,80p,391.2p,365.4p,113.7p,799.9m,9.069u,799.9m,799.7m,38.55u,82.93p,pass,pass,pass,pass,pass
+23,1.68n,120p,391.3p,365.4p,113.6p,799.9m,9.117u,799.8m,799.7m,38.5u,82.91p,pass,pass,pass,pass,pass
+24,1.68n,160p,391.3p,365.4p,113.6p,799.9m,9.091u,800.1m,799.7m,38.53u,82.91p,pass,pass,pass,pass,pass
