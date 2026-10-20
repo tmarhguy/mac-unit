@@ -1,6 +1,6 @@
 # controller unit test (2.4)
 
-Testbench `proj1_lib/tb_controller`: controller driving `decoder_predec` (cwl = 0.5 fF per wordline), loads of 500 aF on PRE_B, 600 aF on RD_EN, 1.3 fF on WR_EN (stand-ins; read from a small schematic label). Transient 0 to 4.5 ns, nominal, 27 C, VDD = 0.8 V, clock period 1 ns (CLK rises at 0.5, 1.5, 2.5, 3.5 ns). Address held at 0, DIN all ones. WE high in cycle 1 and 3 (write), low in cycle 2 and 4 (read), as read from the waveform. Images: `media/controller/tb_controller_ade_results.png`, `tb_controller_tran.png`, schematic `tb_controller_schematic.png`.
+Testbench `proj1_lib/tb_controller`: controller driving `decoder_predec` (cwl = 0.5 fF per wordline), loads of 500 aF on PRE_B, 600 aF on RD_EN, 1.3 fF on WR_EN (stand-ins; read from a small schematic label). Transient 0 to 4.5 ns, nominal, 27 C, VDD = 0.8 V, clock period 1 ns (CLK rises at 0.5, 1.5, 2.5, 3.5 ns). Address held at 0, DIN all ones. WE high in cycle 1 and 3 (write), low in cycle 2 and 4 (read), as read from the waveform. Images: `media/controller/tb_controller_ade_results.png`, `tb_controller_tran.png` (clean waveform, best for the report), `tb_controller_tran_with_scalar_box.png` (same run with the scalar-outputs box and plot markers), schematic `tb_controller_schematic.png`.
 
 | Output | Meaning | Value | Spec | Result |
 |---|---|---|---|---|
