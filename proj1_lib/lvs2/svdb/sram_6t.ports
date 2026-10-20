@@ -1,0 +1,9 @@
+# SVDB: Port Table (ports)
+# SVDB: Layout Primary sram_6t
+BL 3 BL 1600 1200 m3_conn_mask1
+BLB 6 BLB 2000 1200 m3_conn_mask2
+QB 4 QB 1200 1200 m3_conn_mask2
+WL 7 WL 2400 1200 m3_conn_mask1
+VDD 1 VDD 2800 1200 m3_conn_mask2
+VSS 2 VSS 3200 1200 m3_conn_mask1
+Q 5 Q 800 1200 m3_conn_mask1

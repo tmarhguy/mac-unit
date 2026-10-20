@@ -1,0 +1,1 @@
+proj1_lib sram_6t layout sram_6t
