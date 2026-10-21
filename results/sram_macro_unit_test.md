@@ -38,3 +38,19 @@ Observed from the DOUT waveforms (coarse, 66 ns on screen):
 Now recorded: err1 and err2 both pass with 173.8 uV against the 0.1 V limit (the two values are identical, which is plausible for a symmetric pattern and its complement but worth a glance). Not covered: 2.5(iii), the worst-case row read right after a write to the opposite value, and a minimum-period (T_CLK,min) search.
 
 Open: worst-case access over all bits and addresses; add 2.5(iii); measure the worst-case access time and T_CLK,min from a period sweep.
+
+## Worst-row run (22 ns): err3 and write times
+
+Images: `tb_sram_macro_ade_results_err3_write_times.png` (passing values), `tb_sram_macro_ade_results_err3_unresolved_1p28.png` (earlier state of the same table, see below). Setup: transient 0 to 22 ns, tclk = 1 ns, cbw = 0.62 fF. The tab title is `COL<0> (sram_col)`, so the column was opened in the same session; new probes are /I0/COL<0>/Q<15:0>, /QB<15:0>, /I0/WL<15:0>, /I0/COL<0>/BLB (hierarchical nets inside the macro).
+
+| Output | Meaning (expression is truncated in the screenshot) | Value | Spec | Result |
+|---|---|---|---|---|
+| err3 | same style of check as err1/err2 (M-weighted DOUT error), taken here to be the worst-row test 2.5(iii) | 173.8 uV | < 0.1 V | pass |
+| t_wr1 | Q<15> rising through 0.335 V, window 2.4 to 3.4 tclk | 338.6 ps | none | n/a |
+| t_wr0 | Q<15> falling through 0.335 V, window 4.4 to 5.4 tclk | 333.7 ps | none | n/a |
+
+Notes:
+- The reference edge for t_wr1 and t_wr0 is cut off in the screenshot; the values (about 335 ps) match CLK-to-WL (238.2 ps) plus the write time (96 ps) from the column tests (334 ps), so the reference is probably the rising CLK edge. 0.335 V is the cell's own inverter switching point (0.335 V from Part 1).
+- Row 15 is assumed to be the worst-case row (the last wordline); not verified. Only Q is tracked (the handout also asks for the other node, QB, past its switching point).
+- err3 is assumed to be 2.5(iii); its full expression is not visible.
+- Unresolved: the other capture shows err3 = 1.28 with t_wr1 and t_wr0 empty. It is the same table before the delays were evaluated, or an earlier failing run; I do not know which. If it was a failing run (1.28 is above the 0.1 V limit), what changed to fix it should be noted.
