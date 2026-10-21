@@ -158,3 +158,21 @@ Power outputs (setup image): read_power = 0.8 * average(clip(IT("/I0/VDD"), 16.5
 Access time at T_CLK,min (690 ps): t_acc_f 463.8 ps, t_acc_r 488.3 ps (DOUT<1>); worst case so far 488 ps.
 
 Preliminary FOM: area (array estimate 24.9 + periphery so far 18.8 = 43.7 um^2, excluding precharge, the controller and the controller's input latches, and with the array not laid out) x write power 124.3 uW x 0.69 ns = about 3.7e3 um^2 uW ns. Treat as a lower bound until the area is complete.
+
+## Standby power added
+
+Image: `media/sram_macro/tb_sram_macro_power_sweep_with_standby.png` (write, read and standby power for all seven periods; data in the CSV, new column standby_power_uW).
+
+| tclk | write | read | standby |
+|---|---|---|---|
+| 700 ps | 122.6 uW | 113.4 uW | 111 uW |
+| 690 ps | 124.3 uW | 115.2 uW | 112.2 uW |
+| 680 ps | 126 uW | 118 uW | 116 uW |
+| 670 ps | 127.7 uW | 115 uW | 114.2 uW |
+| 660 ps | 129.6 uW | 114.9 uW | 114.4 uW |
+| 650 ps | 131.5 uW | 115.4 uW | 115 uW |
+| 600 ps | 142.8 uW | 122.8 uW | 123 uW |
+
+At T_CLK,min = 690 ps: write 124.3 uW, read 115.2 uW, standby 112.2 uW.
+
+Caution on standby: the expression and window are not visible in the screenshot, and the stimulus is not shown. The value is about 90% of the read power, far higher than idle leakage would be. Two likely reasons, neither verified: (1) this macro has no chip-select or clock gating, so with the clock running the controller still fires WL_EN, the precharge and the latch enables every cycle, and the number is dominated by that clock-driven activity; (2) the window may overlap accesses. If the handout's "standby" means clock running with no access, the 112 uW may be right for this design (there is no way to suppress an access), and it should be explained as such. Confirm the expression and window.
