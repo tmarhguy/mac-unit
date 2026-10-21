@@ -112,3 +112,15 @@ Plot: `media/sram_macro/tb_sram_macro_tclk_sweep_err3_600_700ps.png` (err3 again
 - It then drops steeply: about 0.6 V near 680 ps, about 0.03 V at 690 ps, about 0.006 V at 700 ps.
 - With the 0.1 V limit, the test passes at 690 ps (about 30 mV) and fails at 680 ps (about 0.6 V). So T_CLK,min is between 680 and 690 ps for the worst-row test; the best passing period seen is about 690 ps, with only about 3x margin on the limit.
 - Only err3 was swept below 700 ps; err1 and err2 (66 ns bench) have not been run below 700 ps, so the macro-wide T_CLK,min is the larger of the three, not yet known. The write times (t_wr1, t_wr0) are not drawn in this window.
+
+## Access time versus tclk, about 680 to 700 ps
+
+Plot: `media/sram_macro/tb_sram_macro_tclk_access_680_700ps.png` (t_acc1 and t_acc0 against tclk; the x axis is logarithmic, labelled as powers of ten: 10^-9.167 to 10^-9.155 s = about 681 to 700 ps, with a kink at 10^-9.1615 = about 689 ps, i.e. three sweep points near 680, 690 and 700 ps). Values read off the curves (approximate); the output definitions are not visible, taken as the read-1 and read-0 access times (CLK to DOUT), the same outputs as t_acc_r and t_acc_f.
+
+| tclk | t_acc1 | t_acc0 |
+|---|---|---|
+| about 680 ps | about 500 ps | about 461.9 ps |
+| about 690 ps | about 489 ps | about 461.8 ps |
+| about 700 ps | about 486 ps | about 461.7 ps |
+
+Read access barely changes with the period: t_acc0 moves by about 0.2 ps, and t_acc1 grows from about 486 to about 500 ps as the period shrinks to 680 ps (the period at which err3 already fails), so read-1 slows down as the clock approaches its limit. Compare 484.2 ps (rising) and 463.7 ps (falling) at 1 ns on DOUT<1>. Worst case so far: about 489 ps at 690 ps, the shortest period at which err3 passes.
