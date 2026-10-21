@@ -103,3 +103,12 @@ Same sweep (tclk = 1n to 0.7n) on the worst-row bench (maestro `tb_sram_macro_t3
 err3 passes at every period down to 0.70 ns, like err1 and err2, so all three tests pass at 0.70 ns. err3 follows the same trend: flat near 0.2 mV, then 0.5 mV at 750 ps and 5.6 mV at 700 ps, a steep rise just above the failure edge. The write times do not depend on the clock period (about 338.6 ps and 333.7 ps at all six periods), as expected for a delay set by the controller and the column rather than by the clock.
 
 T_CLK,min is therefore at or below 0.70 ns for all three tests. The failing period is still not found (next: 0.65, 0.6, 0.55, 0.5 ns).
+
+## err3 versus tclk, 600 to 700 ps: where the worst-row test fails
+
+Plot: `media/sram_macro/tb_sram_macro_tclk_sweep_err3_600_700ps.png` (err3 against tclk, 600 to 700 ps; y axis unlabelled, read as volts because 700 ps gives about 0.006 V, matching the 5.6 mV table value). Values below are read off the curve, only approximate; the plot has few sample points (kinks near 670, 680, 690 and 700 ps).
+
+- err3 sits flat at about 1.28 V for tclk from 600 up to about 670 ps: the test fails completely (limit 0.1 V). This explains the earlier unexplained screenshot with err3 = 1.28: it was a run at a period in this failing range.
+- It then drops steeply: about 0.6 V near 680 ps, about 0.03 V at 690 ps, about 0.006 V at 700 ps.
+- With the 0.1 V limit, the test passes at 690 ps (about 30 mV) and fails at 680 ps (about 0.6 V). So T_CLK,min is between 680 and 690 ps for the worst-row test; the best passing period seen is about 690 ps, with only about 3x margin on the limit.
+- Only err3 was swept below 700 ps; err1 and err2 (66 ns bench) have not been run below 700 ps, so the macro-wide T_CLK,min is the larger of the three, not yet known. The write times (t_wr1, t_wr0) are not drawn in this window.
