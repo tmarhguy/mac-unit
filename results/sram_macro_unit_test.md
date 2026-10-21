@@ -136,3 +136,25 @@ Read off the plot:
 - COL<0>/BLB discharges to about 0.4 V in the cycle around 3.4 to 3.6 ns, shallower than in the write cycles.
 
 What this suggests, and what it does not show: the hesitation on the 680p DOUT rise is the visible difference and is where the worst-row failure plausibly starts (the latch capturing late or from a not-yet-settled RD). It is a reading of a small feature, not a measurement; the err3 sampling instants and the failing cycle are not annotated, so the actual failing check cannot be pinned to this plot. To settle it, measure the RD_EN width and the RD settling time at 680 and 690 ps, and print err3 per cycle.
+
+## Final period sweep (700 to 600 ps): T_CLK,min, access time and power
+
+Images: `tb_sram_macro_tclk_600_700_err1_err2.png`, `tb_sram_macro_tclk_600_700_access.png`, `tb_sram_macro_power_sweep_results.png`, `tb_sram_macro_power_outputs_setup.png` (all in `media/sram_macro/`). Data: `results/sram_macro_tclk_power_sweep.csv`. Bench: 66 ns checkerboard/complement, tclk = 0.7n, 0.69n, ... (plus 0.65n, 0.6n), cbw = 0.62 fF, nominal, 27 C.
+
+| tclk | err1 | err2 | Result | t_acc_f | t_acc_r | write power | read power |
+|---|---|---|---|---|---|---|---|
+| 700 ps | 5.103 mV | 5.118 mV | pass | 463.7 ps | 485.5 ps | 122.6 uW | 113.4 uW |
+| 690 ps | 23.26 mV | 22.37 mV | pass | 463.8 ps | 488.3 ps | 124.3 uW | 115.2 uW |
+| 680 ps | 452.2 mV | 440.7 mV | fail | 463.8 ps | 496.9 ps | 126.0 uW | 118.0 uW |
+| 670 ps | 1.28 V | 1.28 V | fail | 463.9 ps | eval err | 127.7 uW | 115.0 uW |
+| 660 ps | 1.28 V | 1.28 V | fail | 464.1 ps | eval err | 129.6 uW | 114.9 uW |
+| 650 ps | 1.281 V | 1.281 V | fail | 464.3 ps | eval err | 131.5 uW | 115.4 uW |
+| 600 ps | 1.281 V | 1.281 V | fail | 465.3 ps | eval err | 142.8 uW | 122.8 uW |
+
+T_CLK,min = 0.69 ns (690 ps passes err1 and err2, and err3 at about 30 mV per the earlier err3 sweep; 680 ps fails all). Resolution 10 ps. Below 680 ps the outputs sit at about 1.28 V (read of the wrong value, full-scale error), t_acc_r cannot be evaluated (no valid rising output), and err3 fails the same way.
+
+Power outputs (setup image): read_power = 0.8 * average(clip(IT("/I0/VDD"), 16.5 tclk, 32.5 tclk)); write_power = 0.8 * average(clip(IT("/I0/VDD"), 32.5 tclk, 48.5 tclk)). Note the write window covers only the second write pass (the complement checkerboard), not both. The current is the macro's VDD pin (I0), so the testbench buffers and data gates are excluded. At T_CLK,min = 690 ps: write power 124.3 uW (checkerboard pattern), read power 115.2 uW (checkerboard read sweep). Power rises as the period shortens (122.6 uW at 700 ps to 142.8 uW at 600 ps), as dynamic power scales with frequency; leakage is included in these averages. Not measured: the all-0 then all-1 write sweep (handout wording) and standby power.
+
+Access time at T_CLK,min (690 ps): t_acc_f 463.8 ps, t_acc_r 488.3 ps (DOUT<1>); worst case so far 488 ps.
+
+Preliminary FOM: area (array estimate 24.9 + periphery so far 18.8 = 43.7 um^2, excluding precharge, the controller and the controller's input latches, and with the array not laid out) x write power 124.3 uW x 0.69 ns = about 3.7e3 um^2 uW ns. Treat as a lower bound until the area is complete.
