@@ -86,3 +86,20 @@ Caveats:
 - Only err1 and err2 (the 66 ns bench) are in this sweep. err3 (worst row, 22 ns bench) and the controller margins are not swept.
 - The controller delays are fixed times (delay chains), not scaled with the clock, so the half-period shrinks while the pulse widths do not. If PRE_B falls with the CLK falling edge at 0.5 tclk (as it appears), the RD_EN-to-PRE_B margin (70 ps at 1 ns, `m_rd_pre`) would shrink by about (1 ns - tclk)/2, reaching zero near 0.86 ns and going negative below that. err1/err2 still pass down to 0.7 ns, so either that margin is not what fails first or this estimate is wrong. Measure m_rd_pre, m_wl_pre and the other controller margins across this sweep to settle it.
 - The 66 ns stop time is fixed; the sources scale with tclk but the run length does not, so at shorter periods the run covers more cycles than intended (the windows in err1/err2 use VAR("tclk"), so they scale). The checks still cover their full windows.
+
+## tclk sweep on the worst-row bench (22 ns): err3 and write times
+
+Same sweep (tclk = 1n to 0.7n) on the worst-row bench (maestro `tb_sram_macro_t3`). Data: `results/sram_macro_tclk_sweep_err3.csv`; plot `media/sram_macro/tb_sram_macro_tclk_sweep_err3_plot.png` (err3, t_wr1, t_wr0 against tclk, plus an overlay of all signals that is not readable).
+
+| tclk | err3 | t_wr1 | t_wr0 | Result |
+|---|---|---|---|---|
+| 1 ns | 173.8 uV | 338.6 ps | 333.7 ps | pass |
+| 900 ps | 177.7 uV | 338.6 ps | 333.6 ps | pass |
+| 850 ps | 187.7 uV | 338.7 ps | 333.6 ps | pass |
+| 800 ps | 232.5 uV | 338.6 ps | 333.6 ps | pass |
+| 750 ps | 496.6 uV | 338.5 ps | 333.7 ps | pass |
+| 700 ps | 5.623 mV | 338.5 ps | 333.7 ps | pass |
+
+err3 passes at every period down to 0.70 ns, like err1 and err2, so all three tests pass at 0.70 ns. err3 follows the same trend: flat near 0.2 mV, then 0.5 mV at 750 ps and 5.6 mV at 700 ps, a steep rise just above the failure edge. The write times do not depend on the clock period (about 338.6 ps and 333.7 ps at all six periods), as expected for a delay set by the controller and the column rather than by the clock.
+
+T_CLK,min is therefore at or below 0.70 ns for all three tests. The failing period is still not found (next: 0.65, 0.6, 0.55, 0.5 ns).
