@@ -124,3 +124,15 @@ Plot: `media/sram_macro/tb_sram_macro_tclk_access_680_700ps.png` (t_acc1 and t_a
 | about 700 ps | about 486 ps | about 461.7 ps |
 
 Read access barely changes with the period: t_acc0 moves by about 0.2 ps, and t_acc1 grows from about 486 to about 500 ps as the period shrinks to 680 ps (the period at which err3 already fails), so read-1 slows down as the clock approaches its limit. Compare 484.2 ps (rising) and 463.7 ps (falling) at 1 ns on DOUT<1>. Worst case so far: about 489 ps at 690 ps, the shortest period at which err3 passes.
+
+## 680 ps (fails err3) against 690 ps (passes): overlay
+
+Plot: `media/sram_macro/tb_sram_macro_680_vs_690ps_overlay.png` (1.7 to 5.4 ns; CLK, DOUT<0>, COL<0>/BLB, COL<0>/RD, PRE_B and RD_EN, the two periods overlaid and labelled 680p and 690p).
+
+Read off the plot:
+- The two runs track each other; the 680p clock edges drift earlier by about 10 ps per cycle, so the two curves separate over time (about 40 ps by 5 ns).
+- DOUT<0> rises at about 2.9 ns in both runs. In the 680p run the rise stalls partway (a shoulder at roughly half swing near 2.85 ns) before completing; the 690p rise is a single clean edge. Both reach full swing, and both fall at about 4.3 ns.
+- RD_EN (bottom panel) is a triangular, rounded pulse at about 2.8 to 3.0 ns and about 4.2 to 4.4 ns in both runs, much more rounded than the ideal pulses of the controller test, with the 680p pulse about 10 to 20 ps earlier. The RD node pulses (about 2.8 to 2.95 ns) follow it.
+- COL<0>/BLB discharges to about 0.4 V in the cycle around 3.4 to 3.6 ns, shallower than in the write cycles.
+
+What this suggests, and what it does not show: the hesitation on the 680p DOUT rise is the visible difference and is where the worst-row failure plausibly starts (the latch capturing late or from a not-yet-settled RD). It is a reading of a small feature, not a measurement; the err3 sampling instants and the failing cycle are not annotated, so the actual failing check cannot be pinned to this plot. To settle it, measure the RD_EN width and the RD settling time at 680 and 690 ps, and print err3 per cycle.
