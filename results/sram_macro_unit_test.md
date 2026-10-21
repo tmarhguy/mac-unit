@@ -66,3 +66,23 @@ Read off the zoom: WE is low around 1.3 to 2.3 ns and 3.3 to 4.3 ns, high around
 All-in-one 22 ns view: `tb_sram_macro_row15_all_signals_22ns_BEST.png` shows CLK, WE, WL<15>, COL<0>/BL, COL<0>/BLB, COL<0>/Q<15>, COL<0>/QB<15> and DOUT<0> together (one image for 2.5(iii); supersedes `tb_sram_macro_worstrow_row15_waveform.png`, which lacks CLK, WE and BL). Q<15> and QB<15> are complementary and each flips every other write (period about 4 ns), and DOUT<0> follows them after each read, as described above.
 
 Write-time markers: `tb_sram_macro_write_time_markers.png`. Marker A is on CLK at 2.55538 ns, 448.458 mV (the rising edge of the write cycle at 2.5 ns); marker B is on Q<15> at 2.88868 ns, 305.508 mV (Q rising after the write of a 1). Delta: 333.2962 ps (dy 142.95 mV). This shows the reference edge for t_wr1 and t_wr0 is the rising CLK edge. The ADE values (338.6 ps and 333.7 ps) use the 0.4 V crossing on CLK and 0.335 V on Q; the markers sit at 0.448 V and 0.306 V, which is why 333.3 ps differs a little from 338.6 ps. Both are within about 2% of each other and of the 334 ps predicted from 238.2 + 96 ps.
+
+## tclk sweep (66 ns checkerboard/complement bench): T_CLK,min
+
+Image: `media/sram_macro/tb_sram_macro_tclk_sweep_results.png`; data `results/sram_macro_tclk_sweep.csv`. Design variables: tclk = 1n, 0.9n, 0.85n, 0.8n, 0.75n, 0.7n; cbw = 0.62 fF; transient 0 to 66n (not scaled with tclk; see below). The results view is filtered to "pass" (12 of 120 rows).
+
+| tclk | err1 | err2 | Result |
+|---|---|---|---|
+| 1 ns | 173.8 uV | 173.8 uV | pass |
+| 900 ps | 177.7 uV | 177.8 uV | pass |
+| 850 ps | 187.7 uV | 187.7 uV | pass |
+| 800 ps | 232.8 uV | 232.8 uV | pass |
+| 750 ps | 496.9 uV | 496.2 uV | pass |
+| 700 ps | 5.103 mV | 5.118 mV | pass |
+
+All six points pass (limit 0.1 V). So T_CLK,min is at or below 0.70 ns; the failing period has not been found. The error rises as the period shortens and jumps 10x between 750 and 700 ps (0.5 mV to 5.1 mV), which suggests the failure edge is not far below 0.7 ns. Next points: 0.65, 0.6, 0.55, 0.5 ns.
+
+Caveats:
+- Only err1 and err2 (the 66 ns bench) are in this sweep. err3 (worst row, 22 ns bench) and the controller margins are not swept.
+- The controller delays are fixed times (delay chains), not scaled with the clock, so the half-period shrinks while the pulse widths do not. If PRE_B falls with the CLK falling edge at 0.5 tclk (as it appears), the RD_EN-to-PRE_B margin (70 ps at 1 ns, `m_rd_pre`) would shrink by about (1 ns - tclk)/2, reaching zero near 0.86 ns and going negative below that. err1/err2 still pass down to 0.7 ns, so either that margin is not what fails first or this estimate is wrong. Measure m_rd_pre, m_wl_pre and the other controller margins across this sweep to settle it.
+- The 66 ns stop time is fixed; the sources scale with tclk but the run length does not, so at shorter periods the run covers more cycles than intended (the windows in err1/err2 use VAR("tclk"), so they scale). The checks still cover their full windows.
