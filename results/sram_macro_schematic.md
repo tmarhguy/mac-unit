@@ -36,3 +36,12 @@ Data pattern (logic read from the gates): x1 = NAND(a0_s, ph_s); x2 = NAND(a0_s,
 Not covered by this bench: 2.5(iii), the worst-case row read immediately after a write to the opposite value. Which bit order DIN[3:0] has (bit 3 first) is assumed.
 
 Open: run it and capture waveforms and a pass/fail table.
+
+## Netlist cross-checks (from the pasted tb_sram_macro netlist)
+
+- Precharge polarity settled: `precharge` is three PMOS (two to VDD, one equalizing) with gates on PRE_B, so precharge is on when PRE_B is low. PRE_B = inv_2x(CLKB), i.e. it follows CLK, so precharge is on while CLK is low and off while CLK is high, and the wordline fires after the rising edge. The controller margins therefore mean what they were taken to mean.
+- M and E sources: E = pulse period 2 tclk, delay tclk, width tclk (the expected-bit wave); M = pulse period tclk, delay 1.35 tclk, width 0.13 tclk (a narrow sampling pulse once per cycle).
+- DIN: IDIN<3:0> are inverters of {xb, xbb, xb, xbb}, so DIN = {X, xb, X, xb} with X = a0 XOR ph, as decoded earlier.
+- we_s: val0 = 0.8 V, val1 = 0, period 32 tclk, delay 16.25 tclk, width 16 tclk - 20p: WE high, low from 16.25 to 32.25 tclk, then high again, as read from the waveforms.
+- Possible typo: a3_s has width 8.25*tclk - 20p, while a2_s, a1_s, a0_s use 4, 2 and 1 tclk - 20p (an 8*tclk - 20p would be expected). With 8.25, a3 falls at 16.5 tclk, the same instant as a clock rising edge (the clock rises at 0.5 + n tclk), whereas the other address bits change a quarter period before the edge. a3 then changes at the capture edge at the 16-cycle wrap (first read, edge 17). Not confirmed to matter: the checkerboard data depends only on a0, so a wrong a3 decode (row 8 instead of row 0) would not change DOUT. It could still affect the T_CLK,min result (the failure at 680 ps), so fix the width to 8*tclk - 20p and rerun the period sweep.
+- Verification limitation: err1, err2 and err3 compare DOUT against a pattern that depends only on a0 (E and X are functions of a0 and ph), so a row mixed up with another row of the same a0 parity is not caught by these checks. The decoder test (wl_idx) shows the correct row fires at every address, which covers that statically.
