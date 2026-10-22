@@ -1,0 +1,6 @@
+point,pw_en,t_en_r,t_en_f,hold1,hold0,hold1_spec,hold0_spec,hold1_result,hold0_result
+1,10p,eval err,eval err,-58.45u,77.11u,> 0.72,< 0.08,fail,pass
+2,20p,99.52p,75.99p,799.8m,88.01u,> 0.72,< 0.08,pass,pass
+3,40p,88.7p,74.78p,799.8m,88.52u,> 0.72,< 0.08,pass,pass
+4,80p,87.2p,74.46p,799.8m,125.3u,> 0.72,< 0.08,pass,pass
+5,150p,87.27p,74.47p,799.2m,1.25m,> 0.72,< 0.08,pass,pass
