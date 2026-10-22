@@ -1,0 +1,64 @@
+# Compile the Part 1 team report to PDF and commit the artifact so it is
+# available from GitHub without requiring a local TeX installation.
+name: LaTeX to PDF
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "ESE5700_Proj1_Part1.tex"
+      - "media/**"
+      - ".github/workflows/latex-to-pdf.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: latex-pdf-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-commit-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compile Part 1
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ESE5700_Proj1_Part1.tex
+          compiler: latexmk
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+          latexmk_shell_escape: false
+
+      - name: Commit and push PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH="${GITHUB_REF_NAME}"
+
+          git config user.name "Tyrone Marhguy"
+          git config user.email "tmarhguy@gmail.com"
+
+          git add -f ESE5700_Proj1_Part1.pdf
+
+          if git diff --cached --quiet; then
+            echo "No PDF changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(docs): regenerate compiled PDF [skip ci]"
+
+          git fetch origin "${BRANCH}"
+          git pull --rebase origin "${BRANCH}"
+
+          if ! git push origin "HEAD:${BRANCH}"; then
+            echo "Initial push failed; rebasing once more and retrying."
+            git fetch origin "${BRANCH}"
+            git pull --rebase origin "${BRANCH}"
+            git push origin "HEAD:${BRANCH}"
+          fi

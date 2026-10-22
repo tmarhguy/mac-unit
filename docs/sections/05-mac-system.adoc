@@ -1,0 +1,43 @@
+[#mac-system]
+== MAC System (Part 3 — roadmap)
+
+NOTE: Roadmap — Part 3 hardware does not exist yet. Every value in
+this chapter is TBD; nothing here is measured or estimated.
+
+Part 3 deliverable: two SRAM macros + datapath + sequencer forming
+the 16-element dot-product unit. Stub headings; fill during Part 3.
+
+=== Datapath
+
+[source,text]
+----
+weights SRAM (16x4) --\
+                       +--> 4x4 mult --> 12-bit acc --> ACC
+activations SRAM (16x4) --/
+----
+
+* 4×4 unsigned multiplier (inputs `W[i], X[i]`).
+* 12-bit accumulator (worst case 3600 < 4096, no overflow).
+* Output register holding `ACC` at sequence end.
+
+Multiplier / adder schematics, areas: TBD.
+
+=== Sequencer
+
+[source,text]
+----
+IDLE -> READ(i) -> MULT -> ACCUM -> i+1 ... -> DONE (i = 0..15)
+----
+
+* 4-bit index counter + one-hot or encoded control FSM.
+* SRAM read-enable, latch, accumulate, and clear sequencing.
+* 16-cycle latency target; throughput and control truth table: TBD.
+
+=== Integration
+
+* Two macro instances + datapath + FSM wired at top level.
+* DRC/LVS/PEX clean at full-chip level.
+* Functional vector: known stem:[W], stem:[X] → expected `ACC`.
+* Corner / supply behaviour summarized in <<results,Results>>.
+
+Top-level schematic, FSM diagram, integration table: TBD.

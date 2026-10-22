@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<setupdb version="7">maestro
+	
+	<active>Active Setup
+		
+		<jobcontrolmode>LSCS</jobcontrolmode>
+		<corners>
+			<corner enabled="1">_default</corner>
+		</corners>
+		<overwritehistory>0</overwritehistory>
+		<tests>
+			<test>proj1_lib_tb_sram_macro_1
+				
+				<tool>ADE</tool>
+				<tooloptions>
+					<option>cell
+						<value>tb_sram_macro</value>
+					</option>
+					<option>lib
+						<value>proj1_lib</value>
+					</option>
+					<option>path
+						<value>$AXL_SETUPDB_DIR</value>
+					</option>
+					<option>sim
+						<value>spectre</value>
+					</option>
+					<option>view
+						<value>schematic</value>
+					</option>
+					<option>state
+						<value>active</value>
+					</option>
+				</tooloptions>
+				<vars>
+					<var>cbw
+						<value>0.62f</value>
+					</var>
+					<var>tclk
+						<value>0.7n 0.69n 0.68n 0.67n 0.66n 0.65n 0.6n</value>
+					</var>
+				</vars>
+				<outputs>
+					<output>err1
+						<evalType>point</evalType>
+					</output>
+					<output>err2
+						<evalType>point</evalType>
+					</output>
+					<output>t_acc_f
+						<evalType>point</evalType>
+					</output>
+					<output>t_acc_r
+						<evalType>point</evalType>
+					</output>
+					<output></output>
+				</outputs>
+			</test>
+		</tests>
+	</active>
+	<active>Active Setup
+		<corners>
+			<corner enabled="1">_default</corner>
+		</corners>
+	</active>
+	<history>History
+	</history>
+</setupdb>

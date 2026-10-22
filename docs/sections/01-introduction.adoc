@@ -1,0 +1,18 @@
+[#requirements]
+== Assignment and evidence
+
+The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nominal 0.8 V and requires one team report. It asks for a symmetric cell, hand sizing analysis, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability measurements, supply dependence and a functional write/read test. The report must also identify each member's contribution.
+
+=== What is recorded
+
+* Virtuoso cell schematic with PD/PG/PU fin counts and equal halves.
+* Handwritten read-path and current-balance work; typed read and write derivations.
+* Two read-SNM DC testbench schematics, raw four-column Cadence exports, derived curves and machine-readable SNM calculations for β=1, 1.5 and 2.
+* Original ViVA butterfly screenshots. Cyan boxes in this site show the maximum-square locations computed from the CSVs.
+* Layout area, DRC/LVS, extracted capacitance, and post-layout stability in <<signoff,Layout, extraction and post-layout results>>.
+
+=== What is still required
+
+The LVS Results Viewer capture is in <<signoff,the layout section>>. A separate DRC Results Viewer capture, the extracted butterfly and write-margin plots, and the functional waveforms are not in the repository. Each author's contribution row is still blank.
+
+All numbers on this site carry their actual evidence level. A hand estimate and a schematic sweep never stand in for a post-layout measurement.

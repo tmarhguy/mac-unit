@@ -1,0 +1,54 @@
+#
+# OPTION COMMAND FILE created byCadence Quantus Extraction Version 23.1.2-p001 from CCL
+#
+capacitance \
+	 -decoupling_factor 1.0 \
+	 -ground_net "VSS"
+extract \
+	 -selection "all" \
+	 -type "rc_decoupled"
+extraction_setup \
+	 -array_vias_spacing "auto" \
+	 -max_fracture_length infinite \
+	 -max_fracture_length_unit "MICRONS" \
+	 -max_via_array_size \
+		"auto" \
+	 -net_name_space "LAYOUT" \
+	 -split_via_by_unit_area false
+filter_res \
+	 -merge_parallel_res false \
+	 -min_res 0.001
+input_db -type pegasus \
+	 -design_cell_name "6t_sram_final_design layout proj1_lib" \
+	 -directory_name "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs/svdb" \
+	 -format "DFII" \
+	 -library_definitions_file "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/cds.lib" \
+	 -run_name "6t_sram_final_design"
+log_file \
+	 -file_name "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs/svdb/qrc.6t_sram_final_design.log"
+output_db -type extracted_view \
+	 -cap_component "pcapacitor" \
+	 -cap_property_name "c" \
+	 -cdl_out_map_directory \
+		"/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs" \
+	 -device_finger_delimiter "@" \
+	 -enable_cellview_check true \
+	 -include_cap_model "false" \
+	 -include_parasitic_cap_model "false" \
+	 -include_parasitic_res_model "comment" \
+	 -include_parasitic_res_width true \
+	 -include_res_model "false" \
+	 -res_component "presistor" \
+	 -res_property_name "r" \
+	 -transfer_net_expression true \
+	 -view_name "av_extracted"
+output_setup \
+	 -directory_name "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs/svdb" \
+	 -temporary_directory_name "6t_sram_final_design"
+process_technology \
+	 -technology_directory \
+		"/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/qrc/typical" \
+	 -temperature \
+		"25.0"
+
+

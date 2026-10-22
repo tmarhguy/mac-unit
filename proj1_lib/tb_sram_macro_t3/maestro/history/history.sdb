@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<setupdb version="7">history
+	<active>Active Setup</active>
+	<history>History
+		<historyentry assemblerOrExplorer="explorer" roOrView="view" runningOrFinished="finished">ExpInteractive.1
+			<timestamp>Oct 21 18:39:33 2026</timestamp>
+			<uuid>{1528438d-f0eb-4c84-9e37-b7d3b0dac7fd}</uuid>
+			<locked>0</locked>
+			<mode>Single Run, Sweeps and Corners</mode>
+			<note>
+				<tooltip>Explorer History</tooltip>
+			</note>
+			<resultsname>/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/maestro/$AXL_HISTORY_NAME.rdb</simresults>
+			<runlog>/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/maestro/$AXL_HISTORY_NAME.log</runlogfile>
+			<psfdir>/vast/home/v/vwanjohi/simulation/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME</psfdir>
+			<simdir>$AXL_PROJECT_DIR/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME</simdir>
+		</historyentry>
+		<historyentry assemblerOrExplorer="explorer" roOrView="view" runningOrFinished="finished">ExplorerRun.0
+			<timestamp>Oct 21 19:06:50 2026</timestamp>
+			<uuid>{d1a7f1a5-71cf-4530-9eab-b8083c47c5c4}</uuid>
+			<locked>0</locked>
+			<mode>Single Run, Sweeps and Corners</mode>
+			<resultsname>/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/maestro/$AXL_HISTORY_NAME.rdb</simresults>
+			<runlog>/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/maestro/$AXL_HISTORY_NAME.log</runlogfile>
+			<psfdir>/vast/home/v/vwanjohi/simulation/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME</psfdir>
+			<simdir>$AXL_PROJECT_DIR/proj1_lib/tb_sram_macro_t3/maestro/results/maestro/$AXL_HISTORY_NAME</simdir>
+		</historyentry>
+	</history>
+</setupdb>

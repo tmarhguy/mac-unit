@@ -1,0 +1,17 @@
+{
+  "name": "6T SRAM",
+  "label": "Project report",
+  "title": "A six-transistor memory cell",
+  "description": "The six-transistor circuit that stores one bit, drawn in an 18 nm process. The cell is 0.39 µm², DRC-clean, and the extracted read margin is 140 mV at 0.8 V.",
+  "url": "",
+  "image": "",
+  "about": "#about",
+  "repository": "https://github.com/tmarhguy/mac-unit",
+  "website": "",
+  "source": "https://github.com/tmarhguy/mac-unit/blob/main/docs/index.adoc",
+  "groups": {
+    "0": "Report"
+  },
+  "branch": "main",
+  "hero": null
+}
