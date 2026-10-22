@@ -1,0 +1,45 @@
+Virtuoso Framework License (111) was checked out successfully. Total checkout time was 0.03s.
+
+Running simulation in directory: "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs2/".
+
+Loading cds_ff_mpt/libInit.il ...
+	Loading cds_ff_mpt/loadCxt.ile ... done!
+	Loading context 'cds_ff_mpt' from library 'cds_ff_mpt' ... done!
+	Loading context 'pdkUtils' from library 'cds_ff_mpt' ... done!
+	Loading cds_ff_mpt/cds_ff_mpt_customFilter.il ... done!
+	Loading cds_ff_mpt/libInitCustomExit.il ... 
+	Loading Environment Settings ...
+	Loading cds_ff_mpt/libInitCktPro.il ... done!
+
+  *************************************************************           
+  *              Cadence Design Systems, Inc.                 *           
+  *                                                           *           
+  *             Generic Finfet Multi Pattern PDK              *           
+  *                     (cds_ff_mpt)                          *           
+  *                                                           *           
+  *************************************************************           
+	
+
+	VERSION: 1.1 (28-Sep-2021) built using ICADVM201-ISR20
+
+done!
+	Loading cds_ff_mpt/cds_ff_mptFgrUtil.il ... 
+done!
+	Loading cds_ff_mpt/cds_ff_mptFgrRing.il ... 
+done!
+Loaded cds_ff_mpt/libInit.il successfully!
+Loading hnlInit.cxt 
+Running Artist Hierarchical Netlisting ...
+End netlisting Oct 18 19:14:29 2026
+
+Running simin
+
+Running runSim()...
+
+
+Running runsim with simulator: "auCdl"
+Begin simulation:    Oct 18 19:14:29 2026
+
+auCdl netlisting completed
+End simulation:      Oct 18 19:14:29 2026
+INFO (AUCDL-21): (Analog) CDL netlisting completed successfully.

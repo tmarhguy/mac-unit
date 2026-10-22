@@ -1,0 +1,211 @@
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* CDL Netlist:                                              *
+*                                                           *
+* Cell Name  : sram_6t                                      *
+* Netlisted  : Sun Oct 18 19:14:39 2026                     *
+* Pegasus Version: 23.20-p013 Tue Jan 9 12:32:47 PST 2024   *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+*.LDD
+*.DEVTMPLT 0 R(resm1) m1res_dev m1_conn_mask1(PLUS) m1_conn_mask1(MINUS)
+*.DEVTMPLT 1 R(resm1) m1res_dev m1_conn_mask2(PLUS) m1_conn_mask2(MINUS)
+*.DEVTMPLT 2 R(resm2) m2res_dev m2_conn_mask1(PLUS) m2_conn_mask1(MINUS)
+*.DEVTMPLT 3 R(resm2) m2res_dev m2_conn_mask2(PLUS) m2_conn_mask2(MINUS)
+*.DEVTMPLT 4 R(resm3) m3res_dev m3_conn_mask1(PLUS) m3_conn_mask1(MINUS)
+*.DEVTMPLT 5 R(resm3) m3res_dev m3_conn_mask2(PLUS) m3_conn_mask2(MINUS)
+*.DEVTMPLT 6 R(resm4) m4res_dev m4_conn(PLUS) m4_conn(MINUS)
+*.DEVTMPLT 7 R(resm5) m5res_dev m5_conn(PLUS) m5_conn(MINUS)
+*.DEVTMPLT 8 R(resm6) m6res_dev m6_conn(PLUS) m6_conn(MINUS)
+*.DEVTMPLT 9 R(resm7) m7res_dev m7_conn(PLUS) m7_conn(MINUS)
+*.DEVTMPLT 10 R(resmt) mtres_dev mt_conn(PLUS) mt_conn(MINUS)
+*.DEVTMPLT 11 R(rsnp) rsnp_dev npoly_conn(PLUS) npoly_conn(MINUS)
+*.DEVTMPLT 12 R(rsnp) rsnp_dev ppoly_conn(PLUS) ppoly_conn(MINUS)
+*.DEVTMPLT 13 R(rnsnp) rnsnp_dev npoly_conn(PLUS) npoly_conn(MINUS)
+*.DEVTMPLT 14 R(rnsnp) rnsnp_dev ppoly_conn(PLUS) ppoly_conn(MINUS)
+*.DEVTMPLT 15 R(rspp) rspp_dev ppoly_conn(PLUS) ppoly_conn(MINUS)
+*.DEVTMPLT 16 R(rspp) rspp_dev npoly_conn(PLUS) npoly_conn(MINUS)
+*.DEVTMPLT 17 R(rnspp) rnspp_dev ppoly_conn(PLUS) ppoly_conn(MINUS)
+*.DEVTMPLT 18 R(rnspp) rnspp_dev npoly_conn(PLUS) npoly_conn(MINUS)
+*.DEVTMPLT 19 R(rnsnd) rnsnd_dev ndiffres_term(PLUS) ndiffres_term(MINUS)
+*.DEVTMPLT 20 R(rsnd) rsnd_dev ndiffres_term(PLUS) ndiffres_term(MINUS)
+*.DEVTMPLT 21 R(rnspd) rnspd_dev pdiffres_term(PLUS) pdiffres_term(MINUS)
+*.DEVTMPLT 22 R(rspd) rspd_dev pdiffres_term(PLUS) pdiffres_term(MINUS)
+*.DEVTMPLT 23 R(rnwo) rnwo_dev nw_term(PLUS) nw_term(MINUS)
+*.DEVTMPLT 24 R(rnws) rnws_dev nw_term(PLUS) nw_term(MINUS)
+*.DEVTMPLT 25 C(cmim) mim_cap_dev CMT(PLUS) m7_conn(MINUS)
+*.DEVTMPLT 26 Q(npn) npn_dev_1x1 BuriedNWell(C) iso_pwell(B) npn_emit(E) psub(S)
+*.DEVTMPLT 27 Q(npn) npn_dev_2x2 BuriedNWell(C) iso_pwell(B) npn_emit(E) psub(S)
+*.DEVTMPLT 28 D(nd1hvt) nd1hvt_dev psub(PLUS) ndiff_conn(MINUS)
+*.DEVTMPLT 29 D(nd1lvt) nd1lvt_dev psub(PLUS) ndiff_conn(MINUS)
+*.DEVTMPLT 30 D(nd1svt) nd1svt_dev psub(PLUS) ndiff_conn(MINUS)
+*.DEVTMPLT 31 D(nd2svt) nd2svt_dev psub(PLUS) ndiff_conn(MINUS)
+*.DEVTMPLT 32 D(pd1hvt) pd1hvt_dev pdiff_conn(PLUS) nw_conn(MINUS)
+*.DEVTMPLT 33 D(pd1lvt) pd1lvt_dev pdiff_conn(PLUS) nw_conn(MINUS)
+*.DEVTMPLT 34 D(pd1svt) pd1svt_dev pdiff_conn(PLUS) nw_conn(MINUS)
+*.DEVTMPLT 35 D(pd2svt) pd2svt_dev pdiff_conn(PLUS) nw_conn(MINUS)
+*.DEVTMPLT 36 MN(n1hvt) n1hvt_dev nsd(D) ngate(G) nsd(S) psub(B)
+*.DEVTMPLT 37 MN(n1hvt) n1hvt_dev_iso nsd(D) ngate(G) nsd(S) iso_pwell(B)
+*.DEVTMPLT 38 MN(n1lvt) n1lvt_dev nsd(D) ngate(G) nsd(S) psub(B)
+*.DEVTMPLT 39 MN(n1lvt) n1lvt_dev_iso nsd(D) ngate(G) nsd(S) iso_pwell(B)
+*.DEVTMPLT 40 MN(n1svt) n1svt_dev nsd(D) ngate(G) nsd(S) psub(B)
+*.DEVTMPLT 41 MN(n1svt) n1svt_dev_iso nsd(D) ngate(G) nsd(S) iso_pwell(B)
+*.DEVTMPLT 42 MN(n2svt) n2svt_dev nsd(D) ngate(G) nsd(S) psub(B)
+*.DEVTMPLT 43 MN(n2svt) n2svt_dev_iso nsd(D) ngate(G) nsd(S) iso_pwell(B)
+*.DEVTMPLT 44 MP(p1hvt) p1hvt_dev psd(D) pgate(G) psd(S) nw_conn(B)
+*.DEVTMPLT 45 MP(p1lvt) p1lvt_dev psd(D) pgate(G) psd(S) nw_conn(B)
+*.DEVTMPLT 46 MP(p1svt) p1svt_dev psd(D) pgate(G) psd(S) nw_conn(B)
+*.DEVTMPLT 47 MP(p2svt) p2svt_dev psd(D) pgate(G) psd(S) nw_conn(B)
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: M1_LiAct_CDNS_792365268070_0_cv1                *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt M1_LiAct_CDNS_792365268070_0_cv1 1
+** N=1 EP=1 FDC=0
+.ends M1_LiAct_CDNS_792365268070_0_cv1
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: M2_M1_CDNS_792365268070_1_cv1                   *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt M2_M1_CDNS_792365268070_1_cv1 1
+** N=1 EP=1 FDC=0
+.ends M2_M1_CDNS_792365268070_1_cv1
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: M3_M2_CDNS_792365268070_2_cv1                   *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt M3_M2_CDNS_792365268070_2_cv1 1
+** N=1 EP=1 FDC=0
+.ends M3_M2_CDNS_792365268070_2_cv1
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: LiPo_Poly_CDNS_792365268070_3                   *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt LiPo_Poly_CDNS_792365268070_3 1
+** N=1 EP=1 FDC=0
+.ends LiPo_Poly_CDNS_792365268070_3
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: M1_LiPo_CDNS_792365268070_4_cv1                 *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt M1_LiPo_CDNS_792365268070_4_cv1 1
+** N=1 EP=1 FDC=0
+.ends M1_LiPo_CDNS_792365268070_4_cv1
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: p1svt_CDNS_792365268070                         *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt p1svt_CDNS_792365268070 1 2 3 4
+** N=12 EP=4 FDC=1
+M0 3 1 2 2 p1svt L=1.8e-08 nf=1 nfin=2 asej=1.904e-15 adej=1.904e-15 psej=3e-07 pdej=3e-07 $X=0 $Y=0 $dt=46
+.ends p1svt_CDNS_792365268070
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: n1svt_CDNS_792365268071                         *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt n1svt_CDNS_792365268071 1 2 3 4
+** N=12 EP=4 FDC=1
+M0 3 1 2 4 n1svt L=1.8e-08 nf=1 nfin=2 asej=1.904e-15 adej=1.904e-15 psej=3e-07 pdej=3e-07 $X=0 $Y=0 $dt=40
+.ends n1svt_CDNS_792365268071
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: n1svt_CDNS_792365268072                         *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt n1svt_CDNS_792365268072 1 2 3
+** N=11 EP=3 FDC=1
+M0 3 1 2 2 n1svt L=1.8e-08 nf=1 nfin=4 asej=3.808e-15 adej=3.808e-15 psej=6e-07 pdej=6e-07 $X=0 $Y=0 $dt=40
+.ends n1svt_CDNS_792365268072
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: nwellTap_CDNS_792365268073                      *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt nwellTap_CDNS_792365268073 1
+** N=1 EP=1 FDC=0
+.ends nwellTap_CDNS_792365268073
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: n1svt_CDNS_792365268075                         *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt n1svt_CDNS_792365268075 1 2 3
+** N=11 EP=3 FDC=1
+M0 3 1 2 2 n1svt L=1.8e-08 nf=1 nfin=4 asej=3.808e-15 adej=3.808e-15 psej=6e-07 pdej=6e-07 $X=0 $Y=0 $dt=40
+.ends n1svt_CDNS_792365268075
+
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+* Sub cell: sram_6t                                         *
+* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ *
+.subckt sram_6t BL BLB Q QB VDD VSS WL
+** N=7 EP=7 FDC=6
+X0 VDD M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 4036 0 0 $X=4900 $Y=3924
+X1 VDD M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 7062 0 0 $X=4900 $Y=6950
+X2 VSS M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 10062 0 0 $X=4900 $Y=9950
+X3 VSS M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 13062 0 0 $X=4900 $Y=12950
+X4 BL M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 16062 0 0 $X=4900 $Y=15950
+X5 QB M1_LiAct_CDNS_792365268070_0_cv1 $T=4932 19062 0 0 $X=4900 $Y=18950
+X6 Q M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 4036 0 0 $X=5072 $Y=3924
+X7 QB M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 7062 0 0 $X=5072 $Y=6950
+X8 Q M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 10062 0 0 $X=5072 $Y=9950
+X9 QB M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 13062 0 0 $X=5072 $Y=12950
+X10 Q M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 16062 0 0 $X=5072 $Y=15950
+X11 BLB M1_LiAct_CDNS_792365268070_0_cv1 $T=5104 19062 0 0 $X=5072 $Y=18950
+X12 VDD M2_M1_CDNS_792365268070_1_cv1 $T=4932 3600 0 0 $X=4880 $Y=3548
+X13 VDD M2_M1_CDNS_792365268070_1_cv1 $T=4932 6600 0 0 $X=4880 $Y=6548
+X14 VSS M2_M1_CDNS_792365268070_1_cv1 $T=4932 9600 0 0 $X=4880 $Y=9548
+X15 VSS M2_M1_CDNS_792365268070_1_cv1 $T=4932 12600 0 0 $X=4880 $Y=12548
+X16 BL M2_M1_CDNS_792365268070_1_cv1 $T=4932 15600 0 0 $X=4880 $Y=15548
+X17 QB M2_M1_CDNS_792365268070_1_cv1 $T=4932 18600 0 0 $X=4880 $Y=18548
+X18 QB M2_M1_CDNS_792365268070_1_cv1 $T=5018 4444 0 0 $X=4966 $Y=4392
+X19 Q M2_M1_CDNS_792365268070_1_cv1 $T=5018 7444 0 0 $X=4966 $Y=7392
+X20 QB M2_M1_CDNS_792365268070_1_cv1 $T=5018 10636 0 0 $X=4966 $Y=10584
+X21 Q M2_M1_CDNS_792365268070_1_cv1 $T=5018 13636 0 0 $X=4966 $Y=13584
+X22 WL M2_M1_CDNS_792365268070_1_cv1 $T=5018 16444 0 0 $X=4966 $Y=16392
+X23 WL M2_M1_CDNS_792365268070_1_cv1 $T=5018 19444 0 0 $X=4966 $Y=19392
+X24 Q M2_M1_CDNS_792365268070_1_cv1 $T=5104 3300 0 0 $X=5052 $Y=3248
+X25 QB M2_M1_CDNS_792365268070_1_cv1 $T=5104 6300 0 0 $X=5052 $Y=6248
+X26 Q M2_M1_CDNS_792365268070_1_cv1 $T=5104 9300 0 0 $X=5052 $Y=9248
+X27 QB M2_M1_CDNS_792365268070_1_cv1 $T=5104 12300 0 0 $X=5052 $Y=12248
+X28 Q M2_M1_CDNS_792365268070_1_cv1 $T=5104 15300 0 0 $X=5052 $Y=15248
+X29 BLB M2_M1_CDNS_792365268070_1_cv1 $T=5104 18300 0 0 $X=5052 $Y=18248
+X30 VSS M2_M1_CDNS_792365268070_1_cv1 $T=6800 1600 0 0 $X=6748 $Y=1548
+X31 VDD M2_M1_CDNS_792365268070_1_cv1 $T=6800 4900 0 0 $X=6748 $Y=4848
+X32 VDD M2_M1_CDNS_792365268070_1_cv1 $T=6800 7900 0 0 $X=6748 $Y=7848
+X33 Q M3_M2_CDNS_792365268070_2_cv1 $T=800 3300 0 0 $X=748 $Y=3248
+X34 Q M3_M2_CDNS_792365268070_2_cv1 $T=800 7444 0 0 $X=748 $Y=7392
+X35 Q M3_M2_CDNS_792365268070_2_cv1 $T=800 9300 0 0 $X=748 $Y=9248
+X36 Q M3_M2_CDNS_792365268070_2_cv1 $T=800 13636 0 0 $X=748 $Y=13584
+X37 Q M3_M2_CDNS_792365268070_2_cv1 $T=800 15300 0 0 $X=748 $Y=15248
+X38 QB M3_M2_CDNS_792365268070_2_cv1 $T=1200 4444 0 0 $X=1148 $Y=4392
+X39 QB M3_M2_CDNS_792365268070_2_cv1 $T=1200 6300 0 0 $X=1148 $Y=6248
+X40 QB M3_M2_CDNS_792365268070_2_cv1 $T=1200 10636 0 0 $X=1148 $Y=10584
+X41 QB M3_M2_CDNS_792365268070_2_cv1 $T=1200 12300 0 0 $X=1148 $Y=12248
+X42 QB M3_M2_CDNS_792365268070_2_cv1 $T=1200 18600 0 0 $X=1148 $Y=18548
+X43 BL M3_M2_CDNS_792365268070_2_cv1 $T=1600 15600 0 0 $X=1548 $Y=15548
+X44 BLB M3_M2_CDNS_792365268070_2_cv1 $T=2000 18300 0 0 $X=1948 $Y=18248
+X45 WL M3_M2_CDNS_792365268070_2_cv1 $T=2400 16444 0 0 $X=2348 $Y=16392
+X46 WL M3_M2_CDNS_792365268070_2_cv1 $T=2400 19444 0 0 $X=2348 $Y=19392
+X47 VDD M3_M2_CDNS_792365268070_2_cv1 $T=2800 3600 0 0 $X=2748 $Y=3548
+X48 VDD M3_M2_CDNS_792365268070_2_cv1 $T=2800 4900 0 0 $X=2748 $Y=4848
+X49 VDD M3_M2_CDNS_792365268070_2_cv1 $T=2800 6600 0 0 $X=2748 $Y=6548
+X50 VDD M3_M2_CDNS_792365268070_2_cv1 $T=2800 7900 0 0 $X=2748 $Y=7848
+X51 VSS M3_M2_CDNS_792365268070_2_cv1 $T=3200 1600 0 0 $X=3148 $Y=1548
+X52 VSS M3_M2_CDNS_792365268070_2_cv1 $T=3200 9600 0 0 $X=3148 $Y=9548
+X53 VSS M3_M2_CDNS_792365268070_2_cv1 $T=3200 12600 0 0 $X=3148 $Y=12548
+X54 QB LiPo_Poly_CDNS_792365268070_3 $T=5018 4252 0 0 $X=4988 $Y=4172
+X55 Q LiPo_Poly_CDNS_792365268070_3 $T=5018 7244 0 0 $X=4988 $Y=7164
+X56 QB LiPo_Poly_CDNS_792365268070_3 $T=5018 10416 0 0 $X=4988 $Y=10336
+X57 Q LiPo_Poly_CDNS_792365268070_3 $T=5018 13416 0 0 $X=4988 $Y=13336
+X58 WL LiPo_Poly_CDNS_792365268070_3 $T=5018 16224 0 0 $X=4988 $Y=16144
+X59 WL LiPo_Poly_CDNS_792365268070_3 $T=5018 19224 0 0 $X=4988 $Y=19144
+X60 QB M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 4252 0 0 $X=4906 $Y=4192
+X61 Q M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 7244 0 0 $X=4906 $Y=7184
+X62 QB M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 10416 0 0 $X=4906 $Y=10356
+X63 Q M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 13416 0 0 $X=4906 $Y=13356
+X64 WL M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 16224 0 0 $X=4906 $Y=16164
+X65 WL M1_LiPo_CDNS_792365268070_4_cv1 $T=5018 19224 0 0 $X=4906 $Y=19164
+X66 QB VDD Q VSS p1svt_CDNS_792365268070 $T=5000 4000 0 0 $X=4484 $Y=3870
+X67 Q VDD QB VSS p1svt_CDNS_792365268070 $T=5000 7000 0 0 $X=4484 $Y=6870
+X68 WL BL Q VSS n1svt_CDNS_792365268071 $T=5000 16000 0 0 $X=4484 $Y=15904
+X69 WL QB BLB VSS n1svt_CDNS_792365268071 $T=5000 19000 0 0 $X=4484 $Y=18904
+X70 Q VSS QB n1svt_CDNS_792365268072 $T=5000 13000 0 0 $X=4484 $Y=12904
+X71 VDD nwellTap_CDNS_792365268073 $T=6800 4062 0 0 $X=6642 $Y=3870
+X72 VDD nwellTap_CDNS_792365268073 $T=6800 7062 0 0 $X=6642 $Y=6870
+X73 QB VSS Q n1svt_CDNS_792365268075 $T=5000 10000 0 0 $X=4484 $Y=9904
+.ends sram_6t

@@ -1,0 +1,1512 @@
+6t_sram_final_layout 2000
+offgrid_check
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Grid violation
+ortho_45_check
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Orthogonal and 45 degree violation
+acute_check
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Acute angle  violation
+NBL.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NBL.W.1: Minimum Nburied Width >= 0.8 um
+NBL.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NBL.SP.1: Minimum Nburied to Nburied spacing >= 2.0 um
+NBL.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NBL.SE.1: Minimum Nburied to non-related Nwell spacing >= 2.2 um
+NBL.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NBL.SE.2: Minimum Nburied to Oxide spacing >= 1.2 um
+NW.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.W.1: Minimum NWell Width >= 0.146 um
+NW.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.SP.1: Minimum Nwell spacing >= 0.162 um
+NW.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.SE.1: Minimum Nwell spacing to Active  >= 0.16 um
+NW.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.SE.2: Minimum Nwell spacing to 1.8V Active Area >= 0.24 um
+NW.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.E.1: Minimum Nwell enclosure of Active Area >= 0.021 um
+NW.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.E.2: Minimum Nwell enclosure of 1.8V Active Area >= 0.034 um
+NW.E.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.E.3: Minimum Nwell enclosure of straddled NBL >= 0.24 um
+NW.E.4
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.E.4: Minimum Nwell extension into straddled NBL >= 0.24 um
+NW.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.A.1: Minimum Nwell area >= 0.03 um
+NW.EA.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NW.EA.1: Minimum Nwell enclosed area >= 0.18 um
+NWR.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NWR.E.1: Minimum Active enclosure of Nwell(in resistor) >= 0.021 um
+NWR.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NWR.SP.1: Minimum Nwell resistor spacing to Nwell  >= 0.3 um
+OXIDE.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDE.W.1: Minimum Active width in the Y direction in steps of 0.048 >= 0.062 um
+OXIDE.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDE.W.2: Minimum Active width in the X direction >= 0.068 um
+OXIDE.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDE.SP.1: Minimum Active space in the Y direction in steps of 0.048 >= 0.13 um
+OXIDE.SP.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDE.SP.2: Minimum Active space in the X direction >= 0.018 um
+OXIDE.C.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDE.C.1: Active must be covered by N+ Implant or P+ Implant
+CUTACTIVE.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTACTIVE.W.1: Minimum CutActive width in the Y direction in steps of 0.048 >= 0.082 um
+CUTACTIVE.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTACTIVE.W.2: Allowed CutActive width values in the X direction (0.018 0.020 0.024 0.028 0.030) um
+CUTACTIVE.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTACTIVE.SP.1: Minimum CutActive space >= 0.068 um
+CUTACTIVE.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTACTIVE.SE.1: Minimum CutActive to Active space >= 0.068 um
+CUTACTIVE.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTACTIVE.E.1: Minimum CutActive extension beyond Active >= 0.01 um
+FB48.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+FB48.W.1: Minimum FinArea width in the Y direction in steps of 0.048 >= 0.062 um
+FB48.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+FB48.W.2: Minimum FinArea width in the X direction >= 0.096 um
+FB48.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+FB48.SP.1: Minimum FinArea space in the Y direction in steps of 0.48 >= 0.034 um
+FB48.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+FB48.E.2: Minimum FinArea Overlap (Active not CutActive) in the X direction >= 0.017 um
+FB48.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+FB48.E.1: Minimum FinArea Overlap Active in the Y direction in steps of 0.048 >= 0.048 um
+OXIDETHK.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.W.1: Minimum Thick Active Area width in the Y direction >= 0.124 um
+OXIDETHK.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.W.2: Minimum Thick Active Area width in the X direction >= 0.158 um
+OXIDETHK.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.SP.1: Minimum Thick Active Area space in the Y direction >= 0.068 um
+OXIDETHK.SP.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.SP.2: Minimum Thick Active Area space in the X direction >= 0.064 um
+OXIDETHK.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.SE.1: Minimum Thick Active Area space to Active Area in the Y direction >= 0.099 um
+OXIDETHK.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.SE.2: Minimum Thick Active Area space to Active Area in the X direction >= 0.109 um
+OXIDETHK.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.E.1: Minimum Thick Active Area to Active Area enclosure in the Y direction >= 0.031 um
+OXIDETHK.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+OXIDETHK.E.2: Minimum Thick Active Area to Active Area enclosure in the X direction >= 0.045 um
+SIPROT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.W.1: Minimum Salicide Block width >= 0.042 um
+SIPROT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.SP.1: Minimum Salicide Block space >= 0.044 um
+SIPROT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.SE.1: Minimum Salicide Block to Contact spacing >= 0.009 um
+SIPROT.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.SE.2: Minimum Salicide Block to unrelated Active Area spacing >= 0.12 um
+SIPROT.SE.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.SE.3: Minimum Salicide Block to Poly space >= 0.022 um
+SIPROT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.E.1 : Minimum Salicide block to Active area enclosure >=0.012
+SIPROT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.E.1 : Minimum Active area to to Salicide block >=0.012
+SIPROT.E.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.E.3 : Minimum Salicide block to Poly >=0.012
+SIPROT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+SIPROT.A.1: Minimum Salicide Block area >= 0.0042 um
+NSVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.W.1: Minimum Nsvt width >= 0.052 um
+NSVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.SP.1: Minimum Nsvt space >= 0.024 um
+NSVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.SE.1: Minimum Nsvt to PActive space >= 0.045 um
+NSVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.A.1: Minimum area for Nsvt >= 0.017 um
+NSVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.E.1: Minimum Nsvt to Poly enclosure >=(0.045,0.065)
+NSVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.E.2: Minimum Nsvt to Active enclosure >=(0.045,0.065)
+NSVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NSVT.X.1: Nsvt is NOT allowed over Ptype Implant
+NHVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.W.1: Minimum Nhvt width >= 0.052
+NHVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.SP.1: Minimum Nhvt spacing >= 0.024
+NHVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.SE.1: Minimum Nhvt to PActive space >= 0.045 um
+NHVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.A.1: Minimum Nhvt area >= 0.03 um
+NHVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.E.1: Minimum Nhvt to Poly enclosure >=(0.045,0.065)
+NHVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.E.2: Minimum Nhvt to Active enclosure >=(0.045,0.065)
+NHVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NHVT.X.1: Nhvt is NOT allowed on Ptype Implant
+NLVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.W.1: Minimum Nlvt width >= 0.052
+NLVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.SP.1: Minimum Nhvt spacing >= 0.024
+NLVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.SE.1: Minimum Nlvt to PActive space >= 0.045 um
+NLVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.A.1: Minimum Nlvt area >= 0.03 um
+NLVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.E.1: Minimum Nlvt to Poly enclosure >=(0.045,0.065)
+NLVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.E.2: Minimum Nlvt to Active enclosure >=(0.045,0.065)
+NLVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+NLVT.X.1: Nlvt is NOT allowed on Ptype Implant
+PSVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.W.1: Minimum Psvt width >= 0.052
+PSVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.SP.1: Minimum Psvt spacing >= 0.024
+PSVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.SE.1: Minimum Psvt to NActive space >= 0.045 um
+PSVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.A.1: Minimum Psvt area >= 0.017 um
+PSVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.E.1: Minimum Psvt to Poly enclosure >=(0.045,0.065)
+PSVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.E.2: Minimum Psvt to Active enclosure >=(0.045,0.065)
+PSVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PSVT.X.1: Psvt is NOT allowed on Ntype Implant
+PHVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.W.1: Minimum Phvt width >= 0.052
+PHVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.SP.1: Minimum Phvt spacing >= 0.024
+PHVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.SE.1: Minimum Phvt to NActive space >= 0.045 um
+PHVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.A.1: Minimum Phvt area >= 0.03 um
+PHVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.E.1: Minimum Phvt to Poly enclosure >=(0.045,0.065)
+PHVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.E.2: Minimum Phvt to Active enclosure >=(0.045,0.065)
+PHVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PHVT.X.1: Phvt is NOT allowed on Ntype Implant
+PLVT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.W.1: Minimum Plvt width >= 0.052
+PLVT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.SP.1: Minimum Plvt spacing >= 0.024
+PLVT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.SE.1: Minimum Plvt to NActive space >= 0.045 um
+PLVT.A.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.A.1: Minimum Plvt area >= 0.03 um
+PLVT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.E.1: Minimum Plvt to Poly enclosure >=(0.045,0.065)
+PLVT.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.E.2: Minimum Plvt to Active enclosure >=(0.045,0.065)
+PLVT.X.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+PLVT.X.1: Plvt is NOT allowed on Ntype Implant
+POLY.P.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.P.1: Poly vertical pitches are restricted to (86, 90, 94, 102, 104)nm
+POLY.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.W.1: Minimum Poly width in the Y direction >= 0.08 um
+POLY.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.W.2: Allowed width values for Poly (0.018, 0.02, 0.024, 0.028, >=0.03)
+POLY.W.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.W.3: Maximum Poly width <= 0.24 um
+POLY.W.4
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.W.4: Maximum Poly length <= 10.0 um
+POLY.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.SP.1: Minimum Poly space >= 0.068 um
+POLY.SP.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.SP.2: Minimum Poly space with width >=0.08 is >= 0.12 um
+POLY.SP.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.SP.3: Minimum Poly space with width >=0.16 is >= 0.20 um
+POLY.C.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.C.1: POLY on Active must be covered by N+ Implant or P+ Implant
+POLY.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+POLY.E.1: Minimum gate extension beyond Active Area >= 0.048 um
+CUTPOLY.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.W.1: Minimum CutPoly width in the X direction >= 0.06 um
+CUTPOLY.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.W.2: Allowed CutPoly width values in the Y direction (0.06 0.07 0.1 0.12) um
+CUTPOLY.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.SP.1: Minimum CutPoly space >= 0.09 um
+CUTPOLY.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.SE.1: Minimum CutPoly to Active space >= 0.02 um
+CUTPOLY.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.SE.2: Minimum CutPoly to LiPo space >= 0.019 um
+CUTPOLY.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTPOLY.E.1: Minimum CutPoly extension beyond Poly >= 0.034 um
+LIPO.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.W.1: Allowed width values for LIPO (0.03, 0.04, 0.05)
+LIPO.W.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.W.3: Minimum LIPO length >= 0.04 um
+LIPO.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.W.2: Maximum LIPO length <= 5.0 um
+LIPO.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.SP.1: Minimum LIPO space >= 0.034 um
+LIPO.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.SE.1: Minimum LIPO to Poly space >= 0.03 um
+LIPO.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.SE.2: Minimum LIPO to LIACT space >= 0.013 um
+LIPO.SE.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.SE.3: Minimum LIPO to Active space >= 0.045 um
+LIPO.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.E.1: Minimum LIPO into Poly overlap >= 0.016 um
+LIPO.E.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIPO.E.2: Minimum Poly to LIPO extension >= 0.01 um
+LIACT.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.W.1: Allowed width values for LIACT (0.03, 0.04, 0.05)
+LIACT.W.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.W.2: Minimum length of LIACT(for width value 0.03) >= 0.062 um
+LIACT.W.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.W.3: Minimum length of LIACT(for width value 0.04) >= 0.068 um
+LIACT.W.4
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.W.4: Minimum length of LIACT(for width value 0.05) >= 0.082 um
+LIACT.W.5
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.W.5: Maximum LIACT length <= 5.0 um
+LIACT.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SP.1: Minimum LIACT space >= 0.045 um
+LIACT.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.1: Minimum LiAct(with width ==0.03)to Poly(with width ==0.018) space >= 0.019 um
+LIACT.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.2: Minimum LiAct(with width ==0.03)to Poly(with width >=0.02) space >= 0.02 um
+LIACT.SE.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.3: Minimum LiAct(with width ==0.03)to Poly(with width >=0.028) space >= 0.022 um
+LIACT.SE.4
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.4: Minimum LiAct(with width ==0.04)to Poly space >= 0.04 um
+LIACT.SE.5
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.5: Minimum LiAct(with width ==0.05)to Poly space >= 0.045 um
+LIACT.SE.6
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.6: Minimum LiAct to Poly(with width >=0.08) space >= 0.07 um
+LIACT.SE.7
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.SE.7: Minimum LiAct to Active space >= 0.031 um
+LIACT.E.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+LIACT.E.1: Minimum Active enclosure of LIACT on atleast two opposite sides >=0.014
+V0.W.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.W.1: Maximum and minimum V0 width/length is 0.032
+V0.SP.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.SP.1: Minimum V0 to V0 space >=0.032
+V0.SE.1
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.SE.1: Minimum V0 to Liact space >= 0.012
+V0.SE.2
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.SE.2: Minimum V0 to LiPo space >= 0.024
+V0.SE.3
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.SE.3: Minimum V0 to Poly space >= 0.018
+V0.E.1a
+0 0 2 Oct 17 22:13:12 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.1a: Minimum LiAct to V0 enclosure with LiAct width 0.03 >=(-0.001,0.018)
+V0.E.1b
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.1b: Minimum LiAct to V0 enclosure with LiAct width 0.04 >=(0.003,0.018)
+V0.E.1c
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.1c: Minimum LiAct to V0 enclosure with LiAct width 0.05 >=(0.008,0.018)
+V0.E.2a
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.2a: Minimum LiPo to V0 enclosure with LiPo width 0.03 >=(-0.001,0.014)
+V0.E.2b
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.2b: Minimum LiPo to V0 enclosure with LiPo width 0.04 >=(0.004,0.012)
+V0.E.2c
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.2c: Minimum LiPo to V0 enclosure with LiPo width 0.05 >=(0.009,0.009)
+V0.E.X
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.X: Minimum Active to V0 enclosure >=(0.018,0.015)
+V0.E.3a_V0.E.3b
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V0.E.3a_V0.E.3b: Minimum M1 to V0 enclosure >= (0,0.04) or (0.009,0.024)
+CUTM1X.W.1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.1_M1: Minimum CutMetal width in preferred metal direction 0.032 um
+CUTM1X.W.2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.2_M1: Minimum CutMetal length >=0.052 um
+CUTM1X.W.3_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.3_M1: Maximum CutMetal length <=1.0 um
+METAL1X.W.1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width 0.032
+METAL1X.W.2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M1_all width 2.0
+METAL1X.SP.1.1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all to M1_all space 0.032
+CUTM1X.E.1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 extension beyond M1_all >= 0.01
+M1_MASK1_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+M1_MASK2_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.SP.4_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 Space (different mask) >= 0.012
+METAL1X.SP.2.1_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to M1 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask1_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 to Metal Space M1 (same mask) >= 0.038
+METAL1X.SP.2.1_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to M1 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 to (M1 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask2_M1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M1 to Metal Space M1 (same mask) >= 0.038
+METAL1X.A.1_M1
+7 7 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all area 0.006176
+p 1 4
+0 1984
+64 1984
+64 2048
+0 2048
+p 2 4
+0 1216
+64 1216
+64 1280
+0 1280
+p 3 4
+1716 3200
+1780 3200
+1780 3264
+1716 3264
+p 4 4
+1582 0
+1646 0
+1646 64
+1582 64
+p 5 4
+1412 3200
+1476 3200
+1476 3264
+1412 3264
+p 6 4
+3166 2042
+3230 2042
+3230 2106
+3166 2106
+p 7 4
+3166 1156
+3230 1156
+3230 1220
+3166 1220
+CUTM1X.W.1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.1_M2: Minimum CutMetal width in preferred metal direction 0.032 um
+CUTM1X.W.2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.2_M2: Minimum CutMetal length >=0.052 um
+CUTM1X.W.3_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.3_M2: Maximum CutMetal length <=1.0 um
+METAL1X.W.1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width 0.032
+METAL1X.W.2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M2_all width 2.0
+METAL1X.SP.1.1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all to M2_all space 0.032
+CUTM1X.E.1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 extension beyond M2_all >= 0.01
+M2_MASK1_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+M2_MASK2_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.SP.4_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 Space (different mask) >= 0.012
+METAL1X.SP.2.1_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to M2 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 to Metal Space M2 (same mask) >= 0.038
+METAL1X.SP.2.1_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to M2 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 to (M2 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask2_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M2 to Metal Space M2 (same mask) >= 0.038
+METAL1X.A.1_M2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all area 0.006176
+CUTM1X.W.1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.1_M3: Minimum CutMetal width in preferred metal direction 0.032 um
+CUTM1X.W.2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.2_M3: Minimum CutMetal length >=0.052 um
+CUTM1X.W.3_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.W.3_M3: Maximum CutMetal length <=1.0 um
+METAL1X.W.1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width 0.032
+METAL1X.W.2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M3_all width 2.0
+METAL1X.SP.1.1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all to M3_all space 0.032
+CUTM1X.E.1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 extension beyond M3_all >= 0.01
+M3_MASK1_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+M3_MASK2_Conflict
+0 0 1 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CUTM1X.SP.4_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 Space (different mask) >= 0.012
+METAL1X.SP.2.1_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to M3 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 to Metal Space M3 (same mask) >= 0.038
+METAL1X.SP.2.1_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to M3 spacing (same mask) >= 0.048
+METAL1X.SP.2.2_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 0.1 run length>= 0.32(same mask)) >= 0.072
+METAL1X.SP.2.3_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 0.75 run length>= 0.75(same mask)) >= 0.112
+METAL1X.SP.2.4_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 to (M3 spacing width >= 1.5 run length>= 1.5(same mask)) >= 0.22
+METAL1X.SP.4.1_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3 end of line spacing (same mask) >= 0.064
+CUTM1X.SP.1_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 Space (same mask) >= 0.064
+CUTM1X.SP.3_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 end of line space(exactly aligned) (same mask) >= 0.02
+CUTM1X.SP.2_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 end of line space (same mask) >= 0.07
+CUTM1X.SE.1_Mask2_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CutMetal M3 to Metal Space M3 (same mask) >= 0.038
+METAL1X.A.1_M3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all area 0.006176
+METAL1BX.E.1.1_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width < 0.052 enclosure V1_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1BX.E.1.3_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width >= 0.052 and < 0.068 enclosure V1_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1BX.E.1.4_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width >= 0.068 enclosure V1_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1BX.E.2.1_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width < 0.05 enclosure V1_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1BX.E.2.2_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width >= 0.05 and < 0.052 enclosure V1_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1BX.E.2.3_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width >= 0.052 and < 0.106 enclosure V1_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1BX.E.2.4_M1V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M1_all width >= 0.106 enclosure V1_rect on 4 sides (0.01,0,0.01,0)
+METAL1BX.E.1.1_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width < 0.052 enclosure V2_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1BX.E.1.3_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.052 and < 0.068 enclosure V2_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1BX.E.1.4_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.068 enclosure V2_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1BX.E.2.1_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width < 0.05 enclosure V2_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1BX.E.2.2_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.05 and < 0.052 enclosure V2_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1BX.E.2.3_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.052 and < 0.106 enclosure V2_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1BX.E.2.4_M2V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.106 enclosure V2_rect on 4 sides (0.01,0,0.01,0)
+METAL1BX.E.1.1_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width < 0.052 enclosure V3_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1BX.E.1.3_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.052 and < 0.068 enclosure V3_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1BX.E.1.4_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.068 enclosure V3_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1BX.E.2.1_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width < 0.05 enclosure V3_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1BX.E.2.2_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.05 and < 0.052 enclosure V3_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1BX.E.2.3_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.052 and < 0.106 enclosure V3_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1BX.E.2.4_M3V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.106 enclosure V3_rect on 4 sides (0.01,0,0.01,0)
+METAL1TX.E.1.1_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width < 0.052 enclosure V1_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1TX.E.1.3_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.052 and < 0.068 enclosure V1_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1TX.E.1.4_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.068 enclosure V1_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1TX.E.2.1_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width < 0.05 enclosure V1_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1TX.E.2.2_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.05 and < 0.052 enclosure V1_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1TX.E.2.3_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.052 and < 0.106 enclosure V1_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1TX.E.2.4_M2V1
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M2_all width >= 0.106 enclosure V1_rect on 4 sides (0.01,0,0.01,0)
+METAL1TX.E.1.1_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width < 0.052 enclosure V2_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1TX.E.1.3_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.052 and < 0.068 enclosure V2_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1TX.E.1.4_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.068 enclosure V2_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1TX.E.2.1_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width < 0.05 enclosure V2_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1TX.E.2.2_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.05 and < 0.052 enclosure V2_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1TX.E.2.3_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.052 and < 0.106 enclosure V2_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1TX.E.2.4_M3V2
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M3_all width >= 0.106 enclosure V2_rect on 4 sides (0.01,0,0.01,0)
+METAL1TX.E.1.1_M4V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width < 0.052 enclosure V3_sq rect on 4 sides (0,0.01,0,0.01)
+METAL1TX.E.1.3_M4V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width >= 0.052 and < 0.068 enclosure V3_sq rect on 4 sides (0.028,0.01,0.028,0.01)
+METAL1TX.E.1.4_M4V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width >= 0.068 enclosure V3_sq on 4 sides (0.018,0.018,0.018,0.018)
+METAL1TX.E.2.1_M4V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width < 0.05 enclosure V3_rect rect on 4 sides (0.02,0,0.02,0)
+METAL1TX.E.2.2_M4V3
+0 0 2 Oct 17 22:13:13 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width >= 0.05 and < 0.052 enclosure V3_rect rect on 4 sides (0.012,0.009,0.012,0.009)
+METAL1TX.E.2.3_M4V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width >= 0.052 and < 0.106 enclosure V3_rect rect on 4 sides (0.01,0.01,0.01,0.01)
+METAL1TX.E.2.4_M4V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4_all width >= 0.106 enclosure V3_rect on 4 sides (0.01,0,0.01,0)
+VIA1X.W.1_W.2_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Min and Max Square V1 w and l = 0.032, Min and Max Rect V1 w and l = (0.064 0.032) 
+VIA1X.SP.1_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V1_all to V1_all space 0.042
+V1_MASK1_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V1_MASK2_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V1_MASK3_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIA1X.SP.2_Same_Mask_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V1 to V1 spacing (same mask) >= 0.08
+VIA1X.C.1.1_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V1_all in M1_all & M2_all region with width >= 0.032 is 1
+VIA1X.C.1.3_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V1_all in M1_all & M2_all region with width >= 0.3 is 2
+VIA1X.C.1.4_V1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V1_all in M1_all & M2_all region with width >= 1.0 is 4
+VIA1X.W.1_W.2_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Min and Max Square V2 w and l = 0.032, Min and Max Rect V2 w and l = (0.064 0.032) 
+VIA1X.SP.1_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V2_all to V2_all space 0.042
+V2_MASK1_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V2_MASK2_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V2_MASK3_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIA1X.SP.2_Same_Mask_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V2 to V2 spacing (same mask) >= 0.08
+VIA1X.C.1.1_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V2_all in M2_all & M3_all region with width >= 0.032 is 1
+VIA1X.C.1.3_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V2_all in M2_all & M3_all region with width >= 0.3 is 2
+VIA1X.C.1.4_V2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V2_all in M2_all & M3_all region with width >= 1.0 is 4
+VIA1X.W.1_W.2_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Min and Max Square V3 w and l = 0.032, Min and Max Rect V3 w and l = (0.064 0.032) 
+VIA1X.SP.1_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V3_all to V3_all space 0.042
+V3_MASK1_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V3_MASK2_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+V3_MASK3_LOCK_Conflict
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIA1X.SP.2_Same_Mask_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V3 to V3 spacing (same mask) >= 0.08
+VIA1X.C.1.1_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V3_all in M3_all & M4_all region with width >= 0.032 is 1
+VIA1X.C.1.3_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V3_all in M3_all & M4_all region with width >= 0.3 is 2
+VIA1X.C.1.4_V3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V3_all in M3_all & M4_all region with width >= 1.0 is 4
+METAL4.W.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4 width 0.032
+METAL4.W.2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M4 width 2.0
+METAL4.SP.2.1
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METAL4.SP.2.2
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METAL4.SP.2.3
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METAL4.SP.2.4
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METAL4.SP.4.1
+0 0 1 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METAL4.A.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4 area 0.006176
+VIA2X.W.1_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum and Maximum suare V4 width and length 0.042
+VIA2X.SP.1_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V4 to V4 space 0.062
+VIA2X.SP.2_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum 3 adjacent V4 to V4 spacing >= 0.078
+VIA2X.C.1.1_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V4 in M4 & M5 region with width >= 0.042 is 1
+VIA2X.C.1.3_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V4 in M4 & M5 region with width >= 0.3 is 2
+VIA2X.C.1.4_V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V4 in M4 & M5 region with width >= 1.0 is 4
+VIA2X.W.1_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum and Maximum suare V5 width and length 0.042
+VIA2X.SP.1_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V5 to V5 space 0.062
+VIA2X.SP.2_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum 3 adjacent V5 to V5 spacing >= 0.078
+VIA2X.C.1.1_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V5 in M5 & M6 region with width >= 0.042 is 1
+VIA2X.C.1.3_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V5 in M5 & M6 region with width >= 0.3 is 2
+VIA2X.C.1.4_V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V5 in M5 & M6 region with width >= 1.0 is 4
+VIA2X.E.1_M4V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M4 enclosure V4 on 4 sides (0.008,0.008,0.008,0.008)
+METAL2X.W.1_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 width 0.058
+METAL2X.W.2_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M5 width 3.0
+METAL2X.SP.1.1_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 to M5 space 0.068
+METAL2X.SP.1.2_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 to M5 spacing width >= 0.06 is 0.08
+METAL2X.SP.1.3_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 to M5 spacing width >= 0.09 is 0.10
+METAL2X.SP.2.1_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 end of line spacing 0.074 um
+METAL2X.A.1_M5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 area 0.0082
+METAL2TX.E.1.1_M5V4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 enclosure of V4 0.008
+METAL2X.W.1_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 width 0.058
+METAL2X.W.2_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M6 width 3.0
+METAL2X.SP.1.1_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 to M6 space 0.068
+METAL2X.SP.1.2_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 to M6 spacing width >= 0.06 is 0.08
+METAL2X.SP.1.3_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 to M6 spacing width >= 0.09 is 0.10
+METAL2X.SP.2.1_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 end of line spacing 0.074 um
+METAL2X.A.1_M6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 area 0.0082
+METAL2TX.E.1.1_M6V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 enclosure of V5 0.008
+METAL2BX.E.1.1_M5V5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M5 enclosure of V5 0.008
+VIA4X.W.1_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum and Maximum suare V6 width and length 0.064
+VIA4X.SP.1_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum V6 to V6 space 0.084
+VIA4X.SP.2_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum 3 adjacent V6 to V6 spacing >= 0.1
+VIA4X.C.1.1_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V6 in M6 & M7 region with width >= 0.064 is 1
+VIA4X.C.1.3_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V6 in M6 & M7 region with width >= 0.6 is 2
+VIA4X.C.1.4_V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum number of V6 in M6 & M7 region with width >= 1.3 is 4
+VIA4X.E.1_M6V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M6 enclosure V6 on 4 sides (0.015,0.015,0.015,0.015)
+METAL4X.W.1_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 width 0.069
+METAL4X.W.2_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Maximum M7 width 4.0
+METAL4X.SP.2.1_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 to M7 space 0.09
+METAL4X.SP.2.2_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 to M7 spacing width >= 0.5 is 0.12
+METAL4X.SP.2.3_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 to M7 spacing width >= 1.0 is 0.4
+METAL4X.SP.4.1_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 end of line spacing 0.096 um
+METAL4X.A.1_M7
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 area 0.01
+METAL4X.E.1.1_M7V6
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 enclosure of V6 0.015
+CAPMET.E.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum CMT enclosure of VT 0.08
+CAPMET.E.2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+Minimum M7 enclosure of CMT 0.04
+CAPMET.W.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CAPMET.W.1: Minimum width of CMT >= 0.26
+CAPMET.S.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+CAPMET.S.1: Minimum space of CMT >= 1.0
+VIAT.W.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.W.1: Maximum and minimum VT width and length is 0.1
+VIAT.SP.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.SP.1: Minimum VT to VT spacing >= 0.12
+VIAT.SP.2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.SP.2: Minimum 3 adjacent VT to VT spacing >= 0.16 um
+VIAT.C.1.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.C.1.1: Minimum number of VT in MT width >= 0.15 is 1
+VIAT.C.1.3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.C.1.3: Minimum number of VT in MT width >= 1.0 is 2
+VIAT.C.1.4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.C.1.4: Minimum number of VT in MT width >= 2.0 is 4
+VIAT.E.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+VIAT.E.1: Minimum last(4x) Metal enclosure of VT >= (0.03, 0.03)
+METALT.W.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.W.1: Minimum MT width >= 0.22
+METALT.W.2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.W.2: Maximum width <= 6.0
+METALT.SP.1.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.SP.1.1: Minimum spacing >= 0.20
+METALT.SP.1.2
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.SP.1.2: Minimum spacing(with width >=0.75) >= 0.35
+METALT.SP.1.3
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.SP.1.3: Minimum spacing(with width >=1.5) >= 0.55
+METALT.SP.1.4
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.SP.1.4: Minimum spacing(with width >=2.5) >= 0.75
+METALT.SP.1.5
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.SP.1.5: Minimum spacing(with width >=3.5) >= 1.25
+METALT.A.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.A.1: Minimum area for MT >= 0.0484 um
+METALT.E.1
+0 0 2 Oct 17 22:13:14 2026
+Rule File Pathname: /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+METALT.E.1: Minimum MT to VT enclosure >=(0.06,0.06)
