@@ -1,0 +1,375 @@
+% !TEX program = pdflatex
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,graphicx,microtype,array,tabularx}
+\usepackage[margin=.78in,headheight=14pt]{geometry}
+\usepackage{subcaption,float,placeins,xcolor,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\definecolor{navy}{HTML}{153654}\definecolor{pale}{HTML}{EAF1F7}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\graphicspath{{img/}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small ESE 5700 / Project 1 / Part 2}\fancyhead[R]{\small 16$\times$4 SRAM macro}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{.3pt}
+\captionsetup{font=small,labelfont=bf}
+% Anything not yet done or not yet measured is marked in red so it cannot be mistaken for a result.
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\est}{\textit{(estimate)}}
+\newcommand{\code}[1]{\texttt{#1}}
+\begin{document}
+\begin{center}
+{\small UNIVERSITY OF PENNSYLVANIA \quad ESE 5700}\par\vspace{8pt}
+{\Huge\bfseries The 16$\times$4 SRAM macro}\par\vspace{4pt}
+{\large Project 1, Part 2: decoder, column circuits and timing}\par\vspace{10pt}
+Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi\par\vspace{8pt}
+\colorbox{pale}{\parbox{.93\linewidth}{\small\centering Cadence GPDK 18 nm \quad $V_{DD}=0.8$ V, nominal corner, 27$^\circ$C \quad Part 1 cell, $0.39\ \mu$m$^2$, $D=28$}}
+\end{center}
+
+\fcolorbox{red}{white}{\parbox{.96\linewidth}{\small\textbf{DRAFT status.} Sections 2.2 (decoder), 2.3 (column circuits) and the supporting measurements are filled from simulations on the \code{contribution-vwanjohi} branch. Items in \todo{red} are not done or not measured yet: the array layout and extraction (2.1), the extracted loads, the controller (2.4), the full-macro verification (2.5), power, and the FOM. Every number below is from a simulation or a hand calculation shown here; all simulated loads are stand-ins and say so. Delete this box before submitting.}}
+
+\section*{Team members and contributions}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule Member & Contribution\\\midrule
+Victor Wanjohi & Column circuits and their unit tests: write driver sizing sweeps, precharge, read path, output latch, and the read-column test. Row decoder schematics (unit inverters and NANDs, predecode, \code{row\_pre}) with the FO4 characterization and the first decoder simulation.\\
+Tyrone Marhguy & \todo{Tyrone to fill: array layout, extraction, controller, anything else}\\\bottomrule
+\end{tabularx}
+
+\section*{Executive summary}
+The macro is a 16-row by 4-column array of the Part 1 cell behind a 4-to-16 decoder built as a 2-2 predecode (a 3-input NAND group gated by the wordline enable, and a 2-input NAND group) followed by a per-row NAND2 and a wordline driver. Each column has a precharge, a write driver and a read path (a 2:2 inverter on BLB) feeding an output latch. At $0.8$ V and $C_{BL}=3.5$ fF:
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item The write driver needs at least 5 fins per pull-down (153 ps write); 8 fins gives a 96 ps write, rising to 102 ps at $+20\%$ $C_{BL}$. The wordline pulse must be at least 100 to 120 ps at 50\%; the design pulse is 140 ps.
+\item The read path reaches the inverter's switching point 83 ps after the wordline rises; DOUT is valid 226 ps after WL for a read of 1 (165 ps for a 0), set by when the latch is enabled.
+\item The decoder drives its wordline 97 ps after the enable edge rising and 101 ps falling (identical at all 16 addresses, 0.5 fF per wordline).
+\item The unit inverter's FO4 delay is 53 ps.\item The controller produces a 134 ps WL\_EN pulse about 0.24 ns after the clock edge, with RD\_EN 96 ps behind the wordline; the thinnest edge margin is 70 ps (RD\_EN to the next precharge).
+\end{itemize}
+Full-macro metrics (access time, $T_{CLK,\min}$, power, FOM) \todo{not yet measured: needs the controller and the full-macro test}.
+
+%--------------------------------------------------------------
+\section*{Macro overview}
+\begin{figure}[H]\centering\includegraphics[width=.85\linewidth]{sram_macro_schematic.png}
+\caption{\code{sram\_macro} top level: the controller, the row decoder (\code{decoder\_predec}) and four column instances \code{sram\_col} (one per bit). Ports CLK, WE, ADDR$\langle3{:}0\rangle$, DIN$\langle3{:}0\rangle$, DOUT$\langle3{:}0\rangle$ match the Part 2 interface.}\end{figure}
+Each \code{sram\_col} takes D, PRE\_B, RD\_EN, WR\_EN and the 16 wordlines and returns one DOUT bit. \todo{Show the \code{sram\_col} schematic (16 cells, precharge, write driver, read path, output latch) and its test.}
+
+\section*{2.1 Array layout and extraction}
+\todo{Array layout (16$\times$4, mirrored rows and columns), DRC and LVS summaries, extracted $C_{BL}$ per column and $C_{WL}$ per row. Not done.}
+
+Expected values from the Part 1 per-cell extraction (180 aF per bitline node, 90 aF per wordline node), before wire:
+\begin{center}\begin{tabular}{lll}\toprule Load & Calculation & Value \est\\\midrule
+$C_{BL}$ per column & $16\times180$ aF & 2.9 fF\\
+$C_{WL}$ per row & $4\times90$ aF & 0.36 fF\\\bottomrule\end{tabular}\end{center}
+All simulations below use stand-in loads (3.5 fF on each bitline, 0.5 fF on each wordline), chosen to cover the estimate plus wire. They must be rerun with the extracted values.
+
+Area (Part 1 convention, $D=28$, one fin $=0.048\ \mu$m wide, $L=18$ nm, so 0.0242 $\mu$m$^2$ per fin), with fin counts read from the netlist:
+\begin{center}\begin{tabular}{lrrr}\toprule Block & Instances & Fins & Area, $\mu$m$^2$ \est\\\midrule
+Array, $64\times0.389\ \mu$m$^2$ (tiled estimate, not laid out) & 64 & -- & 24.9\\
+Row decoder & 1 & 520 & 12.6\\
+Controller (23 \code{inv\_u}, 9 latches, 4 \code{inv\_2x}, 3 \code{nand2\_u}) & 1 & 426 & 10.3\\
+Write drivers & 4 & 144 & 3.5\\
+Precharge (3 PMOS, 2 fins each) & 4 & 24 & 0.58\\
+Read paths & 4 & 16 & 0.39\\
+Output latches & 4 & 96 & 2.3\\\midrule
+Periphery total & & 1226 & 29.7\\
+Macro total & & & 54.6\\\bottomrule\end{tabular}\end{center}
+Periphery area is $D\sum W_iL_i$ with $W_i$ the fin count times 0.048 $\mu$m; for the decoder, $520\times0.048\times0.018\times28=12.6\ \mu$m$^2$. The periphery is 54\% of the macro; the controller's input latches (216 fins) and delay chains (90 fins) dominate its 426 fins. The testbench input buffers and data gates are not part of the macro and are excluded.
+
+%--------------------------------------------------------------
+\section*{2.2 Row decoder and wordline timing}
+\subsection*{Gates and sizes}
+Every gate is built from the unit inverter \code{inv\_u} (PMOS 4 fins, NMOS 2 fins, $L=18$ nm). The NAND gates keep the pull-down strength of the inverter: \code{nand3\_u} widens its NMOS stack by 3 ($6$ fins) and keeps 4-fin PMOS. \code{nand2\_u} uses 2 fins on every device, i.e.\ half the strength of \code{inv\_u} (logical effort is unchanged).
+\begin{figure}[H]\centering
+\begin{subfigure}{.48\linewidth}\centering\includegraphics[height=6.2cm,keepaspectratio]{inv_u_schematic.png}\caption{\code{inv\_u}: PMOS 4, NMOS 2 fins}\end{subfigure}\hfill
+\begin{subfigure}{.48\linewidth}\centering\includegraphics[height=6.2cm,keepaspectratio]{inv_drv_schematic.png}\caption{\code{inv\_drv}: PMOS 6, NMOS 3 fins}\end{subfigure}\\[6pt]
+\begin{subfigure}{.48\linewidth}\centering\includegraphics[height=6.2cm,keepaspectratio]{inv_2x_schematic.png}\caption{\code{inv\_2x}: PMOS 8, NMOS 4 fins}\end{subfigure}\hfill
+\begin{subfigure}{.48\linewidth}\centering\includegraphics[height=6.2cm,keepaspectratio]{nand2_u_schematic.png}\caption{\code{nand2\_u}: all devices 2 fins}\end{subfigure}\\[6pt]
+\begin{subfigure}{.48\linewidth}\centering\includegraphics[height=6.2cm,keepaspectratio]{nand3_u_schematic.png}\caption{\code{nand3\_u}: PMOS 4, NMOS 6 fins}\end{subfigure}
+\caption{Decoder gate schematics with sizes (fins per device, $L=18$ nm).}
+\end{figure}
+
+\subsection*{Structure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth,trim=256bp 0 0 0,clip]{decoder_predec_schematic.png}
+\caption{\code{decoder\_predec}: the four \code{nand3\_u}+\code{inv\_2x} gates (PA, top), the four \code{nand2\_u}+\code{inv\_2x} gates (PB, middle) and the sixteen \code{row\_pre} instances (\code{R<15:0>}, bottom right).}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{decoder_predec_gate_detail.png}
+\caption{Predecode gates in detail: PA$\langle2\rangle$, PA$\langle3\rangle$ (top) and PB$\langle2\rangle$, PB$\langle3\rangle$ (bottom). Each output is a NAND followed by \code{inv\_2x}.}\end{figure}
+\begin{center}\small\begin{tabular}{@{}lll@{}}\toprule Output & Function & Gates\\\midrule
+PA$\langle j\rangle$, $j=0..3$ & WL\_EN $\cdot$ ($A_{1:0}=j$) & \code{nand3\_u} + \code{inv\_2x}\\
+PB$\langle m\rangle$, $m=0..3$ & ($A_{3:2}=m$) & \code{nand2\_u} + \code{inv\_2x}\\
+WL$\langle 4m+j\rangle$ & PA$\langle j\rangle\cdot$PB$\langle m\rangle$ & \code{row\_pre}: \code{nand2\_u} + \code{inv\_drv}\\\bottomrule\end{tabular}\end{center}
+The WL\_EN-to-WL path has four gates: \code{nand3\_u}, \code{inv\_2x}, \code{nand2\_u}, \code{inv\_drv}. Each PA and PB output drives four rows; each address literal reaches two predecode gates, so it reaches $2\times4=8$ of the 16 row gates, as in the handout.
+
+\subsection*{Logical-effort analysis}
+Path logical effort and branching, from the schematics:
+\[G=g_{\text{NAND3}}\,g_{\text{INV}}\,g_{\text{NAND2}}\,g_{\text{INV}}=\tfrac53\cdot1\cdot\tfrac43\cdot1=\tfrac{20}{9}\approx2.2,\qquad B=2\times4=8.\]
+Assumptions: $\tau=10.5$ ps (from FO4 $=5\tau$ below), about 20 aF of gate capacitance per fin (from the Part 1 wordline capacitance: 90 aF per cell over its 4 pass-gate fins is about 22 aF per fin), parasitic delays $p_{\text{INV}}=1$, $p_{\text{NAND2}}=2$, $p_{\text{NAND3}}=3$, and the same $C_{WL}=0.5$ fF used in the simulations. The input capacitance of one \code{nand3\_u} input is 10 fins (4 PMOS $+$ 6 NMOS), i.e.\ $C_{in}=200$ aF, so
+\[H=\frac{C_{WL}}{C_{in}}=\frac{500}{200}=2.5,\quad F=GBH=\tfrac{20}{9}\times8\times2.5\approx44,\quad \hat N=\log_4F\approx2.7,\quad N=4:\ f=F^{1/4}\approx2.6,\quad P=3+1+2+1=7,\]
+\[D=Nf+P=4\times2.6+7\approx17.3\,\tau\approx182\ \text{ps}.\]
+The optimum is about 3 stages; the design uses 4 (NAND3, inverter, NAND2, wordline driver) because the NAND/inverter pairs implement the AND function, with a stage effort of about 2.6, close to the optimum of about 4. The predicted 182 ps is almost twice the simulated WL\_EN-to-WL delay of 97 ps (rising, below); the model with these assumed per-fin capacitances and parasitics is pessimistic for this design, and the measured value is the one used in the metrics. \todo{Second decoder implementation (flat NAND per row): the same $G,B,H,F,N,P,D$ for comparison, and its simulated delay.}
+
+\subsection*{FO4 delay of the unit inverter}
+\begin{figure}[H]\centering\includegraphics[width=.8\linewidth]{tb_fo4_tran.png}
+\caption{\code{tb\_fo4}: IN, N1 and N2 for a chain of \code{inv\_u}; I1 (N1 to N2) drives four copies of itself and is driven by a stage with the same fanout.}\end{figure}
+\begin{center}\begin{tabular}{lr}\toprule Quantity (0.4 V crossings) & Value\\\midrule
+$t_{pHL}$ & 54.66 ps\\ $t_{pLH}$ & 50.59 ps\\ FO4 delay, average & 52.62 ps $\approx$ 53 ps\\\bottomrule\end{tabular}\end{center}
+With the convention FO4 $=5\tau$, $\tau\approx10.5$ ps \est. Single nominal-corner run, no wire load.
+
+\subsection*{Simulated decoder delay}
+Test bench \code{tb\_dec\_pre}: 0.5 fF on every wordline, WL\_EN pulse of 300 ps with 20 ps edges, address inputs as DC sources (complements generated as $0.8-a$). Outputs sum the 16 wordlines, so that the selected wordline is measured without a per-address expression.
+\begin{center}\begin{tabular}{lrl}\toprule Output (same at all 16 addresses) & Value & Spec\\\midrule
+WL\_EN rising to WL rising & 97.42 ps & --\\
+WL\_EN falling to WL falling & 101.0 ps & --\\
+Peak of the sum of all wordlines & 824 mV & $<1$ V (at most one row high): pass\\
+Peak of the sum of all wordlines & 824 mV & $>0.72$ V (selected row high): pass\\\bottomrule\end{tabular}\end{center}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_dec_pre_tran_addr0.png}
+\caption{Address 0: WL\_EN and all 16 wordlines. Only WL$\langle0\rangle$ rises. The other rows show only coupling glitches (tens to about 150 $\mu$V; about 2 mV on WL$\langle4\rangle$, WL$\langle8\rangle$, WL$\langle12\rangle$, which share PA$\langle0\rangle$ with row 0).}\end{figure}
+Sweeping $A_{3:0}$ over all 16 addresses (same bench), the peak of the summed wordlines is 824 mV at every address, so exactly one wordline goes high each time and none overlap (both level checks pass at all 16 points). The WL\_EN-to-WL delay is the same at all 16 addresses (97.42 ps rising, 101 ps falling): the address is held static while WL\_EN is pulsed, and WL\_EN always enters the same \code{nand3\_u} pin, so the switching path is identical. To confirm the \emph{correct} row fires, the output \code{wl\_idx} weights each wordline's peak by its row index and divides by the 0.824 V peak, so it returns the index of the row that went high. It rounds to the applied address at all 16 points (e.g.\ 8.009 for address 8, 14.99 for address 15; worst deviation 0.06 from coupling glitches), so every address selects the right row. \todo{Delay from an address input to the wordline (address changing with the enable already high), where the \code{nand3\_u} pins B and C are on the path.}
+
+\begin{table}[H]\centering\small
+\caption{Decoder functional check: all 16 addresses ($V_{DD}=0.8$ V, 0.5 fF per wordline, WL\_EN pulsed). \code{wl\_idx} is the index of the row that went high (the sum of row index times that wordline's peak, divided by 0.824 V). Specs: peak of the summed wordlines $<1$ V (at most one row high) and $>0.72$ V (the selected row reaches high); both pass at every address.}
+\begin{tabular}{@{}rcrrrr@{}}\toprule Address & $A_{3:0}$ & Expected row & \code{wl\_idx} & \code{wl\_idx} $-$ row & Peak sum (mV)\\\midrule
+0 & 0000 & 0 & 0.059 & $+0.059$ & 824 \\
+1 & 0001 & 1 & 1.061 & $+0.061$ & 824 \\
+2 & 0010 & 2 & 2.063 & $+0.063$ & 824 \\
+3 & 0011 & 3 & 3.064 & $+0.064$ & 824 \\
+4 & 0100 & 4 & 4.034 & $+0.034$ & 824 \\
+5 & 0101 & 5 & 5.035 & $+0.035$ & 824 \\
+6 & 0110 & 6 & 6.037 & $+0.037$ & 824 \\
+7 & 0111 & 7 & 7.039 & $+0.039$ & 824 \\
+8 & 1000 & 8 & 8.009 & $+0.009$ & 824 \\
+9 & 1001 & 9 & 9.010 & $+0.010$ & 824 \\
+10 & 1010 & 10 & 10.01 & $+0.010$ & 824 \\
+11 & 1011 & 11 & 11.01 & $+0.010$ & 824 \\
+12 & 1100 & 12 & 11.98 & $-0.020$ & 824 \\
+13 & 1101 & 13 & 12.98 & $-0.020$ & 824 \\
+14 & 1110 & 14 & 13.99 & $-0.010$ & 824 \\
+15 & 1111 & 15 & 14.99 & $-0.010$ & 824 \\
+\bottomrule\end{tabular}\end{table}
+All 16 \code{wl\_idx} values are distinct and each is within 0.07 of its expected row (largest deviation 0.064). The offsets come from small coupling glitches on the unselected rows, weighted by their row numbers: at address 0, glitches of about 2 mV on rows 4, 8 and 12 give $(4+8+12)\times2$ mV $=48$ mV, i.e.\ $0.048/0.824\approx0.058$, against 0.059 measured. Together with the peak of the summed wordlines staying below 1 V, this shows each address selects its own row and no two addresses select the same row. This tests row selection with static addresses; it does not test the address-to-wordline timing.
+
+
+\subsection*{Alternatives and choice}
+Chosen: 2-2 predecode with NAND2 rows. \todo{Second implementation (e.g.\ a flat 4-input NAND per row): logical-effort prediction, simulated delay, and the comparison, as required by 2.2b. Predicted-versus-measured delay for the chosen decoder.}
+
+\subsection*{Wordline pulse width (2.2c)}
+\begin{center}\begin{tabular}{lll}\toprule Quantity & Value & Source\\\midrule
+Bitline reaches the read inverter's trip point ($t_{blb}$) & 83 ps & read-column test\\
+Read: minimum WL pulse, 50\% width & $\approx110$ ps & 83 ps plus margin \est\\
+Write: minimum WL pulse, 50\% width & 100 to 120 ps & write-driver sweep, both loads\\
+Design WL pulse, 50\% width & 140 ps & set by the write\\\bottomrule\end{tabular}\end{center}
+At $+20\%$ $C_{BL}$ the bitline time scales to about 100 ps \est, which still fits inside 140 ps; the write sets the pulse. \todo{Annotated timing diagram with these numbers.}
+
+%--------------------------------------------------------------
+\section*{2.3 Column circuits}
+All results use a stand-in $C_{BL}=3.5$ fF and must be rerun with the extracted load (\todo{rerun}).
+
+\subsection*{Precharge}
+\begin{figure}[H]\centering\includegraphics[width=.5\linewidth]{precharge_schematic.png}\caption{\code{precharge} schematic.}\end{figure}
+\todo{Sizes, equalization behavior, and measured precharge recovery time; the simulation captures exist but have not been tabulated.}
+
+\subsection*{Write driver}
+\begin{figure}[H]\centering\includegraphics[width=.95\linewidth]{write_driver_schematic_nfin8.png}\caption{Write driver at the chosen size (NM1--NM4 at 8 fins).}\end{figure}
+Table~\ref{tab:drv} sweeps the pull-down fin count with $C_{BL}=3.5$ fF and a 0.3 ns wordline pulse. A small driver fails because the write is a race against the undriven bitline: while WL is on, the cell discharges BLB through its pass gate, which pins QB low and blocks the cell's own feedback. At nfin $=2$, BL reached 0.12 V and the write still failed.
+\begin{table}[H]\centering\small\caption{Driver sizing ($V_{DD}=0.8$ V, $C_{BL}=3.5$ fF, $pw\_w1=0.3$ ns). The BLB column is read from the waveform.}\label{tab:drv}
+\begin{tabular}{@{}rlrrr@{}}\toprule NM1--NM4 nfin & Write 0 & $t_{wr0}$ (ps) & $t_{wr1}$ (ps) & Lowest BLB before flip (mV)\\\midrule
+2 & Fail, Q stalls at 0.66 V & -- & -- & $\sim$0\\
+4 & Fail, Q stalls at 0.38 V & -- & -- & $\sim$60\\
+5 & Pass & 153 & 154 & $\sim$190\\
+6 & Pass & 121 & 121 & $\sim$260\\
+8 & Pass & 96 & 96 & $\sim$345\\\bottomrule\end{tabular}\end{table}
+\begin{figure}[H]\centering\includegraphics[width=.8\linewidth]{write_driver_tran_nfin8.png}\caption{Write 0, then write 1 at nfin $=8$ (0.3 ns pulse): $q_{wr0}=34.6\ \mu$V, $q_{wr1}=799.8$ mV, $t_{wr0}=96.2$ ps.}\end{figure}
+\begin{table}[H]\centering\small\caption{Write wordline pulse (nfin $=8$). Pulse width at 50\% is \code{pw\_w1} plus 20 ps (assumes 20 ps edges). Specs: $q_{wr0}<0.08$ V, $q_{wr1}>0.72$ V.}
+\begin{tabular}{@{}rrll@{}}\toprule \code{pw\_w1} & WL at 50\% & $C_{BL}=3.5$ fF & $C_{BL}=4.2$ fF ($+20\%$)\\\midrule
+40p & $\sim$60 ps & Fail (Q stalls at 0.62 V) & Fail (0.66 V)\\
+60p & $\sim$80 ps & Fail (0.46 V) & Fail (0.51 V)\\
+80p & $\sim$100 ps & Fail (0.27 V) & Fail (0.34 V)\\
+100p & $\sim$120 ps & Pass, $t_{wr}=96$ ps & Pass, 102 ps\\
+120p & $\sim$140 ps & Pass, 96 ps & Pass, 102 ps\\
+150p & $\sim$170 ps & Pass, 96 ps & Pass, 102 ps\\\bottomrule\end{tabular}\end{table}
+Write time is 96 ps, rising to 102 ps at $+20\%$ $C_{BL}$ (6\%). The minimum write pulse is 100 to 120 ps at 50\% at both loads; the cell does not finish flipping after WL falls. One point of the sweep (150p, 4.2 fF) has a missing $q_{wr1}$ (the run finished with errors).
+
+Area cost: each column's driver is 36 fins (four 8-fin pull-downs plus a 2+2-fin inverter), $4\times36\times0.048\times0.018\times28\approx3.5\ \mu$m$^2$ \est, about 14\% of the array. Going from nfin $=6$ to 8 adds about 0.77 $\mu$m$^2$ (about 3\% of the array) and saves about 25 ps. \todo{Settle 6 versus 8 once $T_{CLK,\min}$ is known; nfin $=8$ is provisional.}
+
+\subsection*{Read path}
+The read path is an inverter on BLB (full swing). The chosen sizing is 2:2 (PMOS 2 fins, NMOS 2 fins), whose switching point is 0.376 V.
+\begin{figure}[H]\centering
+\begin{subfigure}{.44\linewidth}\includegraphics[width=\linewidth]{read_path_schematic_library_view_2to2.png}\caption{Schematic}\end{subfigure}\hfill
+\begin{subfigure}{.54\linewidth}\includegraphics[width=\linewidth]{read_path_vtc_2to2.png}\caption{Transfer curve, $V_M=376.3$ mV}\end{subfigure}
+\caption{\code{read\_path} at 2:2.}\end{figure}
+\begin{center}\small\begin{tabular}{@{}lccc@{}}\toprule PMOS : NMOS fins & $V_M$ (V) & BLB drop to flip RD (V) & Read-time estimate \est\\\midrule
+2 : 2 (chosen) & 0.376 & 0.42 & $\sim$59 ps\\ 4 : 2 & 0.415 & 0.39 & $\sim$54 ps\\\bottomrule\end{tabular}\end{center}
+The read-time estimate is $C_{BL}\,\Delta V/I_{read}$ with 3.5 fF and 25 $\mu$A, not a simulated read. Why 2:2 is kept: (1) the 4:2 option adds 8 fins over 4 columns, $8\times0.048\times0.018\times28\approx0.19\ \mu$m$^2$ (under 1\% of the array); (2) the bitline reaches 0.376 V 83 ps after WL rises, inside the 140 ps write-limited pulse; (3) 4:2 would save only about 7 ps \est, and neither $T_{CLK}$ nor the FOM depends on it (the write sets the wordline pulse); (4) the read-1 failure found in testing was fixed by widening the latch enable, not by strengthening the PMOS; (5) the lower switching point makes a read of 0 slightly more tolerant of a sagging BLB. A PMOS fin drives about half the current of an NMOS fin in this PDK (switching points 0.376 V at 2:2, 0.415 V at 4:2, and 0.335 V for the cell's own 2:4 inverter), so 4:2 is the balanced inverter used as the decoder's unit gate; read\_path does not need a balanced switching point.
+
+\subsection*{Output latch}
+\begin{figure}[H]\centering\includegraphics[width=.9\linewidth]{out_latch_schematic.png}\caption{\code{out\_latch}: all devices 2 fins, $L=18$ nm.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{out_latch_tran_en_delay300p.png}\caption{\code{out\_latch} unit test, EN pulse 150 ps: DOUT is written only while EN is high and holds while RD toggles. $t_{en,r}=87.27$ ps, $t_{en,f}=74.47$ ps, hold-1 $=799.2$ mV, hold-0 $=1.25$ mV.}\end{figure}
+\begin{table}[H]\centering\small\caption{Latch enable-pulse sweep ($c_{dout}=1$ fF). Specs: hold-1 $>0.72$ V, hold-0 $<0.08$ V.}
+\begin{tabular}{@{}rrrrrl@{}}\toprule \code{pw\_en} & $t_{en,r}$ & $t_{en,f}$ & hold-1 & hold-0 & Result\\\midrule
+10p & -- & -- & $-58$ $\mu$V & 77 $\mu$V & Fail: never captures the 1\\
+20p & 99.5 ps & 76.0 ps & 799.8 mV & 88 $\mu$V & Pass\\
+40p & 88.7 ps & 74.8 ps & 799.8 mV & 89 $\mu$V & Pass\\
+80p & 87.2 ps & 74.5 ps & 799.8 mV & 125 $\mu$V & Pass\\
+150p & 87.3 ps & 74.5 ps & 799.2 mV & 1.25 mV & Pass\\\bottomrule\end{tabular}\end{table}
+
+\subsection*{Read column (cell, write driver, precharge, read path and latch together)}
+\begin{figure}[H]\centering\includegraphics[width=.9\linewidth]{tb_read_col_schematic.png}\caption{\code{tb\_read\_col}: cell, write driver, precharge, read path and output latch, with $C_{BL}$ on both bitlines and $c_{dout}=1$ fF.}\end{figure}
+The test writes 1, reads, writes 0, reads, writes 1, reads, sweeping the latch-enable delay \code{rd\_dly} (relative to WL) and the enable width \code{pw\_rden}. Every check passes except the third read at \code{pw\_rden} $=40$ ps, where the latch never captures the 1 (24 points).
+\begin{table}[H]\centering\small\caption{Read-1 access time $t_{acc1}$ (ps, WL to DOUT) and read-0 time $t_{acc0}$.}
+\begin{tabular}{@{}rrrrrr@{}}\toprule \code{rd\_dly} & 40p & 80p & 120p & 160p & $t_{acc0}$\\\midrule
+1.48n & fail & 247 & 226 & 226 & 165\\
+1.52n & fail & 235 & 235 & 235 & 205\\
+1.56n & fail & 271 & 271 & 271 & 245\\
+1.60n & fail & 311 & 311 & 311 & 285\\
+1.64n & fail & 351 & 351 & 351 & 325\\
+1.68n & fail & 391 & 391 & 391 & 365\\\bottomrule\end{tabular}\end{table}
+Opening the latch later only adds delay: from 1.52n on, both access times grow 40 ps for every 40 ps of \code{rd\_dly}. At 1.48n, 80p is 22 ps slower than 120p; 120p and 160p are equal, so 120p is the shortest width that loses nothing. \textbf{Chosen read timing: \code{rd\_dly} $=1.48$ n, \code{pw\_rden} $=120$ p}, about 140 ps wide at 50\%.
+\begin{center}\begin{tabular}{lr}\toprule Measurement (WL to \ldots, $C_{BL}=3.5$ fF) & Value\\\midrule
+BLB reaches the read inverter's switching point ($t_{blb}$) & 83 ps\\
+RD crosses 0.4 V, latch not loading it ($t_{rd}$) & 113 ps\\
+DOUT valid, read 0 & 165 ps\\
+DOUT valid, read 1 (column access time) & 226 ps\\\bottomrule\end{tabular}\end{center}
+At the chosen point all checks pass ($q_{rd1}=799.7$ mV, $q_{rd0}=38.8\ \mu$V, DOUT hold-1 $796.9$ mV), so the reads do not disturb the cell.
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{read_col_tran_1p48n_120p_1to6ns_BEST.png}
+\caption{\code{tb\_read\_col} at \code{rd\_dly} $=1.48$ n, \code{pw\_rden} $=120$ p, 1 to 6 ns: WL, BLB, RD, RD\_EN, DOUT, Q and QB.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{read_col_tran_1p48n_120p_zoom_read3_stacked_BEST.png}
+\caption{Cycle 6 read of a 1, $C_{BL}=3.5$ fF, \code{rd\_dly} $=1.48$ n, \code{pw\_rden} $=120$ p: BLB crosses the read inverter's 0.376 V switching point 83 ps after WL rises; DOUT is valid 226 ps after WL rises.}\end{figure}
+Because the bitline only needs about 83 ps of wordline time, the read does not limit the wordline pulse; the write's 140 ps still sets it.
+
+%--------------------------------------------------------------
+\section*{2.4 Controller}
+Requirements from the tests above, for the read enable (RD\_EN): rise about 80 ps after the wordline at the cell (so about decoder delay $+$ 80 ps after WL\_EN), stay high about 140 ps at 50\%, pulse in read cycles only, and close before precharge pulls BLB back up.
+
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{controller_schematic.png}
+\caption{\code{controller}: input latches (\code{LA}, \code{LD}, \code{LWE}), the one-shot that makes WL\_EN (delay chain DLY1), WR\_EN, and RD\_EN (delay chain DLY2). Inputs CLK, WE, ADDR$\langle3{:}0\rangle$, DIN$\langle3{:}0\rangle$.}\end{figure}
+\begin{center}\small\begin{tabularx}{\linewidth}{@{}lX@{}}\toprule Net & How it is generated\\\midrule
+CLKB, CLKBUF & CLK through one \code{inv\_u} (CLKB), then a second \code{inv\_u} (CLKBUF)\\
+CLKBL & CLK through its own \code{inv\_2x}; it drives only the input-latch enables, so they do not load CLKB\\
+A$\langle3{:}0\rangle$, D$\langle3{:}0\rangle$, WE\_L & \code{out\_latch} cells with EN $=$ CLKBL: transparent while CLK is low, holding while CLK is high, so ADDR, DIN and WE are captured at the rising edge\\
+AB$\langle3{:}0\rangle$, WE\_LB & \code{inv\_u} on A and on WE\_L\\
+WL\_EN & CLKBUF AND CLKD\_B, where CLKD\_B is CLKBUF through a chain of 7 \code{inv\_u} (DLY1): a one-shot pulse on each rising edge whose width is the chain delay (\code{nand2\_u} + \code{inv\_2x})\\
+WR\_EN & WL\_EN AND WE\_L (\code{nand2\_u} + \code{inv\_2x}): write cycles only\\
+RD\_EN & WLD AND WE\_LB, where WLD is WL\_EN through a chain of 8 \code{inv\_u} (DLY2) (\code{nand2\_u} + \code{inv\_u}): read cycles only\\
+PRE\_B & CLKB through one \code{inv\_2x}, so PRE\_B follows CLK (low while CLK is low, rising with it)\\\bottomrule\end{tabularx}\end{center}
+This produces the ordering found in 2.3: RD\_EN rises one DLY2 delay after WL\_EN and falls one DLY2 delay after it, so its width equals the WL\_EN width, and it pulses in read cycles only. The structure is read from the schematic; the pulse widths have not been simulated yet.
+
+\subsection*{Controller simulation}
+Test bench \code{tb\_controller}: the controller drives \code{decoder\_predec} ($c_{wl}=0.5$ fF per wordline), with stand-in loads of 500 aF on PRE\_B, 600 aF on RD\_EN and 1.3 fF on WR\_EN; 1 ns clock, address 0, write in cycles 1 and 3, read in cycles 2 and 4.
+\begin{table}[H]\centering\small\caption{Controller timing ($V_{DD}=0.8$ V, 0.4 V crossings).}
+\begin{tabular}{@{}llrl@{}}\toprule Output & Meaning & Value & Spec\\\midrule
+\code{wlen\_w} & WL\_EN width & 133.5 ps & --\\
+\code{t\_clk\_wl} & CLK rising to WL$\langle0\rangle$ rising & 238.2 ps & --\\
+\code{t\_wl\_rden} & WL rising to RD\_EN rising & 95.78 ps & --\\
+\code{rden\_w} & RD\_EN width & 135.8 ps & --\\
+\code{gap\_pre\_wr} & PRE\_B rising to WR\_EN rising & 155.1 ps & $>0$: pass\\
+\code{m\_wl\_pre} & WL falling to PRE\_B falling & 157.4 ps & $>0$: pass\\
+\code{m\_rd\_pre} & RD\_EN falling to PRE\_B falling & 70.33 ps & $>0$: pass\\
+\code{no\_rd\_wr} & peak RD\_EN in a write cycle & 3.327 mV & $<0.08$ V: pass\\
+\code{no\_wr\_rd} & peak WR\_EN in a read cycle & 410.6 $\mu$V & $<0.08$ V: pass\\\bottomrule\end{tabular}\end{table}
+\begin{figure}[H]\centering\includegraphics[width=.95\linewidth]{tb_controller_tran.png}\caption{Controller transient: CLK, WE, WL\_EN, WR\_EN, RD\_EN, PRE\_B and WL$\langle0\rangle$. WR\_EN pulses only in the write cycles, RD\_EN only in the read cycles. WE is high at the rising edges at 0.5 and 2.5 ns (writes) and low at 1.5 and 3.5 ns (reads).}\end{figure}
+PRE\_B follows CLK, so precharge releases (PRE\_B high, assuming an active-low precharge) at the rising edge. The wordline fires about 0.24 ns later and ends 157 ps before PRE\_B falls. WL\_EN is 133.5 ps wide at the 0.4 V crossings, above the write minimum of 100 to 120 ps at 50\%. RD\_EN rises 96 ps after the wordline (target about 80 ps) and falls 70 ps before PRE\_B falls: this is the thinnest margin. An earlier version enabled the input latches from CLKB; moving them to their own \code{inv\_2x} (CLKBL) cut the CLK-to-wordline delay from 356 ps to 238 ps and raised this margin from 30 ps to 70 ps, probably because the latch enables no longer load CLKB (inferred, not separately simulated). Adding the separately measured column access (226 ps from WL), the CLK-edge-to-DOUT access time is about $238.2+226\approx0.46$ ns \est\ (a sum of two simulations at stand-in loads).
+
+\begin{table}[H]\centering\small\caption{Controller timing before and after enabling the input latches from their own inverter.}
+\begin{tabularx}{\linewidth}{@{}lrrX@{}}\toprule Output & Before & After & Note\\\midrule
+\code{t\_clk\_wl} & 356 ps & 238 ps & CLK edge to wordline\\
+\code{m\_rd\_pre} & 30 ps & 70 ps & Smallest margin; it does not set $T_{CLK,\min}$ (see 2.5)\\
+\code{m\_wl\_pre} & 118 ps & 157 ps & Wordline ends well before precharge starts\\
+\code{gap\_pre\_wr} & 178 ps & 155 ps & Precharge is off well before the write driver turns on\\
+\code{t\_wl\_rden} & 96 ps & 96 ps & Column test needs $\ge80$ ps\\
+\code{rden\_w} & 136 ps & 136 ps & Column test needs $\ge100$ ps\\
+\code{wlen\_w} & 134 ps & 134 ps & Write needs about 120 to 140 ps\\\bottomrule\end{tabularx}\end{table}
+\begin{table}[H]\centering\small\caption{Margin on each controller edge (after). Widths are at the 0.4 V crossings, not at 50\%.}
+\begin{tabularx}{\linewidth}{@{}Xlrr@{}}\toprule Edge & Requirement & Measured & Margin\\\midrule
+WL\_EN width & $\ge\approx120$ ps (write) & 133.5 ps & $\approx+14$ ps\\
+RD\_EN rises after WL & $\ge80$ ps & 95.8 ps & $+16$ ps\\
+RD\_EN width & $\ge100$ ps & 135.8 ps & $+36$ ps\\
+RD\_EN falls before PRE\_B falls & $>0$ & 70.3 ps & $+70$ ps\\
+WL falls before PRE\_B falls & $>0$ & 157.4 ps & $+157$ ps\\
+PRE\_B rises before WR\_EN rises & $>0$ & 155.1 ps & $+155$ ps\\\bottomrule\end{tabularx}\end{table}
+\textbf{Margin at $+20\%$ $C_{BL}$:} the 70 ps RD\_EN margin is the one at risk, since the read delays grow with the bitline load; recovery is a shorter DLY2 chain or a longer clock half period. \todo{Rerun the controller bench with the bitline-side loads scaled by 1.2 and report the margin on each edge.}
+PRE\_B polarity is confirmed from the netlist: the precharge cell is three PMOS (two to VDD and one equalizer) gated by PRE\_B, so it conducts when PRE\_B is low; PRE\_B follows CLK, so precharge is on while CLK is low and off while CLK is high, and the wordline fires after the rising edge, as 2.2c requires. \todo{Rerun with extracted loads.}
+
+\section*{2.5 Verification}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_sources.png}\par\vspace{4pt}\includegraphics[width=\linewidth]{tb_sram_macro_buffers_and_data_gates.png}
+\caption{\code{tb\_sram\_macro}. Top: the macro with 1 fF on each DOUT, the pulse sources, and the DIN inverter. Bottom: the input buffers (IB1, IB2, two \code{inv\_u} stages on each of the six inputs) and the four-NAND XOR (N1--N4) that builds the data pattern.}\end{figure}
+\textbf{Stimulus.} With $t_{clk}$ the clock period, the address sources are a binary counter ($a_0$ period $2t_{clk}$, $a_1$ $4t_{clk}$, $a_2$ $8t_{clk}$, $a_3$ $16t_{clk}$, delays $1.25$, $2.25$, $4.25$, $8.25\,t_{clk}$, so address changes fall while CLK is low), stepping through all 16 addresses in 16 cycles. WE starts high for 16 cycles (write all words) and then low for 16 (read all words), repeating every $32\,t_{clk}$. CLK, WE and the address pass through two \code{inv\_u} stages per input, so the macro sees realistic drive instead of ideal sources.
+
+\textbf{Data pattern.} The four NANDs compute $X=a_0\oplus ph$ ($x_1=\overline{a_0 ph}$, $x_2=\overline{a_0x_1}$, $x_3=\overline{ph\,x_1}$, $X=\overline{x_2x_3}$), and DIN$\langle3{:}0\rangle$ is $\{X,\bar X,X,\bar X\}$. Each word is therefore 0101 or 1010, alternating by row through $a_0$, which is the checkerboard of 2.5(i); the phase source $ph$ switches at $32.25\,t_{clk}$ and complements every word, giving the overwrite of 2.5(ii) in the next write pass. The bit order of DIN is assumed. The test bench's $a_3$ source has a width of $8.25\,t_{clk}-20$ ps instead of $8\,t_{clk}-20$ ps, so $a_3$ falls at the capture edge of the sixteenth cycle. This is a stimulus error to correct; it does not change the results above, because rows 0 and 8 hold the same checkerboard data (a stale $a_3$ would not show as an error) and test (iii) uses a fixed address and fails at the same period, 0.68 ns.
+\textbf{First full-macro run (66 ns, $t_{clk}=1$ ns).} WE is high from 0 to 16.25 ns (write the 16 words, one per cycle), low from 16.25 to 32.25 ns (read them back), high from 32.25 to 48.25 ns (overwrite with the complement) and low from 48.25 to 64.25 ns (read back).
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_tran_control.png}\par\vspace{3pt}\includegraphics[width=\linewidth]{tb_sram_macro_tran_addr.png}
+\caption{Control and address during the 66 ns run: sampling pulse M, expected-bit wave E, WE and CLK (top); ADDR$\langle3{:}0\rangle$ (bottom, counting through all 16 addresses).}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_tran_dout.png}
+\caption{DOUT$\langle3{:}0\rangle$ over the run. Bits 3 and 1 are in phase and bits 2 and 0 are in phase and opposite, so each word alternates 0101/1010 every cycle. DOUT holds while WE is high (32 to 49 ns) and toggles every cycle in each read pass (17 to 32 ns and 50 to 64 ns).}\end{figure}
+Two check outputs compare DOUT to the expected pattern during the read windows (\code{err1}: 17 to 33\,$t_{clk}$, checkerboard; \code{err2}: 49 to 65\,$t_{clk}$, complement), each against a 0.1 V limit. Both pass: \code{err1} $=173.8\ \mu$V and \code{err2} $=173.8\ \mu$V. The bitline load in this run is the device parasitics of the 16 cells and the column circuits taken from the transistor models, plus a 0.62 fF wire term (\code{cbw}) on each bitline; the 3.5 fF stand-in value belongs to the column-level tests.
+\begin{table}[H]\centering\small\caption{Pass/fail, 2.5(i) to (iii). Error values from the check outputs ($<0.1$ V limit); observations from the 66 ns plots.}
+\begin{tabularx}{\linewidth}{@{}p{.27\linewidth}Xp{.2\linewidth}@{}}\toprule Test & Observation & Result\\\midrule
+(i) checkerboard write, read all 16 & DOUT alternates 0101/1010 each cycle, bits 3,1 opposite to bits 2,0; \code{err1} $=173.8\ \mu$V & Pass\\
+(ii) complement overwrite, read all 16 & address 0 reads as the complement of its first-pass value; outputs toggle each cycle again; \code{err2} $=173.8\ \mu$V & Pass\\
+(iii) far-end row (row 15), read right after a write to the opposite value & 22 ns run; \code{err3} $=173.8\ \mu$V & Pass\\\bottomrule\end{tabularx}\end{table}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_worstrow_tran_22ns.png}
+\caption{22 ns far-end-row run (row 15): CLK, WE and the bitline-bar of column 0. WE changes every cycle, so writes and reads alternate back to back (test 2.5(iii)); the bitline-bar swings close to 0 V on some cycles and about 0.4 V on others.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=.9\linewidth]{tb_sram_macro_row15_all_signals_22ns_BEST.png}
+\caption{2.5(iii), far-end row (row 15), 22 ns: CLK, WE, WL$\langle15\rangle$, the bitline pair of column 0, the storage nodes $Q\langle15\rangle$ and $\overline Q\langle15\rangle$ (complementary, flipping every other write), and DOUT$\langle0\rangle$, which follows the stored value after each read.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_row15_wl_bl_we_clk_dout_zoom_BEST.png}
+\caption{2.5(iii), far-end row (row 15), 1.5 to 6.8 ns: WL$\langle15\rangle$, the bitline pair of column 0, WE, CLK and DOUT$\langle0\rangle$. With CLK rising at 1.5, 2.5, 3.5, 4.5 and 5.5 ns and WE low, high, low, high, low, the cycles alternate read, write, read, write, read. DOUT changes only after the reads (about 2.0, 4.0 and 6.0 ns, about 0.5 ns after the edge) and toggles each time, so every read returns the value written in the cycle just before, which is the opposite of the previous one.}\end{figure}
+\textbf{Write time.} In a 22 ns run on the far-end row (row 15, used as a stand-in: at schematic level all rows are equivalent; observed through the hierarchical probe on \code{COL<0>/Q<15>}), $Q$ crosses the cell's 0.335 V switching point 338.6 ps after the clock edge when written to 1 and 333.7 ps when written to 0. This matches the controller delay to the wordline (238.2 ps) plus the 96 ps column write time (334 ps). \begin{figure}[H]\centering\includegraphics[width=.85\linewidth]{tb_sram_macro_write_time_markers.png}
+\caption{Write-time measurement on row 15: cursor A on the rising CLK edge (2.555 ns, 448 mV) and cursor B on $Q\langle15\rangle$ (2.889 ns, 306 mV) give 333.3 ps. The ADE outputs use the 0.4 V crossing on CLK and 0.335 V on $Q$, giving 338.6 ps; the cursors sit at slightly different levels.}\end{figure}
+The cursors confirm that the reference edge is the rising clock edge. The write time is the later of the $Q$ and $\overline Q$ crossings of the 0.335 V switching point (the handout's both-nodes definition), measured from the clock edge. Row 15 is the far-end row and serves as a stand-in: at schematic level all rows are equivalent, so the wordline distance does not differ; this changes with extracted wire.
+
+\begin{table}[H]\centering\small\caption{Clock-period sweep of the checkerboard and complement tests (limit 0.1 V on both errors).}
+\begin{tabular}{@{}rrrl@{}}\toprule $t_{clk}$ & \code{err1} & \code{err2} & Result\\\midrule
+1 ns & 173.8 $\mu$V & 173.8 $\mu$V & Pass\\
+900 ps & 177.7 $\mu$V & 177.8 $\mu$V & Pass\\
+850 ps & 187.7 $\mu$V & 187.7 $\mu$V & Pass\\
+800 ps & 232.8 $\mu$V & 232.8 $\mu$V & Pass\\
+750 ps & 496.9 $\mu$V & 496.2 $\mu$V & Pass\\
+700 ps & 5.103 mV & 5.118 mV & Pass\\\bottomrule\end{tabular}\end{table}
+Every period passes, so $T_{CLK,\min}\le0.70$ ns. The error grows as the period shrinks and jumps tenfold between 750 and 700 ps, so the failing period is probably not far below 0.7 ns.
+\begin{figure}[H]\centering\includegraphics[width=.85\linewidth]{tb_sram_macro_tclk_sweep_err3_plot.png}
+\caption{Worst-row test against the clock period: \code{err3} (left axis, in mV) rises steeply below about 0.76 ns, while the write times \code{t\_wr1} and \code{t\_wr0} stay flat. The panel on the right is an overlay of all signals from the 22 ns runs and is not meant to be read.}\end{figure}
+\begin{table}[H]\centering\small\caption{Worst-row test and write times against the clock period (limit 0.1 V on \code{err3}).}
+\begin{tabular}{@{}rrrrl@{}}\toprule $t_{clk}$ & \code{err3} & $t_{wr1}$ & $t_{wr0}$ & Result\\\midrule
+1 ns & 173.8 $\mu$V & 338.6 ps & 333.7 ps & Pass\\
+900 ps & 177.7 $\mu$V & 338.6 ps & 333.6 ps & Pass\\
+850 ps & 187.7 $\mu$V & 338.7 ps & 333.6 ps & Pass\\
+800 ps & 232.5 $\mu$V & 338.6 ps & 333.6 ps & Pass\\
+750 ps & 496.6 $\mu$V & 338.5 ps & 333.7 ps & Pass\\
+700 ps & 5.623 mV & 338.5 ps & 333.7 ps & Pass\\\bottomrule\end{tabular}\end{table}
+\begin{figure}[H]\centering\includegraphics[width=.85\linewidth]{tb_sram_macro_tclk_sweep_err3_600_700ps.png}
+\caption{Worst-row test below 0.70 ns (values read off the curve; limit 0.1 V). \code{err3} is flat near 1.28 V from 600 to about 670 ps (complete failure), then falls to about 0.6 V at 680 ps, about 30 mV at 690 ps and 6 mV at 700 ps. The test fails at 680 ps and passes at 690 ps, so the minimum period for this test lies between 680 and 690 ps, with about a factor of three of margin at 690 ps.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=\linewidth]{tb_sram_macro_680_vs_690ps_overlay.png}
+\caption{680 ps (fails) and 690 ps (passes) overlaid: CLK, DOUT$\langle0\rangle$, the column's BLB and RD nodes, PRE\_B and RD\_EN. The runs track each other, but the 680 ps DOUT rise near 2.85 ns stalls at about half swing before completing, where the 690 ps rise is a single clean edge. This is the visible difference between the two runs; the failing cycle and sampling instant are not annotated.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=.6\linewidth]{tb_sram_macro_tclk_access_680_700ps.png}
+\caption{Read access time against clock period near the limit (logarithmic $x$ axis: three points at about 680, 690 and 700 ps; values read off the curves, outputs taken as read-1 and read-0 access). Read-0 stays at about 462 ps; read-1 grows from about 486 ps at 700 ps to about 500 ps at 680 ps.}\end{figure}
+The write times do not depend on the period, as expected for a delay set by the controller and the column. A first estimate said the RD\_EN-to-PRE\_B margin (70 ps at 1 ns) would reach zero near 0.86 ns if the delay-chain pulses stay fixed while the half period shrinks, and so would set $T_{CLK,\min}$. That was wrong: the full-macro tests pass down to 0.69 ns, well below 0.86 ns, so the 70 ps margin does not limit the clock. The measured limit is 0.69 ns, and the controller margins were not remeasured across the sweep, so the edge that actually fails below 0.69 ns is not identified.
+
+\textbf{Access time.} Measuring from the rising CLK crossing at 0.4 V to the first 0.4 V crossing of DOUT$\langle1\rangle$: 463.7 ps for a falling output (clock edge 17) and 484.2 ps for a rising output (clock edge 18). The falling value agrees with the 464 ps built up in 2.4 (controller 238.2 ps plus column 226 ps). These are one bit at two reads, with stand-in loads; \todo{worst case over all bits and addresses, and with extracted loads}. DOUT is a latched output, as required: it holds the last word read (bits 3 and 1 high, 2 and 0 low, address 15) while WE is high.
+Unit-level checks done so far: the write driver writes both values from the cell's stored state (Table~\ref{tab:drv}), the read column returns the stored value without disturbing the cell, and the decoder selects row 0 at address 0.
+
+%--------------------------------------------------------------
+\section*{Metrics and figure of merit}
+\begin{figure}[H]\centering\includegraphics[width=.85\linewidth]{tb_sram_macro_sb_tran.png}\caption{Standby measurement at 690 ps: the clock and DIN toggle for about 47 ns, then the clock stops and the macro's VDD current (top, hundreds of $\mu$A while clocked) falls to about zero. The standby power with the clock stopped is 3.99 $\mu$W.}\end{figure}
+\begin{figure}[H]\centering\includegraphics[width=.8\linewidth]{tb_sram_macro_tclk_600_700_err1_err2.png}\caption{Checkerboard and complement errors against the clock period: both pass at 700 and 690 ps and fail at 680 ps and below (0.1 V limit).}\end{figure}
+\begin{table}[H]\centering\small\caption{Final clock-period sweep (nominal, 27$^\circ$C, 0.8 V; $C_{BL}=3.5$ fF stand-in). Power is the macro's VDD-pin current times 0.8 V.}
+\begin{tabular}{@{}rrrlrrrr@{}}\toprule $t_{clk}$ & \code{err1} & \code{err2} & Result & $t_{acc,f}$ & $t_{acc,r}$ & Write power & Read power\\\midrule
+700 ps & 5.10 mV & 5.12 mV & Pass & 463.7 ps & 485.5 ps & 122.6 $\mu$W & 113.4 $\mu$W\\
+\textbf{690 ps} & 23.3 mV & 22.4 mV & \textbf{Pass} & 463.8 ps & 488.3 ps & 124.3 $\mu$W & 115.2 $\mu$W\\
+680 ps & 452 mV & 441 mV & Fail & 463.8 ps & 496.9 ps & 126.0 $\mu$W & 118.0 $\mu$W\\
+670 ps & 1.28 V & 1.28 V & Fail & 463.9 ps & -- & 127.7 $\mu$W & 115.0 $\mu$W\\
+660 ps & 1.28 V & 1.28 V & Fail & 464.1 ps & -- & 129.6 $\mu$W & 114.9 $\mu$W\\
+650 ps & 1.28 V & 1.28 V & Fail & 464.3 ps & -- & 131.5 $\mu$W & 115.4 $\mu$W\\
+600 ps & 1.28 V & 1.28 V & Fail & 465.3 ps & -- & 142.8 $\mu$W & 122.8 $\mu$W\\\bottomrule\end{tabular}\end{table}
+Below 680 ps the outputs sit at about 1.28 V (a full-scale error: the read returns the wrong value) and the rising access time cannot be evaluated. The worst-row test (\code{err3}) fails over the same range and passes at 690 ps ($\approx30$ mV).
+\begin{tabularx}{\linewidth}{@{}p{.4\linewidth}X@{}}\toprule Metric & Value\\\midrule
+$T_{CLK,\min}$ & \textbf{0.69 ns} (690 ps passes all three tests; 680 ps fails; 10 ps resolution)\\
+Worst-case read access time (CLK edge to DOUT) & 488 ps at $T_{CLK,\min}$ (463.8 ps falling, 488.3 ps rising, DOUT$\langle1\rangle$); \todo{worst case over all bits and addresses}\\
+Worst-case write time (CLK edge to $Q$ past its switching point) & 338.6 ps (write 1), 333.7 ps (write 0), far-end row 15, later of the $Q$ and $\overline Q$ crossings at 0.335 V (reference edge is CLK)\\
+Power at $T_{CLK,\min}$: array write & 124.3 $\mu$W (checkerboard pattern; second write pass), \todo{all-0 then all-1 sweep, four times}\\
+Power at $T_{CLK,\min}$: checkerboard read sweep & 115.2 $\mu$W\\
+Power at $T_{CLK,\min}$: standby & 112.2 $\mu$W with the clock running (111 $\mu$W at 700 ps, 123 $\mu$W at 600 ps), and 3.99 $\mu$W with the clock stopped (leakage). The macro has no chip-select or clock gating, so a running clock always triggers an access: the controller pulses, precharge and latch enables fire every cycle, which is why the clocked ``standby'' is close to the read power\\
+Area: array (estimate, not laid out) $+$ periphery ($D\cdot\sum W_iL_i$) & 24.9 $+$ 29.7 $=$ 54.6 $\mu$m$^2$ \est (periphery is all blocks in 2.1); \todo{array layout replaces the 24.9 estimate}\\
+FOM $=\text{Area}\cdot\text{Power}\cdot T_{CLK,\min}$ & about $4.7\times10^3$ $\mu$m$^2\cdot\mu$W$\cdot$ns ($54.6\times124.3\times0.69$); preliminary: the array area is an estimate and the write power is a checkerboard pattern, not all 0s and all 1s\\\bottomrule\end{tabularx}
+Density factor $D=28$ (from the Part 1 layout: $0.39\ \mu\text{m}^2/0.0138\ \mu\text{m}^2$, 16 fins $\times0.048\times0.018$).
+
+\section*{Trade-offs}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Write-driver size versus area.} nfin $=5$ is the smallest that writes (153 ps); nfin $=8$ writes in 96 ps for 0.77 $\mu$m$^2$ more than nfin $=6$ (about 3\% of the array). Provisional until $T_{CLK,\min}$ is known.
+\item \textbf{Read inverter 2:2 versus 4:2.} 2:2 saves 8 fins and costs about 7 ps \est, which is not on the critical path since the write sets the wordline pulse.
+\item \textbf{Decoder.} The 2-2 predecode keeps each address literal to two gate loads, and the wordline enable is gated into one group only. Its delay is about 100 ps for address 0; the other addresses and the alternative are not yet measured.
+\item \textbf{Latch enable timing.} Opening RD\_EN early (1.48n) gives the shortest access (226 ps) with no glitch on DOUT; a 120 ps pulse is the shortest that loses nothing.
+\end{itemize}
+\end{document}
