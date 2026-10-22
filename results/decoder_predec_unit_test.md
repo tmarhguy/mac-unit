@@ -47,3 +47,21 @@ What this does not show: (1) which row fires: resolved by `wl_idx` above; (2) th
 - The 16-address sweep has run: level checks pass and the WL_EN-to-WL delay is the same at every address. Still needed: the address-input-to-WL delay (address changing, enable already high).
 - `cwl` = 0.5 fF is a stand-in; rerun with the extracted wordline load.
 - Delay is to the 0.4 V crossing of the wordline, not to the cell. The cell sees WL rise through `inv_drv`; use the WL waveform at the cell for read and write timing.
+
+## Address-to-wordline delay (A<0> switching, WL_EN held high)
+
+Images: `tb_dec_pre_addr_to_wl_ade.png` (outputs), `tb_dec_pre_addr_to_wl_tran.png` (waveform, plot 23:41:09). Setup: WL_EN held high, A<0> pulsed (period about 2 ns) with its complement on AB<0>, cwl = 0.5 fF, 0 to 4 ns. This is the PA path (WL<0> and WL<1>).
+
+| Output | Definition (0.4 V crossings) | Value |
+|---|---|---|
+| t_ar | WL<1> rising minus A<0> rising | 106.2 ps (new row rising) |
+| t_af | WL<0> falling minus A<0> rising | 112.4 ps (old row falling) |
+| t_br | WL<0> rising minus A<0> falling | 105.9 ps |
+| t_bf | WL<1> falling minus A<0> falling | 112.4 ps |
+| wl_one / wl_hi | peak of the summed wordlines | 1.016 V (spec < 1 V flagged, > 0.72 V pass) |
+| wl_idx | | 1.094 (between rows 0 and 1 during the swap) |
+| t_en_f | WL_EN falling delay | eval err (WL_EN does not switch in this bench) |
+
+Slower address-to-wordline delay: 112 ps. Logical-effort prediction 182 ps (B = 8): overestimates by about 1.6x (1.7x against the 106 ps edge). The old and new rows overlap briefly while the address changes (summed peak 1.02 V), so the < 1 V static check does not hold during a switch, which is why WL_EN gates the wordlines; the controller changes the address while CLK is low and the enable is off.
+
+Expression details are truncated in the screenshot (definitions above are read from the visible parts of the expressions). Still to do: A<2> (PB path) and quote the slower; the flat decoder.
