@@ -33,7 +33,7 @@ Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi \quad\textbullet\quad Due 10
 \toprule Required item & Pts & Section & Status\\\midrule
 \rowcolor{partc}Register cell with its characterization (setup, hold, $t_{cq}$, $C_{CLK}$, energy per clock) & 1 & \S2 & \textbf{Partial}: \code{tb\_dff} and \code{tb\_register\_1b} run (functional); setup/hold/energy sweeps still open\\
 \rowcolor{partc}Multiplier and adder schematics with sizes; logical-effort sizing of the critical path & 1.5 & \S3 & \textbf{Partial}: multiplier verified (256 pairs), worst case $\approx1.2$ ns measured, schematics in; logical effort missing\\
-\rowcolor{partc}State diagram, sequencer schematic, one-dot-product timing diagram & 1.5 (with timing closure) & \S4 & \textbf{Partial}: state diagram and logic described from the netlist; schematics, benches, timing diagram missing\\
+\rowcolor{partc}State diagram, sequencer schematic, one-dot-product timing diagram & 1.5 (with timing closure) & \S4 & \textbf{Partial}: state diagram, counter and controller verified (38/38, 60/60 vector checks); \code{controller\_mac} schematic and one-dot-product timing diagram missing\\
 \rowcolor{missc}Timing closure: hand-computed critical path vs.\ measured $T_{CLK,\min}$; hold check & (above) & \S5 & \textbf{Missing}: critical path named; numbers need \S2 and \code{tb\_top}\\
 \rowcolor{partc}Verification waveforms (Test A) and pass/fail table & 1 (with metrics and report quality) & \S6 & \textbf{Partial}: \code{tb\_top} built; Test A captured (ACC $=0$); B/C still open\\
 \rowcolor{partc}Metrics table: FOM$_{MAC}$, $D$, $V_{DD}$; energy per MAC with and without memory; where the energy goes & (above) & \S7 & \textbf{Partial}: area estimated; delay, energy, FOM missing\\
@@ -61,7 +61,7 @@ Register bit (DFF) & latch pair, T-gates & \code{tb\_dff}, \code{tb\_register\_1
 4$\times$4 multiplier & AND array, adders & \code{tb\_multiplier4b} & 256/256 correct; worst case 1.14--1.24 ns\\
 12-bit adder / acc. & \code{fulladder\_12b}, \code{register\_12b} & \code{tb\_fulladder\_12b}, \code{tb\_accumulator\_12b} & adder sums match; acc. reaches $0$xE10\\
 4-bit counter & 4 DFFs, toggle chain & \code{tb\_counter4b} & 38/38 vector checks pass\\
-Controller (idle/compute/done) & 4 registers, gates & \code{tb\_controller} & stimulus and expected values ready\\
+Controller (idle/compute/done) & 4 registers, gates & \code{tb\_controller\_mac} & 60/60 vector checks pass; DONE 17 edges after START\\
 MAC top & all of the above and 2 macros & \code{tb\_top} & PWL bench; Test A captured, ACC $=0$\\\bottomrule\end{tabular}\end{center}
 
 %==============================================================
@@ -188,7 +188,7 @@ Encoding (from \code{controller\_mac}): two state registers, $S_0$ and DONE; IDL
 \item \textbf{DONE:} held by $\mathrm{DONE}\cdot\overline{\mathrm{START}}$; ACC holds because ACC\_EN $=0$.
 \end{itemize}
 
-\textbf{Counter and controller.} \code{counter\_4b} is a synchronous toggle-chain counter: $T_1=EN\cdot Q_0$, $T_2=T_1Q_1$, $T_3=T_2Q_2$ (\code{and2}), $D_k=(Q_k\oplus T_k)\cdot\overline{RST}$ with $T_0=EN$ (\code{xor2}, \code{and2}), four \code{d\_ff}; RST is driven by CLEAR, so the count restarts at 0 on START (728 fins). \code{controller\_mac} is the logic above: 4 \code{register\_1b}, 11 \code{and2}, 3 \code{or2}, 5 \code{inv\_2x} (948 fins). In \code{top}, four \code{mux2} send COUNT to the memory address while RUN $=1$ and the external ADDR otherwise, and LOAD\_EN $=\overline{\mathrm{RUN}+\mathrm{DONE}+\mathrm{START}}$ gates WE\_W and WE\_X. The counter passes all 38 vector checks (below). \todo{\code{tb\_controller} result (START during compute ignored, DONE hold, restart from DONE).}
+\textbf{Counter and controller.} \code{counter\_4b} is a synchronous toggle-chain counter: $T_1=EN\cdot Q_0$, $T_2=T_1Q_1$, $T_3=T_2Q_2$ (\code{and2}), $D_k=(Q_k\oplus T_k)\cdot\overline{RST}$ with $T_0=EN$ (\code{xor2}, \code{and2}), four \code{d\_ff}; RST is driven by CLEAR, so the count restarts at 0 on START (728 fins). \code{controller\_mac} is the logic above: 4 \code{register\_1b}, 11 \code{and2}, 3 \code{or2}, 5 \code{inv\_2x} (948 fins). In \code{top}, four \code{mux2} send COUNT to the memory address while RUN $=1$ and the external ADDR otherwise, and LOAD\_EN $=\overline{\mathrm{RUN}+\mathrm{DONE}+\mathrm{START}}$ gates WE\_W and WE\_X. The counter passes all 38 vector checks (below). The controller, closed-loop with the counter, follows the expected sequence edge for edge, with DONE 17 edges after START (below).
 \fig{counter4b_schematic}{.98}{\code{counter\_4b}: four \code{d\_ff} (I5--I8); $D_k=(Q_k\oplus T_k)\cdot\overline{RST}$ through \code{xor2} and \code{and2} (I12/I13, I21/I22, I25/I26, I24/I23); toggle chain $T_1=EN\cdot Q_0$, $T_2=T_1Q_1$, $T_3=T_2Q_2$ (I15, I27, I28); RST inverted by I20. 728 fins.}
 \fig{controller_schematic}{.48}{\todo{Controller.}}
 \textbf{\code{tb\_counter4b}.} Stimulus and check from a Spectre digital vector file (\code{counter4b.vec}): CLK (1 ns period, rising edges at 0.5, 1.5, \ldots\ ns), RST and EN change while CLK is low, and COUNT$\langle3{:}0\rangle$ is compared with the expected value a quarter period after every edge (output thresholds 0.2/0.6 V). The 38-edge sequence covers reset, counting through the $15\to0$ wrap, hold (EN $=0$), resume, reset while counting and a final hold; expected COUNT: 0 0 1 2 \ldots\ F 0 1 2 3 4 $|$ 4 4 4 $|$ 5 \ldots\ 9 $|$ 0 0 $|$ 1 2 3 4 $|$ 4 4. \textbf{Result: 38/38 checks pass} (empty \code{.vecerr}, Spectre 0 errors, 0 warnings); outputs swing rail to rail with $V_{DD}=0.8$ V.
@@ -196,11 +196,16 @@ Encoding (from \code{controller\_mac}): two state registers, $S_0$ and DONE; IDL
 \fig{tb_counter4b_internal}{.98}{Bit 0 next state $D_0$ and the master-latch node (\code{I5/net5}) change before each rising edge and COUNT$\langle0\rangle$ follows after it; $V_{DD}$ flat at 0.8 V.}
 \fig{tb_counter4b_vec_result}{.98}{Vector check: Spectre reads \code{counter4b.vec}; the mismatch file \code{input\_tran.vecerr} has 0 lines.}
 Debug note: the first runs left the bench's VSS net unconnected to the simulator ground, so the supply pair floated against the vector-driven inputs (nodes at 0.7--1.5 V, no counting); tying VSS to \code{gnd} fixed it.
-\fig{tb_controller_tran}{.48}{\todo{Controller waveform.}}
+\textbf{\code{tb\_controller\_mac}.} \code{controller\_mac} and \code{counter\_4b} wired as in \code{top} (COUNT\_EN $\to$ EN, CLEAR $\to$ counter RST), driven and checked by a 60-edge vector file (\code{controller.vec}, 1 ns clock): reset, START at edge 5, a full dot product, restart from DONE at edge 26, a START at edge 31 during RUN, RST at edge 35, and a second full run from edge 40. RUN, DONE, ACC\_EN and COUNT are checked after every edge.
+\fig{tb_controller_mac_schematic}{.9}{\code{tb\_controller\_mac}: \code{controller\_mac} (I1) and \code{counter\_4b} (I2) as in \code{top} (COUNT\_EN $\to$ EN, CLEAR $\to$ counter RST, COUNT$\langle3{:}0\rangle$ fed back); \code{inv\_2x} loads on RUN, DONE and ACC\_EN; $V_{DD}=0.8$ V to \code{gnd!}. CLK, RST and START come from the vector file.}
+\fig{tb_controller_tran}{.98}{\code{tb\_controller\_mac}, 0--61 ns, with COUNT$\langle3{:}0\rangle$: the counter steps 0$\to$15 and holds during each run, clears on the START edge (25.5 ns) and on RST (34.5 ns). RUN rises after the START edge (4.5 ns), ACC\_EN one cycle later (pipeline), and DONE after edge 22 (21.5 ns): \textbf{17 edges from START to DONE}. START at edge 26 restarts from DONE; START at edge 31 is ignored while RUN; RST at edge 35 aborts the run; the run from edge 40 ends with DONE at edge 57 and DONE holds.}
+\fig{tb_controller_tran_prefix}{.98}{First run, with the counter's reset wired to RST instead of CLEAR: the restart from DONE lasts two cycles because the counter still holds 15 (LAST is already true). Wiring the counter reset to CLEAR, as in \code{top}, fixed it.}
+\textbf{Result: all 60 edges match} (\code{input\_tran.vecerr} has 0 lines; Spectre read and processed \code{controller.vec}).
+\fig{tb_controller_vec_result}{.8}{Vector check for \code{tb\_controller\_mac}: the mismatch file has 0 lines.}
 
 \textbf{Timing over one dot product.} \todo{Annotated diagram, as in Part 2 (\code{timing\_diagram\_2p2c.tex} is the model): CLK, START, state, counter, ADDR to the macros, $W$/$X$ outputs, product, ACC, DONE; mark the START edge, the first read, the first accumulate, the last accumulate, DONE rising.}
 \begin{center}\small\begin{tabular}{@{}ll@{}}\toprule Architecture & pipelined: address and read in cycle $n$, multiply-accumulate in $n+1$ (VALID)\\
-Cycles START to DONE & 17 edges after the START edge (cycle-level model of the netlist; limit 20) \todo{confirm in \code{tb\_top}}\\
+Cycles START to DONE & 17 edges after the START edge (\code{tb\_controller\_mac}; limit 20)\\
 Cycles per dot product & 17 (plus 32 load cycles when the memories are reloaded)\\\bottomrule\end{tabular}\end{center}
 
 %==============================================================
