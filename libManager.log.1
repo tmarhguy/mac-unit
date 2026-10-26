@@ -1,6 +1,6 @@
 \o Program:		@(#)$CDS: libManager version 6.1.8 - CAT38.23 06/08/2023 01:07 (sjfdcl1184) $
 \o Sub version:		sub-version  p200 
-\o Arguments:		-unmapped -mpssession virtuoso1813225 -mpshost epyc-2-12 -ADVM 
+\o Arguments:		-unmapped -mpssession virtuoso1873233 -mpshost epyc-2-12 -ADVM 
 \o Working Directory:	epyc-2-12:/vast/projects/radway/ese-5700-fall/tmarhguy/project_1
 \o 64-bit offsets
 \o Qt version: 		5.15.9
@@ -13,23 +13,39 @@
 \o MPS service: map window
 \a nrSetCurrentWindow(cdsLibManager)
 \o Library Manager customization server connected.
-\a nrResizeWindow(cdsLibManager list(0 31 1462 695))
+\a nrResizeWindow(cdsLibManager list(676 263 602 491))
 \a cdsLibManager->libListBox->value = "proj1_lib"
 \a cdsLibManager->libLineEdit->value = "proj1_lib"
-\a nrListItemAction(cdsLibManager->libListBox "proj1_lib" 0)
 \a cdsLibManager->cellListBox->value = "6t_sram_final_design"
 \a cdsLibManager->cellLineEdit->value = "6t_sram_final_design"
-\a cdsLibManager->cellListBox->value = "tb_sram_macro"
-\a cdsLibManager->cellLineEdit->value = "tb_sram_macro"
-\a cdsLibManager->viewListBox->value = "maestro"
-\a cdsLibManager->viewLineEdit->value = "maestro"
+\a cdsLibManager->viewListBox->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = "av_extracted"
 \a cdsLibManager->viewListBox->value = nil
 \a cdsLibManager->viewLineEdit->value = ""
-\a nrSetWindowVisibility(cdsLibManager "hide")
-\a _lmgrCloseIconify("cdsLibManager" 1)
-\a nrSetWindowVisibility(cdsLibManager "show")
-\a nrSetWindowVisibility(cdsLibManager "hide")
-\a nrResizeWindow(cdsLibManager list(0 31 1462 695))
-\o MPS service: shutdown
-\o libManager is exiting.
-\a exit(0)
+\a cdsLibManager->viewListBox->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = "av_extracted"
+\o MPS request: edit design
+\a nrListItemAction(cdsLibManager->gdmXTView 0 1)
+\a nrSetCurrentWindow(cdsLibManager)
+\a cdsLibManager->viewListBox->value = nil
+\a cdsLibManager->viewLineEdit->value = ""
+\a cdsLibManager->viewListBox->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = "av_extracted"
+\o MPS request: edit design
+\a nrListItemAction(cdsLibManager->gdmXTView 0 0)
+\a cdsLibManager->libListBox->value = nil
+\a cdsLibManager->libLineEdit->value = ""
+\a cdsLibManager->cellListBox->value = nil
+\a cdsLibManager->viewLineEdit->value = ""
+\a cdsLibManager->viewListBox->value = nil
+\a cdsLibManager->cellLineEdit->value = ""
+\a cdsLibManager->libListBox->value = "proj1_lib"
+\a cdsLibManager->libLineEdit->value = "proj1_lib"
+\a cdsLibManager->cellListBox->value = "6t_sram_final_design"
+\a cdsLibManager->cellLineEdit->value = "6t_sram_final_design"
+\a cdsLibManager->viewListBox->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = ""
+\a cdsLibManager->viewListBox->value = nil
+\a cdsLibManager->viewListBox->value = "av_extracted"
+\a cdsLibManager->viewLineEdit->value = "av_extracted"
