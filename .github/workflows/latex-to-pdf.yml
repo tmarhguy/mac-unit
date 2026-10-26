@@ -1,4 +1,4 @@
-# Compile the Part 1 team report to PDF and commit the artifact so it is
+# Compile team reports to PDF and commit the artifacts so they are
 # available from GitHub without requiring a local TeX installation.
 name: LaTeX to PDF
 
@@ -7,6 +7,9 @@ on:
     branches: [main, master]
     paths:
       - "ESE5700_Proj1_Part1.tex"
+      - "report/part3/**"
+      - "graph/**"
+      - "tb_sch/**"
       - "media/**"
       - ".github/workflows/latex-to-pdf.yml"
   workflow_dispatch:
@@ -35,6 +38,15 @@ jobs:
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
           latexmk_shell_escape: false
 
+      - name: Compile Part 3
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: ESE5700_Proj1_Part3.tex
+          work_in_subfolder: report/part3
+          compiler: latexmk
+          args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
+          latexmk_shell_escape: false
+
       - name: Commit and push PDF
         shell: bash
         run: |
@@ -44,7 +56,8 @@ jobs:
           git config user.name "Tyrone Marhguy"
           git config user.email "tmarhguy@gmail.com"
 
-          git add -f ESE5700_Proj1_Part1.pdf
+          cp -f report/part3/ESE5700_Proj1_Part3.pdf ESE5700_Proj1_Part3.pdf
+          git add -f ESE5700_Proj1_Part1.pdf report/part3/ESE5700_Proj1_Part3.pdf ESE5700_Proj1_Part3.pdf
 
           if git diff --cached --quiet; then
             echo "No PDF changes to commit."

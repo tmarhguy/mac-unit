@@ -35,6 +35,8 @@ __pycache__/
 # Keep CI-published report PDFs; ignore other generated PDFs.
 *.pdf
 !ESE5700_Proj1_Part1.pdf
+!ESE5700_Proj1_Part3.pdf
+!report/part3/ESE5700_Proj1_Part3.pdf
 !docs/ese5700-project1.pdf
 
 # Spectre / Cadence simulation byproducts
