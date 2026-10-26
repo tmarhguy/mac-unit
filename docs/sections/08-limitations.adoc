@@ -46,17 +46,21 @@ The same fin-pitch convention has to be used for every stem:[\sum W_i L_i] in Pa
 
 === Extraction
 
-Parasitics come from the layout with the tutorial Quantus flow (C+CC).
+Parasitics come from Cadence Quantus 23.1.2 on `6t_sram_final_design` (typical, 25 °C, `rc_decoupled`, ground net VSS). The run terminated normally and wrote `av_extracted`: 4 `n1svt` + 2 `p1svt`, 132 R, 97 C. Node values are the Quantus All-Parasitics sums (decoupled + coupled + self C). They are net parasitics and do not necessarily include transistor-intrinsic C.
 
-.Extracted node capacitance of one cell (WL = 0, bitlines held at stem:[V_{DD}])
+.Quantus All Parasitics for 6t_sram_final_design (decoupled + coupled + self C)
+image::parasitics_extraction.png[Quantus All Parasitics table,align=center,width=720]
+
+.Extracted net capacitance of one cell
 [cols="2,1,2",options="header"]
 |===
 | Node | Capacitance | Meaning for Part 2
-| BL (one bitline, one cell) | 180 aF | stem:[C_{BL} \approx 16\times 180] aF, plus wire, per column
-| WL (one cell) | 90 aF | stem:[C_{WL} \approx 4\times 90] aF, plus wire, per row
+| BL (one bitline, one cell) | 497.8 aF | stem:[C_{BL,\mathrm{array}} \approx 16\times 0.498] fF = 7.97 fF, plus wire
+| BLB | 576.5 aF | stem:[C_{BLB,\mathrm{array}} \approx 9.22] fF, plus wire
+| WL (one cell) | 938.9 aF | stem:[C_{WL,\mathrm{array}} \approx 4\times 0.939] fF = 3.76 fF, plus wire
 |===
 
-The bitline term is the pass-gate drain junction plus the shared bitline contact. The wordline term is two pass-gate gates plus the WL wire across the cell. Fifteen copies of 180 aF are the stand-in column load in the functional check.
+Those array numbers are cell-only extrapolations, not a Quantus run on `6t_sram_64b`. Fifteen copies of 497.8 aF are the stand-in column load in the functional check.
 
 === Post-layout stability at 0.8 V
 
@@ -87,11 +91,11 @@ Read SNM falls from 140 mV to 110 mV to 70 mV as the supply drops. stem:[\mathrm
 
 === Functional check
 
-The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of 180 aF, standing in for a 16-row column. The sequence is write 0, read, write 1, read. The capture (`media/part1/functional_check.png`) is not in the repository yet.
+The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of 497.8 aF, standing in for a 16-row column. The sequence is write 0, read, write 1, read. The capture (`media/part1/functional_check.png`) is not in the repository yet.
 
 === What limits the cell
 
-Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from 134 mV (β=1) to 77 mV (β=2). Extraction gives 140 mV of read SNM and a 95 mV zero node at 0.8 V, against a hold SNM of 280 mV, so the read is what the Part 2 noise budget has to clear. The four-fin pull-down sets the 0.54 µm cell height and most of stem:[C_{WL}=90] aF. The two-fin pass-gate sets stem:[C_{BL}=180] aF and the 25 µA read current. Writability is the γ=1 limit: stem:[\mathrm{WM}_{BL}] is 0.42 V at 0.8 V and 0.18 V at 0.5 V. The cell still reads at 0.5 V (70 mV). The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and sizes the wordline driver and precharge from 16 × 180 aF and 4 × 90 aF plus wire.
+Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from 134 mV (β=1) to 77 mV (β=2). Extraction gives 140 mV of read SNM and a 95 mV zero node at 0.8 V, against a hold SNM of 280 mV, so the read is what the Part 2 noise budget has to clear. Quantus net parasitics are stem:[C_{BL}=497.8] aF, stem:[C_{BLB}=576.5] aF and stem:[C_{WL}=938.9] aF. Writability is the γ=1 limit: stem:[\mathrm{WM}_{BL}] is 0.42 V at 0.8 V and 0.18 V at 0.5 V. The cell still reads at 0.5 V (70 mV). The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and treats 7.97 fF / 3.76 fF as the cell-only column/row estimates until `6t_sram_64b` is extracted.
 
 === Team contributions
 

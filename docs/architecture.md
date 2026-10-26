@@ -4,7 +4,7 @@ The current project basis is Cadence GPDK 18 nm (`cds_ff_mpt`) at nominal 0.8 V.
 
 ## Planned hierarchy
 
-1. Keep this cell: 0.39 µm², $C_{BL}=180$ aF, $C_{WL}=90$ aF. The 0.5 V write margin, 0.18 V, is the weak result.
+1. Keep this cell: 0.39 µm², Quantus net parasitics $C_{BL}=497.8$ aF, $C_{WL}=938.9$ aF. The 0.5 V write margin, 0.18 V, is the weak result.
 2. File the functional write/read waveforms, then tile the cell into a 16 × 4 SRAM macro with decoder, precharge, write and sense circuitry.
 3. Feed two macros into a 4 × 4 multiplier and 12-bit accumulator. A sequencer addresses the 16 word pairs.
 
