@@ -12,7 +12,7 @@
 \newcommand{\sourcepath}[1]{\nolinkurl{#1}}
 \newcommand{\pending}{\textcolor{navy}{---}}
 % ===== PART 1 RESULT VALUES (single source of truth; fill from Cadence) =====
-% Layout (proj1_lib/6t-sram_final_layout, Pegasus DRC/LVS from proj1_lib/lvs decks)
+% Layout (proj1_lib/6t_sram_final_design, Pegasus DRC/LVS from proj1_lib/lvs decks)
 \newcommand{\cellW}{0.72}           % cell width, um (PR boundary, BL pitch direction)
 \newcommand{\cellH}{0.54}           % cell height, um (WL pitch direction)
 \newcommand{\cellAreaUm}{0.39}      % um^2
@@ -20,9 +20,27 @@
 \newcommand{\densityD}{28}          % D = A_cell / sum(W_i L_i)
 \newcommand{\drcResult}{0 violations} % pass/fail: a clean cell is 0, not a partial count
 \newcommand{\lvsResult}{Clean, comparison match}
-% Extraction (Quantus, per cell)
-\newcommand{\cBL}{180}              % aF, one bitline node of one cell
-\newcommand{\cWL}{90}               % aF, wordline node of one cell
+% Extraction (Quantus 23.1.2-p001 on 6t_sram_final_design, 2026-10-21)
+\newcommand{\qrcVer}{23.1.2}
+\newcommand{\qrcType}{rc\_decoupled}
+\newcommand{\qrcR}{132}             % parasitic resistors in av_extracted
+\newcommand{\qrcC}{97}              % parasitic capacitors in av_extracted
+\newcommand{\qrcNmos}{4}            % n1svt (2 PD + 2 PG)
+\newcommand{\qrcPmos}{2}            % p1svt (2 PU)
+\newcommand{\qrcSignal}{7}          % named signal nets (VSS is the ground net)
+\newcommand{\qrcFloat}{42}          % floating fragments after fracture
+\newcommand{\qrcView}{av\_extracted}
+\newcommand{\qrcCell}{6t\_sram\_final\_design}
+% Quantus "All Parasitics" on av_extracted (decoupled+coupled+self C), 2026-10-21.
+% Net parasitics; they do not necessarily include transistor-intrinsic C.
+\newcommand{\cBL}{497.8}            % aF, sum C on /BL
+\newcommand{\cBLB}{576.5}           % aF, sum C on /BLB
+\newcommand{\cWL}{938.9}            % aF, sum C on /WL
+\newcommand{\cQ}{794.0}             % aF, sum C on /Q
+\newcommand{\cQB}{767.3}            % aF, sum C on /QB
+\newcommand{\cBLarr}{7.97}          % fF, 16 * C_BL (cell-only, not array Quantus)
+\newcommand{\cBLBarr}{9.22}         % fF, 16 * C_BLB
+\newcommand{\cWLarr}{3.76}          % fF, 4 * C_WL
 % Post-layout stability at 0.8 V
 \newcommand{\snmHold}{280}          % mV
 \newcommand{\snmReadPL}{140}        % mV
@@ -58,7 +76,7 @@ Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi\par\vspace{8pt}
 \section*{Executive summary}
 The symmetric 6T cell was sized by hand analysis and a three-point schematic $\beta$ sweep. At $0.8$ V, raising $\beta$ from 1 to 2 increases read SNM from $126.6$ to $156.3$ mV and lowers the read-disturbed zero node from $134.3$ to $77.1$ mV. The selected cell is $\beta=2$, $\gamma=1$: pull-down 4 fins, pull-up 2 fins, pass-gate 2 fins, $L=18$ nm.
 
-Figure~\ref{fig:layout} is the drawn layout. Pull-ups sit on VDD at the top, pull-downs on VSS at the bottom, $Q$ and $\overline Q$ between them, and the wordline along the bottom and up both sides. The PR boundary is \cellW\ $\times$ \cellH\ $\mu$m, so the cell occupies \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$ and the density factor is $D=$ \densityD. DRC is \drcResult. LVS is \lvsResult. One cell presents $C_{BL}=$ \cBL\ aF and $C_{WL}=$ \cWL\ aF.
+Figure~\ref{fig:layout} is the drawn layout. Pull-ups sit on VDD at the top, pull-downs on VSS at the bottom, $Q$ and $\overline Q$ between them, BL/BLB vertical, and WL horizontal along the bottom and up both sides. The PR boundary is \cellW\ $\times$ \cellH\ $\mu$m, so the cell occupies \cellAreaUm\ $\mu$m$^2$ $=$ \cellAreaF\ $F^2$ and the density factor is $D=$ \densityD. DRC is \drcResult. LVS is \lvsResult. Quantus~\qrcVer\ extracted \texttt{\qrcCell} into \texttt{\qrcView} (\qrcR\ $R$, \qrcC\ $C$). Net parasitics are $C_{BL}=$ \cBL\ aF, $C_{BLB}=$ \cBLB\ aF, $C_{WL}=$ \cWL\ aF.
 
 At $0.8$ V the extracted hold SNM is \snmHold\ mV, read SNM \snmReadPL\ mV, the disturbed zero node \vZeroPL\ mV, write margin \wmBL\ V, and cell current \iCell\ $\mu$A. At $0.7$ V read SNM is \snmReadSeven\ mV and $\mathrm{WM}_{BL}$ is \wmSeven\ V. At $0.5$ V read SNM is \snmReadFive\ mV and $\mathrm{WM}_{BL}$ is \wmFive\ V. The cell still reads, and a full write still completes. The write is the weak one.
 
@@ -222,23 +240,27 @@ Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contac
 
 \subsection{Result}
 \begin{figure}[H]\centering
-\includegraphics[width=.78\linewidth]{media/part1/current/layout_.png}
-\caption{Drawn 6T bitcell. Pull-ups are at the top on VDD, pull-downs are at the bottom on VSS, $Q$ and $\overline Q$ run between them, and WL runs along the bottom and up both sides. PR boundary \cellW\ $\times$ \cellH\ $\mu$m.}\label{fig:layout}
+\includegraphics[width=.92\linewidth]{media/part1/current/6t_with_fins.png}
+\caption{Drawn 6T bitcell (\texttt{\qrcCell}) with fins visible. BL at the top, BLB at the bottom, WL along the bottom edge and both sides, VDD at the top of the devices, VSS at the bottom. PR boundary \cellW\ $\times$ \cellH\ $\mu$m.}\label{fig:layout}
+\end{figure}
+\begin{figure}[H]\centering
+\includegraphics[width=.92\linewidth]{media/part1/current/6t_cell_no_fins.png}
+\caption{Same cell with device types labelled: two \texttt{p1svt} pull-ups, two 4-fin \texttt{n1svt} pull-downs, two 2-fin \texttt{n1svt} pass-gates.}\label{fig:layout-dev}
 \end{figure}
 \begin{table}[H]\centering
 \caption{Layout signoff and area. $F=10$ nm per the handout, so $A_{F^2}=A_{\mu m^2}/(0.01\,\mu\mathrm m)^2=10^4A_{\mu m^2}$.}\label{tab:area}
 \begin{tabular}{@{}lll@{}}\toprule
 Quantity & Value & Source \\\midrule
 Pegasus DRC & \drcResult & Pegasus DRC signoff \\
-Pegasus LVS vs.\ \sourcepath{sram\_6t/schematic} & \lvsResult & Fig.~\ref{fig:lvs}, Pegasus 23.20 \\
+Pegasus LVS vs.\ schematic & \lvsResult & Fig.~\ref{fig:lvs}, Pegasus 23.20 \\
 Cell width $\times$ height & \cellW\ $\times$ \cellH\ $\mu$m & PR boundary of the layout \\
 Cell area $A_{\rm cell}$ & \cellAreaUm\ $\mu$m$^2$ \quad $=$ \cellAreaF\ $F^2$ & width $\times$ height \\
 Density factor $D$ & \densityD & Eq.~\eqref{eq:density} \\\bottomrule
 \end{tabular}
 \end{table}
 \begin{figure}[H]\centering
-\includegraphics[width=.72\linewidth]{media/part1/current/lvs_clean.png}
-\caption{Pegasus 23.20 LVS Results Viewer for Figure~\ref{fig:layout}. The run is clean: ISL clean, SCD with no conflicts, ERC empty, extraction clean, and comparison match.}\label{fig:lvs}
+\includegraphics[width=.72\linewidth]{media/part1/current/lvs_pass.png}
+\caption{Pegasus 23.20 LVS for \texttt{\qrcCell}: ISL clean, SCD with no conflicts, ERC empty, extraction clean, comparison match.}\label{fig:lvs}
 \end{figure}
 The area in Table~\ref{tab:area} is the PR-boundary area that abutting cells repeat at; it includes the half-rails and half-bitline-contacts that are shared with the mirrored neighbours, which is the area the Part 2 array actually tiles.
 
@@ -253,19 +275,47 @@ D=\frac{A_{\rm cell}}{0.0138\;\mu\mathrm m^2}=\densityD .
 The same $W_{\rm fin}$ convention must be used for every $\sum W_iL_i$ in Parts 2 and 3 so that $D$ cancels consistently.
 
 \section{Extraction (handout 1.3)}
-Parasitics were extracted from Figure~\ref{fig:layout} with the tutorial Quantus flow (C+CC). Part 2 inherits the per-cell loads:
+Parasitics were extracted from Figure~\ref{fig:layout} with Cadence Quantus \qrcVer\ on \texttt{\qrcCell} (typical corner, $25^\circ$C, technology \texttt{qrc/typical}). The command file requested C+R, \texttt{\qrcType}, ground net VSS, and decoupling factor $1.0$. The run terminated normally and wrote \texttt{proj1\_lib/\qrcCell/\qrcView} (Figure~\ref{fig:qrc-ok}). The extracted cell contains the six schematic devices---\qrcNmos\ \texttt{n1svt} (two pull-downs, two pass-gates) and \qrcPmos\ \texttt{p1svt} (two pull-ups)---plus \qrcR\ \texttt{presistor} and \qrcC\ \texttt{pcapacitor} instances.
+\begin{figure}[H]\centering
+\includegraphics[width=.72\linewidth]{media/part1/current/quantus_success_dialog.png}
+\caption{Quantus run on \texttt{\qrcCell} completed; output view \texttt{\qrcView}.}\label{fig:qrc-ok}
+\end{figure}
 \begin{table}[H]\centering
-\caption{Extracted node capacitance of one cell (WL $=0$, bitlines held at $V_{DD}$ for the DC operating point).}\label{tab:cap}
+\caption{Quantus run on one cell. Device counts match the $\beta=2$, $\gamma=1$ schematic.}\label{tab:qrc}
 \begin{tabular}{@{}lll@{}}\toprule
-Node & Capacitance & Meaning for Part 2 \\\midrule
-BL (one bitline, one cell) & \cBL\ aF & $C_{BL}\approx 16\times$ this $+$ wire per column \\
-WL (one cell) & \cWL\ aF & $C_{WL}\approx 4\times$ this $+$ wire per row \\\bottomrule
+Quantity & Value & Source \\\midrule
+Extractor & Quantus \qrcVer, typical, $25^\circ$C & Fig.~\ref{fig:qrc-log} \\
+Extract type & \texttt{\qrcType} (C+R, $C$ to VSS) & command file \\
+Output view & \texttt{\qrcView} & \texttt{proj1\_lib/\qrcCell} \\
+MOS devices & \qrcNmos\ \texttt{n1svt} $+$ \qrcPmos\ \texttt{p1svt} & extracted-view summary \\
+Parasitics & \qrcR\ $R$, \qrcC\ $C$, $0$ $L$ & output statistics \\
+Named / floating nets & \qrcSignal\ signal, \qrcFloat\ floating; VSS ground & extraction stage \\
+Incomplete nets shorted & 0 & reduction statistics \\\bottomrule
 \end{tabular}
 \end{table}
-The bitline number is dominated by the pass-gate drain junction plus the shared bitline contact; the wordline number by two pass-gate gate capacitances plus the WL wire across the cell. Fifteen copies of the BL value are the stand-in column load used in the functional check.
+\begin{figure}[H]\centering
+\includegraphics[width=.82\linewidth]{media/part1/current/quantus_terminal_out.png}
+\caption{Quantus output-stage summary: \qrcR\ $R$, \qrcC\ $C$, 4 \texttt{n1svt} $+$ 2 \texttt{p1svt}, run terminated normally.}\label{fig:qrc-log}
+\end{figure}
+Node capacitances are the Quantus ``All Parasitics'' sums (decoupled $+$ coupled $+$ self $C$) on \texttt{\qrcView} (Figure~\ref{fig:parasitics}). These are net parasitics; they do not necessarily include transistor-intrinsic capacitance. The two bitlines are slightly asymmetric, so both are reported. Handout 1.3 uses $C_{BL}=$ \cBL\ aF and $C_{WL}=$ \cWL\ aF.
+\begin{figure}[H]\centering
+\includegraphics[width=.78\linewidth]{media/part1/current/parasitics_extraction.png}
+\caption{Quantus All Parasitics for \texttt{\qrcCell}: $C_{BL}=$ \cBL\ aF, $C_{BLB}=$ \cBLB\ aF, $C_{WL}=$ \cWL\ aF, $C_Q=$ \cQ\ aF, $C_{\overline Q}=$ \cQB\ aF.}\label{fig:parasitics}
+\end{figure}
+\begin{table}[H]\centering
+\caption{Extracted net capacitance of one cell, from Figure~\ref{fig:parasitics}. Part 2 column/row loads scale these by 16 and 4 before array routing.}\label{tab:cap}
+\begin{tabular}{@{}lll@{}}\toprule
+Node & Capacitance & Meaning for Part 2 \\\midrule
+BL (one bitline, one cell) & \cBL\ aF & $C_{BL,\rm array}\approx 16\times$ this $=$ \cBLarr\ fF, plus wire \\
+BLB (the other bitline) & \cBLB\ aF & $C_{BLB,\rm array}\approx 16\times$ this $=$ \cBLBarr\ fF, plus wire \\
+WL (one cell) & \cWL\ aF & $C_{WL,\rm array}\approx 4\times$ this $=$ \cWLarr\ fF, plus wire \\
+$Q$ / $\overline Q$ & \cQ\ / \cQB\ aF & internal storage nodes \\\bottomrule
+\end{tabular}
+\end{table}
+Those array numbers are cell-only extrapolations, not a Quantus run on \texttt{6t\_sram\_64b}. Fifteen copies of $C_{BL}$ are the stand-in column load in the functional check.
 
 \section{Post-layout stability characterization (handout 1.4)}\label{sec:stability}
-These benches use the extracted view at $V_{DD}=0.8$ V unless stated. The margin is the same largest-square reduction as Section~\ref{sec:method} (\sourcepath{scripts/check_snm_sweep.py}), and for any asymmetry SNM $=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$.
+These benches use \texttt{\qrcView} at $V_{DD}=0.8$ V unless stated. The margin is the same largest-square reduction as Section~\ref{sec:method} (\sourcepath{scripts/check_snm_sweep.py}), and for any asymmetry SNM $=\min(\mathrm{SNM}_L,\mathrm{SNM}_R)$. The 21~Oct Quantus view is in place; the numbers in Table~\ref{tab:stability} should be re-checked on that view.
 \begin{table}[H]\centering
 \caption{Post-layout stability results at $V_{DD}=0.8$ V. Setups are the handout's 1.4a--d.}\label{tab:stability}
 \begin{tabularx}{\linewidth}{@{}p{.16\linewidth}X p{.2\linewidth}@{}}\toprule
@@ -298,7 +348,7 @@ At the schematic level the $0.8$ V read SNM was $156.3$ mV (Table~\ref{tab:sweep
 The transient bench drives WL and the precharge devices with ideal pulses and loads each bitline with the extracted cell plus 15 copies of the per-cell bitline capacitance from Table~\ref{tab:cap}, standing in for the 16-row Part 2 column. The sequence is write 0, read, write 1, read. Both writes finish inside the WL pulse, and both reads leave $Q$ and $\overline Q$ in place.
 
 \section{What limits the cell, and what changes for Part 2}
-Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from $134$ mV ($\beta=1$) to $77$ mV ($\beta=2$) and raised read SNM by $30$ mV. Extraction gives \snmReadPL\ mV of read SNM and a \vZeroPL\ mV zero node at $0.8$ V, against a hold SNM of \snmHold\ mV, so the read is what the Part 2 noise budget has to clear. The cost of $\beta=2$ is the four-fin pull-down, which sets the \cellH\ $\mu$m cell height and most of $C_{WL}=$ \cWL\ aF, and the two-fin pass-gate, which sets $C_{BL}=$ \cBL\ aF and the \iCell\ $\mu$A read current the sense path integrates. Writability is the $\gamma=1$ limit: $\mathrm{WM}_{BL}$ is \wmBL\ V at $0.8$ V and only \wmFive\ V at $0.5$ V. The cell still reads at $0.5$ V (\snmReadFive\ mV), and a full write still completes. The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and sizes the wordline driver and precharge from $16\times$ \cBL\ aF and $4\times$ \cWL\ aF plus wire.
+Read stability is set by the pass-gate/pull-down divider. The schematic sweep moved the disturbed zero node from $134$ mV ($\beta=1$) to $77$ mV ($\beta=2$) and raised read SNM by $30$ mV. Extraction gives \snmReadPL\ mV of read SNM and a \vZeroPL\ mV zero node at $0.8$ V, against a hold SNM of \snmHold\ mV, so the read is what the Part 2 noise budget has to clear. The cost of $\beta=2$ is the four-fin pull-down, which sets the \cellH\ $\mu$m cell height, and the two-fin pass-gate, which sets the \iCell\ $\mu$A read current the sense path integrates. Quantus net parasitics on one cell are $C_{BL}=$ \cBL\ aF, $C_{BLB}=$ \cBLB\ aF and $C_{WL}=$ \cWL\ aF; $C_{WL}$ is an order of magnitude above the earlier 90~aF stand-in, so the Part 2 wordline driver must be sized to \cWLarr\ fF (4 cells) plus array wire, not the old 0.5~fF decoder load. Writability is the $\gamma=1$ limit: $\mathrm{WM}_{BL}$ is \wmBL\ V at $0.8$ V and only \wmFive\ V at $0.5$ V. The cell still reads at $0.5$ V (\snmReadFive\ mV), and a full write still completes. The write is the weak one, so a Part 2 remedy, if that margin is not enough for the column, is a weaker pull-up or a write assist rather than a new cell. Part 2 keeps this cell, mirrors it to share the BL contacts and the VDD/VSS rails, and treats \cBLarr\ fF / \cWLarr\ fF as the cell-only column/row estimates until \texttt{6t\_sram\_64b} is extracted.
 
 \section*{Traceability and team contributions}
 The handout used for this report is \sourcepath{docs/ese5700-project1.pdf} (Part 1 on pp.~3--4). Reproducible results are in \sourcepath{results/part1/read-snm/beta1/}, \sourcepath{beta1p5/}, and \sourcepath{beta2/}; each contains \sourcepath{raw.csv}, normalized curves and \sourcepath{snm.json}. The overlay coordinates are the two \sourcepath{lobes} entries in those JSON files. Recompute with the command below. The original handwritten and Cadence images are retained in \sourcepath{media/part1/}.
