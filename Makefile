@@ -18,12 +18,14 @@ docs-clean:
 docs-open: docs
 	python3 -m http.server --directory build/docs 8000
 
-# Compile the Part 1 report locally (requires tectonic, latexmk, or Docker).
+# Compile Part 1 and Part 2 reports locally (requires tectonic, latexmk, or Docker).
 report:
 	@if command -v tectonic >/dev/null 2>&1; then \
 		tectonic ESE5700_Proj1_Part1.tex; \
+		tectonic ESE5700_Proj1_Part2.tex; \
 	elif command -v latexmk >/dev/null 2>&1; then \
 		latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode ESE5700_Proj1_Part1.tex; \
+		latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode ESE5700_Proj1_Part2.tex; \
 	else \
 		bash scripts/run-latex-ci-local.sh; \
 	fi
@@ -35,3 +37,4 @@ snm:
 # Remove local TeX byproducts (the PDF stays tracked).
 clean:
 	rm -f ESE5700_Proj1_Part1.aux ESE5700_Proj1_Part1.log ESE5700_Proj1_Part1.out ESE5700_Proj1_Part1.toc ESE5700_Proj1_Part1.fls ESE5700_Proj1_Part1.fdb_latexmk ESE5700_Proj1_Part1.synctex.gz
+	rm -f ESE5700_Proj1_Part2.aux ESE5700_Proj1_Part2.log ESE5700_Proj1_Part2.out ESE5700_Proj1_Part2.toc ESE5700_Proj1_Part2.fls ESE5700_Proj1_Part2.fdb_latexmk ESE5700_Proj1_Part2.synctex.gz
