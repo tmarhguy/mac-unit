@@ -111,6 +111,12 @@ The repository contains the symmetric bitcell schematic, handwritten read and wr
 
 $\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. The [Part 1 report](report/part1/ESE5700_Proj1_Part1.pdf) uses the extracted cell: 0.72 µm × 0.54 µm, $D=28$, $C_{BL}=180$ aF, $C_{WL}=90$ aF, hold SNM 280 mV, read SNM 140 mV, disturbed zero node 95 mV, $\mathrm{WM}_{BL}=0.42$ V, and $I_{\mathrm{cell}}=25$ µA at 0.8 V. DRC is 0 violations and LVS is clean. At 0.7 V, read SNM is 110 mV and $\mathrm{WM}_{BL}$ is 0.32 V; at 0.5 V, read SNM is 70 mV and $\mathrm{WM}_{BL}$ is 0.18 V.
 
+<p align="center">
+  <img alt="Drawn 6T bitcell layout without fins" src="media/part1/6t_sram_final_layout.png" width="640">
+  <br>
+  <em>Part 1 6T layout, Cadence GPDK 18 nm. DRC 0, LVS match.</em>
+</p>
+
 ## Repository layout
 
 | Path | Description |
