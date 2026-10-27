@@ -10,7 +10,9 @@ on:
       - "docs/**"
       - "media/**"
       - "scripts/**"
-      - "ESE5700_Proj1_Part1.pdf"
+      - "report/part1/**"
+      - "report/part2/**"
+      - "report/part3/**"
       - "Makefile"
       - ".github/workflows/docs.yml"
   workflow_dispatch:

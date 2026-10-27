@@ -1,43 +1,146 @@
 [#mac-system]
-== MAC System (Part 3 — roadmap)
+== MAC unit (Part 3)
 
-NOTE: Roadmap — Part 3 hardware does not exist yet. Every value in
-this chapter is TBD; nothing here is measured or estimated.
+Two Part 2 macros hold W and X. A static-CMOS array multiplier, a 12-bit ripple accumulator, a 4-bit counter and `controller_mac` compute the dot product. The macro output latch is the only pipeline stage: SRAM access and arithmetic share one period. Tests A, B and C all pass at 10, 4.0 and **2.5 ns**. At 2.0 ns, A finishes at 0x34D and C at 0x320 (pass) while B finishes at 0xC10 instead of 0xE10 (fail). At 1.75 ns and 1.5 ns all three fail. Selected stem:[T_{CLK}=2.5] ns (400 MHz), stem:[t_{dot}=17\times2.5=42.5] ns. Energy and FOM use that same period. All of this chapter is schematic-level.
 
-Part 3 deliverable: two SRAM macros + datapath + sequencer forming
-the 16-element dot-product unit. Stub headings; fill during Part 3.
+link:report-part3.pdf[Part 3 PDF] is the Gradescope write-up (figures, DFF tables, energy integrals).
+
+.Part 3 `top`, right half: controller, counter, address muxes
+image::mac_top_schematic_right.png[MAC top schematic right half with controller and counter,align=center,width=760]
+
+.Selected MAC metrics
+[cols="1,2",options="header"]
+|===
+| Metric | Value
+| stem:[V_{DD}] | 0.8 V (nominal, 27 °C)
+| Density factor D | 28 (one fin = 0.0242 µm²)
+| stem:[T_{CLK}] | **2.5 ns** (400 MHz)
+| stem:[N_{cycles}] START→DONE | 17
+| stem:[t_{dot}] | **42.5 ns**
+| Area | **291.8 µm²** (est.): 2×54.6 SRAM + 137.8 datapath + 44.7 sequencer
+| Test A stem:[E_{dot}] | **8.870 pJ** (0.5544 pJ/MAC), measured on V0
+| Test A without memory | 0.38 pJ/MAC (est.)
+| FOM~MAC~ | **stem:[1.1\times10^{5}]** µm²·pJ·ns
+|===
+
+=== Register
+
+Positive-edge TG master-slave (`d_ff`), 100 fins, fully static so IDLE and DONE can stop the clock. stem:[C_Q=1] fF, 0.4 V markers.
+
+[cols="2,1,2",options="header"]
+|===
+| Quantity | Value | Notes
+| stem:[t_{cq}] rise / fall | 68.51 / 62.18 ps | CLK and Q at 0.4 V
+| stem:[t_{su}] both edges | 40 ps | 10% stem:[t_{cq}] wall; 30 ps fails
+| stem:[t_{h}] rise / fall | 10 ps / ≤0 ps | functional; 0 ps rise fails
+| stem:[C_{CLK}] | 2.822 fF | rising-edge integral on `tb_dff_cclk`
+| Energy idle / toggle | 3.895 / 9.309 fJ | 20 clocks, 10–90 ns
+|===
+
+.`d_ff`: master on CLKB, slave on CLK
+image::dff_schematic.png[Transmission-gate master-slave DFF schematic,align=center,width=560]
+
+.Rising clock-to-Q, 68.51 ps
+image::tb_dff_clk_to_q.png[ViVA clock-to-Q markers at 0.4 V,align=center,width=760]
+
+.40 ps setup (pass) and 10 ps hold (pass)
+image::dff_setup_rise_40ps.png[Setup time 40 ps rising, Q captured,align=center,width=700]
+
+image::dff_hold_rise_10ps.png[Hold time 10 ps rising, Q stays low,align=center,width=700]
 
 === Datapath
 
-[source,text]
-----
-weights SRAM (16x4) --\
-                       +--> 4x4 mult --> 12-bit acc --> ACC
-activations SRAM (16x4) --/
-----
+Leaf cells are static CMOS, L=18 nm. The 4×4 array multiplier is AND rows plus ripple full adders. Exhaustive 256/256 products match; measured worst case is 1.14–1.24 ns (vector 244, B=15). Hand logical effort is ~1.85 ns. The 12-bit ripple adder is twelve of the same full adder (148 fins each).
 
-* 4×4 unsigned multiplier (inputs `W[i], X[i]`).
-* 12-bit accumulator (worst case 3600 < 4096, no overflow).
-* Output register holding `ACC` at sequence end.
+.4×4 array multiplier
+image::mult4x4_schematic.png[Four by four array multiplier schematic,align=center,width=700]
 
-Multiplier / adder schematics, areas: TBD.
+.Sampled product error at stem:[t_v=1] ns (settling, not logic)
+image::tb_multiplier4b_errS.png[Multiplier errS sampled check,align=center,width=700]
+
+.12-bit ripple adder
+image::adder12_schematic.png[Twelve-bit ripple-carry adder schematic,align=center,width=700]
 
 === Sequencer
 
-[source,text]
-----
-IDLE -> READ(i) -> MULT -> ACCUM -> i+1 ... -> DONE (i = 0..15)
-----
+`controller_mac` plus `counter_4b`: START is sampled on a rising CLK; COUNT walks 0–15; both macros are read in cycles 0–15; VALID delays ACC_EN so accumulate occupies cycles 1–16; DONE rises on cycle 17. `tb_controller_mac`: **60/60** vector checks; `tb_counter4b`: **38/38**.
 
-* 4-bit index counter + one-hot or encoded control FSM.
-* SRAM read-enable, latch, accumulate, and clear sequencing.
-* 16-cycle latency target; throughput and control truth table: TBD.
+.Controller schematic
+image::controller_schematic.png[controller_mac schematic,align=center,width=700]
 
-=== Integration
+.4-bit address counter
+image::counter4b_schematic.png[Four-bit counter schematic,align=center,width=560]
 
-* Two macro instances + datapath + FSM wired at top level.
-* DRC/LVS/PEX clean at full-chip level.
-* Functional vector: known stem:[W], stem:[X] → expected `ACC`.
-* Corner / supply behaviour summarized in <<results,Results>>.
+.Controller bench: COUNT 0→15, DONE 17 edges after START
+image::tb_controller_tran.png[Controller transient with COUNT, RUN, DONE,align=center,width=760]
 
-Top-level schematic, FSM diagram, integration table: TBD.
+=== Period sweep and Tests A/B/C
+
+Expected finals: A = 0x34D (845), B = 0xE10 (3600, full-scale carries), C = 0x320 (800, 5/10 checkerboard). Vectors in `stimuli/timing/mac_top_<A|B|C>_<period>.vec`.
+
+[cols="1,1,1,1,2",options="header"]
+|===
+| stem:[T_{CLK}] | Test A | Test B | Test C | Result
+| 10 ns | 0x34D, pass | 0xE10, pass | 0x320, pass | pass
+| 4.0 ns | 0x34D, pass | 0xE10, pass | 0x320, pass | pass
+| **2.5 ns** | 0x34D, pass | 0xE10, pass | 0x320, pass | **selected**
+| 2.0 ns | 0x34D, pass | 0xC10, fail | 0x320, pass | fail (B)
+| 1.75 ns | 0x31D, fail | fail | fail | fail
+| 1.5 ns | 0x13D, fail | fail | fail | fail
+|===
+
+.Vector files on the cluster
+image::stimuli_timing_dir.png[File dialog of mac_top period-sweep vector files,align=center,width=640]
+
+.Test B at 2.5 ns: ACC = 0xE10, selected clock
+image::tb_top_B_2p5.png[Test B accumulator bus at 2.5 ns finishing at 0xE10,align=center,width=760]
+
+.Test C at 2.5 ns: ACC = 0x320
+image::tb_top_C_2p5.png[Test C accumulator bus at 2.5 ns finishing at 0x320,align=center,width=760]
+
+.Test A at 4.0 ns (pass), 2.0 ns (pass), 1.5 ns (fail, 0x13D)
+image::tb_top_A_4ns.png[Test A at 4 ns finishing at 0x34D,align=center,width=700]
+
+image::tb_top_A_2ns.png[Test A at 2 ns still 0x34D,align=center,width=700]
+
+image::tb_top_A_1p5ns.png[Test A at 1.5 ns stuck at 0x13D,align=center,width=700]
+
+The first `tb_top` runs finished DONE with ACC = 0: RD_EN was a ~150 ps pulse that closed before RD crossed mid-rail. RD_EN is now CLKBUF · not WE_L (level-sensitive on clock-high). Tests A–C after the fix are the check.
+
+.Read-latch bug: RD_EN closes before RD
+image::tb_top_rden_bug.png[RD_EN pulse closing before RD, latch node falling back,align=center,width=760]
+
+=== Energy and FOM
+
+Single VDD pin on `tb_top`. Window 82–126 ns (44 ns clip; latency is 42.5 ns).
+
+[stem]
+++++
+E_{dot}=-V_{DD}\int_{82\,\mathrm{ns}}^{126\,\mathrm{ns}} I_{V0+}\,\mathrm{d}t
+++++
+
+[cols="1,1,1,1",options="header"]
+|===
+| Test | ACC | stem:[E_{dot}] (meas.) | stem:[E_{\mathrm{MAC}}=E_{dot}/16]
+| A | 0x34D | **8.870 pJ** | 0.5544 pJ/MAC
+| B | 0xE10 | 15.29 pJ | 0.9556 pJ/MAC
+| C | 0x320 | 9.500 pJ | 0.5938 pJ/MAC
+|===
+
+.Test A energy, 8.870 pJ
+image::tb_top_A_eng_2p5.png[ViVA energy integral for Test A at 2.5 ns,align=center,width=700]
+
+Memory vs logic is not a second Spectre split (one VDD). From Part 2: stem:[E_{\mathrm{macro/cyc}}\approx86.7] fJ at 2.5 ns → stem:[E_{\mathrm{mem}}\approx2.77] pJ (est.) for two macros × 16 addresses. Test A logic ≈ 6.10 pJ (0.38 pJ/MAC without memory, est.). Bitline restore is only 0.29 pJ of that 2.77 pJ; the clocked Part 2 controller dominates.
+
+[stem]
+++++
+\mathrm{FOM}_{MAC}=\mathrm{Area}\cdot E_{dot}\cdot t_{dot}
+=291.8\,\mu\mathrm{m}^{2}\times 8.870\,\mathrm{pJ}\times 42.5\,\mathrm{ns}
+=1.100\times10^{5}
+++++
+
+reported as stem:[1.1\times10^{5}] µm²·pJ·ns.
+
+=== What limited the design
+
+The period is set by the multiply-accumulate path (~1.2 ns multiplier, then 12-bit ripple and stem:[t_{su}=40] ps), not the 488 ps SRAM read. Ripple arithmetic was kept for one verified full adder. A chip-select on the macros would cut the clocked memory energy; a pipeline register after the multiplier would split SRAM and arithmetic at a second extra cycle (18).

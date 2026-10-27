@@ -1,8 +1,8 @@
 {
-  "name": "6T SRAM",
+  "name": "SRAM MAC",
   "label": "Project report",
-  "title": "A six-transistor memory cell",
-  "description": "The six-transistor circuit that stores one bit, drawn in an 18 nm process. The cell is 0.39 µm², DRC-clean, and the extracted read margin is 140 mV at 0.8 V.",
+  "title": "SRAM-based 4-bit MAC unit",
+  "description": "ESE 5700 Project 1: a 6T bitcell, a 16×4 SRAM macro, and a 4-bit MAC in Cadence GPDK 18 nm at 0.8 V. Selected MAC clock 2.5 ns, Test A energy 8.870 pJ, FOM 1.1e5.",
   "url": "",
   "image": "",
   "about": "#about",

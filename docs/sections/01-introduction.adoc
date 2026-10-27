@@ -1,18 +1,15 @@
 [#requirements]
 == Assignment and evidence
 
-The link:ese5700-project1.pdf[current handout] sets Part 1 in GPDK 18 nm at nominal 0.8 V and requires one team report. It asks for a symmetric cell, hand sizing analysis, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability measurements, supply dependence and a functional write/read test. The report must also identify each member's contribution.
+The link:ese5700-project1.pdf[current handout] sets the project in GPDK 18 nm at nominal 0.8 V and requires one team PDF per part. Part 1 asks for a symmetric cell, hand sizing, a three-value schematic β sweep, a DRC/LVS-clean tileable layout, parasitic extraction, post-layout stability, supply dependence and a functional write/read. Parts 2 and 3 add the 16×4 macro and the MAC. Each report names both members and their contributions.
 
 === What is recorded
 
-* Virtuoso cell schematic with PD/PG/PU fin counts and equal halves.
-* Handwritten read-path and current-balance work; typed read and write derivations.
-* Two read-SNM DC testbench schematics, raw four-column Cadence exports, derived curves and machine-readable SNM calculations for β=1, 1.5 and 2.
-* Original ViVA butterfly screenshots. Cyan boxes in this site show the maximum-square locations computed from the CSVs.
-* Layout area, DRC/LVS, extracted capacitance, and post-layout stability in <<signoff,Layout, extraction and post-layout results>>.
+* Virtuoso 6T schematic with PD/PG/PU fin counts; handwritten read/write analysis; β=1 / 1.5 / 2 SNM CSVs and original ViVA butterflies.
+* Layout area, DRC 0, LVS match, extracted stem:[C_{BL}=180] aF / stem:[C_{WL}=90] aF, post-layout SNM and write margin (<<signoff>>).
+* Part 2 macro benches: write driver nfin=8, decoder, `tb_sram_macro` access and power (<<macro>>).
+* Part 3 `tb_top` Tests A/B/C, DFF characterization, multiplier 256/256, controller 60/60, energy and FOM (<<mac-system>>).
 
-=== What is still required
+=== Evidence level
 
-The LVS Results Viewer capture is in <<signoff,the layout section>>. A separate DRC Results Viewer capture, the extracted butterfly and write-margin plots, and the functional waveforms are not in the repository. Each author's contribution row is still blank.
-
-All numbers on this site carry their actual evidence level. A hand estimate and a schematic sweep never stand in for a post-layout measurement.
+Part 1 numbers on this site that come from Quantus are extracted. Part 2 and Part 3 timing, energy and area (except the tiled cell) are schematic-level or stem:[D\sum W_i L_i] estimates and are labeled as such. A hand estimate never stands in for a measured Spectre integral.

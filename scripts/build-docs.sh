@@ -100,13 +100,78 @@ if [ -d "$REPO_ROOT/media/part1/current" ]; then
   cp "$REPO_ROOT/media/part1/current/"*.png "$OUT_DIR/images/" 2>/dev/null || true
 fi
 
+# Curated Part 2 JPEGs (cropped). Do not copy all of media/ or report/part2/img.
+P2_IMG="$REPO_ROOT/report/part2/img/small"
+for f in \
+  sram_macro_schematic.jpg \
+  write_driver_schematic_nfin8.jpg \
+  precharge_schematic.jpg \
+  read_path_schematic_library_view_2to2.jpg \
+  out_latch_schematic.jpg \
+  decoder_predec_schematic.jpg \
+  tb_sram_macro_row15_wl_bl_we_clk_dout_zoom_BEST.jpg \
+  tb_sram_macro_tclk_access_680_700ps.jpg \
+  tb_sram_macro_power_sweep_with_standby.jpg \
+  write_driver_tran_nfin8.jpg \
+  tb_fo4_tran.jpg \
+  tb_dec_pre_addr_to_wl.jpg \
+  read_path_vtc_2to2.jpg \
+  tb_sram_macro_ade_results_err.jpg
+do
+  if [ -f "$P2_IMG/$f" ]; then
+    cp "$P2_IMG/$f" "$OUT_DIR/images/"
+  fi
+done
+
+# Curated Part 3 PNGs. Skip debug dumps (*_unreadable*, *_overzoomed*, *_prefix*).
+P3_IMG="$REPO_ROOT/report/part3/img"
+for f in \
+  mac_top_schematic.png \
+  mac_top_schematic_right.png \
+  dff_schematic.png \
+  tb_dff_clk_to_q.png \
+  dff_setup_rise_40ps.png \
+  dff_hold_rise_10ps.png \
+  mult4x4_schematic.png \
+  tb_multiplier4b_errS.png \
+  adder12_schematic.png \
+  controller_schematic.png \
+  tb_controller_tran.png \
+  stimuli_timing_dir.png \
+  tb_top_B_2p5.png \
+  tb_top_A_4ns.png \
+  tb_top_A_2ns.png \
+  tb_top_A_1p5ns.png \
+  tb_top_rden_bug.png \
+  tb_top_A_eng_2p5.png \
+  tb_top_C_2p5.png \
+  counter4b_schematic.png \
+  tb_counter4b_tran.png \
+  dff_energy_idle.png \
+  dff_energy_toggle.png \
+  tb_top_B_eng_2p5.png \
+  tb_top_C_eng_2p5.png \
+  tgate_schematic.png \
+  xor2_schematic.png
+do
+  if [ -f "$P3_IMG/$f" ]; then
+    cp "$P3_IMG/$f" "$OUT_DIR/images/"
+  fi
+done
+
 python3 "$REPO_ROOT/scripts/prepare-docs.py" page
 python3 "$REPO_ROOT/scripts/prepare-docs.py" not-found
 if [ -f "$REPO_ROOT/docs/ese5700-project1.pdf" ]; then
   cp "$REPO_ROOT/docs/ese5700-project1.pdf" "$OUT_DIR/ese5700-project1.pdf"
 fi
-if [ -f "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" ]; then
-  cp "$REPO_ROOT/ESE5700_Proj1_Part1.pdf" "$OUT_DIR/report.pdf"
+if [ -f "$REPO_ROOT/report/part1/ESE5700_Proj1_Part1.pdf" ]; then
+  cp "$REPO_ROOT/report/part1/ESE5700_Proj1_Part1.pdf" "$OUT_DIR/report.pdf"
+fi
+if [ -f "$REPO_ROOT/report/part2/ESE5700_Proj1_Part2.pdf" ]; then
+  cp "$REPO_ROOT/report/part2/ESE5700_Proj1_Part2.pdf" "$OUT_DIR/report-part2.pdf"
+fi
+if [ -f "$REPO_ROOT/report/part3/ESE5700_Proj1_Part3.pdf" ]; then
+  cp "$REPO_ROOT/report/part3/ESE5700_Proj1_Part3.pdf" "$OUT_DIR/report-part3.pdf"
 fi
 python3 "$REPO_ROOT/scripts/export-docs-template.py"
 

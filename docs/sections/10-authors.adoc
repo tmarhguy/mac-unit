@@ -1,9 +1,9 @@
 [#authors]
 == Authors
 
-The reports and this site are produced by the two-person team behind
-the design. Both members are responsible for understanding the full
-design and report for every part.
+The Part 1–3 reports and this site are produced by the two-person team
+behind the bitcell, SRAM macro, and MAC. Both members are responsible
+for understanding the full design and report for every part.
 
 === Victor Wanjohi
 

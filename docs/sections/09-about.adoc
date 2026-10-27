@@ -1,8 +1,18 @@
 [#about]
 == Sources, reproducibility and authors
 
-This site mirrors the link:report.pdf[full Part 1 PDF]. The assignment source is the link:ese5700-project1.pdf[current nine-page handout], with Part 1 on pp. 3–4. Raw Cadence exports and calculations are under `results/part1/read-snm/beta1/`, `beta1p5/` and `beta2/`. Each directory holds `raw.csv`, the normalized transfer curves and `snm.json`. The images in `media/part1/` retain the original handwritten work, testbench captures and ViVA views.
+This site is the HTML companion to the three Gradescope PDFs:
 
-The cyan overlay coordinates come from the two `lobes` entries in each `snm.json`; the report draws the same coordinates on the original screenshots. The fitted margin is the smaller side. The script uses 16,001 voltage samples and checks against 4,001 samples.
+* link:report.pdf[Part 1] — 6T cell, layout, extracted SNM
+* link:report-part2.pdf[Part 2] — 16×4 SRAM macro
+* link:report-part3.pdf[Part 3] — MAC at stem:[T_{CLK}=2.5] ns
 
-Tyrone Marhguy and Victor Wanjohi are the report authors. Both are responsible for the whole report. The contribution rows in <<signoff,team contributions>> stay blank until the team fills them; the repository does not record who performed each task.
+The assignment source is the link:ese5700-project1.pdf[nine-page handout]. Part 1 due 10/13/2026, Part 2 10/20/2026, Part 3 10/27/2026. Cadence libraries stay on the cluster (`proj1_lib`); this repository keeps reports, figures, and scripts.
+
+Part 1 SNM CSVs are under `results/part1/read-snm/beta1/`, `beta1p5/` and `beta2/` (`raw.csv`, transfer curves, `snm.json`). Cyan overlay coordinates come from the two `lobes` entries in each `snm.json`; the fitted margin is the smaller side. The script uses 16,001 voltage samples and checks against 4,001 samples. Images in `media/part1/` retain the handwritten work and original ViVA views.
+
+Part 2 cropped captures: `report/part2/img/small/`. Part 3 ViVA captures: `report/part3/img/`. This site stages a curated subset, not every dump.
+
+Tyrone Marhguy and Victor Wanjohi are the report authors. Both are responsible for the whole design and report. Task split is in <<signoff,team contributions>>.
+
+include::10-authors.adoc[]

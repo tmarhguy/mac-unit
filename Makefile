@@ -21,9 +21,9 @@ docs-open: docs
 # Compile the Part 1 report locally (requires tectonic, latexmk, or Docker).
 report:
 	@if command -v tectonic >/dev/null 2>&1; then \
-		tectonic ESE5700_Proj1_Part1.tex; \
+		cd report/part1 && tectonic ESE5700_Proj1_Part1.tex; \
 	elif command -v latexmk >/dev/null 2>&1; then \
-		latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode ESE5700_Proj1_Part1.tex; \
+		cd report/part1 && latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode ESE5700_Proj1_Part1.tex; \
 	else \
 		bash scripts/run-latex-ci-local.sh; \
 	fi
@@ -34,4 +34,4 @@ snm:
 
 # Remove local TeX byproducts (the PDF stays tracked).
 clean:
-	rm -f ESE5700_Proj1_Part1.aux ESE5700_Proj1_Part1.log ESE5700_Proj1_Part1.out ESE5700_Proj1_Part1.toc ESE5700_Proj1_Part1.fls ESE5700_Proj1_Part1.fdb_latexmk ESE5700_Proj1_Part1.synctex.gz
+	rm -f report/part1/ESE5700_Proj1_Part1.aux report/part1/ESE5700_Proj1_Part1.log report/part1/ESE5700_Proj1_Part1.out report/part1/ESE5700_Proj1_Part1.toc report/part1/ESE5700_Proj1_Part1.fls report/part1/ESE5700_Proj1_Part1.fdb_latexmk report/part1/ESE5700_Proj1_Part1.synctex.gz

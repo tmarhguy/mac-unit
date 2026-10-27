@@ -1,6 +1,6 @@
 # Part 2 data index (branch `contribution-vwanjohi`)
 
-Everything measured for Part 2 is in this branch (PR #4 into `main`). The compiled report and its source are on `main` under `report/part2/`; a longer, less edited draft is in `report/part2_long_draft/`.
+Everything measured for Part 2 is in this branch (PR #4 into `main`). The compiled report and its source are on `main` under `report/part2/`.
 
 ## Images, by block (`media/`)
 
@@ -57,4 +57,3 @@ Image names say what they show; names ending `_BEST` mark the clearest capture, 
 ## Report
 
 - `report/part2/` on `main`: `ESE5700_Proj1_Part2.tex`, `.pdf`, `timing_diagram_2p2c.tex`, resized figures in `img/small/` (full-size originals are the `media/` files above).
-- `report/part2_long_draft/` (this branch): the earlier 25-page draft with every figure, `.tex` and `.pdf`.

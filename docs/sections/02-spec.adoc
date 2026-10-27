@@ -1,89 +1,66 @@
 [#spec]
 == Specification
 
-System overview: what the unit computes, how the work splits into
-three graded parts, and where each piece lives in the tree.
-
-=== Dot-product specification
-
-The unit computes a 16-element dot product of 4-bit unsigned
-weights stem:[W] and activations stem:[X]:
+The unit computes a 16-element dot product of 4-bit unsigned weights stem:[W] and activations stem:[X]:
 
 [stem]
 ++++
-\mathrm{ACC} = \sum_{i=0}^{15} W[i] \cdot X[i]
+\mathrm{ACC} = \sum_{i=0}^{15} W_{i} \cdot X_{i}
 ++++
 
-Blocks:
-
-* two 16 × 4 SRAM macros (weights, activations)
-* one 4×4 unsigned multiplier
-* one 12-bit accumulator (max sum: 16 × 15 × 15 = 3600 < 4096)
-* one sequencer stepping through the 16 index positions
-
-=== Three-part build order
-
-Three graded parts, one accumulator at the end:
+The maximum unsigned sum is stem:[16\times15\times15=3600], which fits in 12 bits. Two copies of the Part 2 16×4 macro hold W and X. A static-CMOS 4×4 array multiplier, a 12-bit ripple-carry accumulator, a 4-bit address counter and a two-bit controller sequence the 16 products. Every register is a transmission-gate master-slave flip-flop. The read is pipelined against the multiply-accumulate (address and read in cycle n, accumulate in n+1), so a dot product takes **17 cycles** from START to DONE (handout limit: 20).
 
 .Three-part deliverables
-[cols="1,3,1,1",options="header"]
+[cols="1,3,1,3",options="header"]
 |===
 | Part | Deliverable | Due | In repo
 
 | **1** | 6T bitcell: schematic, custom layout, post-layout stability
-| 9/29/2026 | yes
-| **2** | Bitcell tiled into a 16 × 4 synchronous SRAM macro
-| 10/6/2026 | roadmap
-| **3** | Two SRAMs + datapath + sequencer → MAC unit
-| 10/20/2026 | roadmap
-|===
+| 10/13/2026
+| Cell 0.39 µm², DRC 0, LVS clean; extracted read SNM 140 mV at 0.8 V
 
-This site already carries the Part 2 and Part 3 chapter shells
-so bring-up never requires restructuring — only filling tables.
+| **2** | Cell tiled into a 16 × 4 synchronous SRAM macro
+| 10/20/2026
+| stem:[T_{CLK}=0.69] ns, stem:[t_{\mathrm{access}}=488] ps, area 54.6 µm² (est.), FOM stem:[\approx 4.7\times10^{3}]
+
+| **3** | Two macros + datapath + sequencer → MAC
+| 10/27/2026
+| stem:[T_{CLK}=2.5] ns, stem:[t_{dot}=42.5] ns, Test A 8.870 pJ, FOM~MAC~ stem:[=1.1\times10^{5}]
+|===
 
 === Technology and flow
 
-* Cadence GPDK 18 nm process, Virtuoso schematic and layout.
-* Spectre / ADE for characterization and transient checks.
-* DRC, LVS, and PEX required; characterization is post-layout.
-* Nominal supply stem:[V_{DD} = 1.2\,\mathrm{V}];
-supply sweep additionally covers 0.9 V and 0.6 V for Part 1 §4e.
+* Cadence GPDK 18 nm, Virtuoso schematic and (Part 1) custom layout.
+* Spectre / ADE / ViVA. Part 1 characterization is extracted. Parts 2 and 3 in this report are schematic-level (no extracted parasitics on the MAC).
+* Nominal stem:[V_{DD}=0.8\,\mathrm{V}], 27 °C. Part 1 also reports 0.7 V and 0.5 V.
+* Density factor stem:[D=28] from the laid-out cell: one fin = 0.048 µm × 18 nm = 0.0242 µm².
 
-Full handout: link:ese5700-project1.pdf[course project handout, window=_blank].
+Full handout: link:ese5700-project1.pdf[course project handout].
 
 === Repository map
 
-.Repository layout
 [cols="1,2",options="header"]
 |===
 | Path | Owns
-
-| `ESE5700_Proj1_Part1.tex` | Gradescope-canonical Part 1 report source
-| `docs/index.adoc` + `docs/sections/` | This site (running report)
+| `report/part1/` | Part 1 Gradescope report
+| `report/part2/` | Part 2 report, cropped figures
+| `report/part3/` | Part 3 report and `img/` captures
+| `docs/index.adoc` | This site
 | `docs/ese5700-project1.pdf` | Official handout
-| `media/cadence/` | Virtuoso screenshots (flow checkout, heroes)
-| `media/part1/` | Part 1 report figures (schematic, layout, butterflies)
-| `scripts/` | Local build helpers (TeX container, docs builder)
-| `.github/workflows/` | `latex-to-pdf.yml` + `docs.yml`
+| `media/part1/` | Bitcell schematic, layout, butterflies
+| `results/part1/read-snm/` | Raw SNM CSVs
+| `results/` | Part 2 unit-test notes (write driver, decoder, macro)
 |===
 
 === Flow checkout (sample inverter)
 
-Before the bitcell, the Cadence environment is checked out with a
-sample inverter (`proj1_lib sample_inv`):
+Before the bitcell, the Cadence environment is checked out with a sample inverter (`proj1_lib sample_inv`).
 
-* Schematic capture in Virtuoso Schematic Editor XL.
-* Custom layout of the same cell.
-* Library load window confirming the user setup.
-
-.Sample inverter close-up — device and pin placement before wiring detail
+.Sample inverter close-up — device and pin placement
 image::inv_sch_closeup.png[Sample inverter schematic close-up,align=center,width=560]
 
 .Sample inverter layout — N/P placement and supply rails
 image::inv_layout.png[Sample inverter custom layout,align=center,width=720]
 
-.Cadence library load window — environment checkout for `tmarhguy`
+.Cadence library load window
 image::cadence_load_window_tmarhguy_title.png[Cadence library load window,align=center,width=560]
-
-These figures prove the flow runs; the graded design starts in
-<<bitcell,Bitcell>>.

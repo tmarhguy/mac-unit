@@ -31,7 +31,7 @@
 ## Docs
 
 - [Report site](https://tmarhguy.github.io/mac-unit/) — built from [`docs/index.adoc`](docs/index.adoc) with `make docs`
-- [Part 1 PDF](ESE5700_Proj1_Part1.pdf) · [source](ESE5700_Proj1_Part1.tex)
+- [Part 1 PDF](report/part1/ESE5700_Proj1_Part1.pdf) · [source](report/part1/ESE5700_Proj1_Part1.tex)
 - [Part 2 PDF](report/part2/ESE5700_Proj1_Part2.pdf) · [source](report/part2/ESE5700_Proj1_Part2.tex)
 - [Part 3 PDF](report/part3/ESE5700_Proj1_Part3.pdf) · [source](report/part3/ESE5700_Proj1_Part3.tex) · [figures](report/part3/img/)
 - [Raw read-SNM sweep](results/part1/read-snm/)
@@ -111,13 +111,13 @@ The repository contains the symmetric bitcell schematic, handwritten read and wr
 | 1.5 | 3 / 2 / 2 | 145.8 mV | 96.6 mV |
 | **2.0** | **4 / 2 / 2** | **156.3 mV** | **77.1 mV** |
 
-$\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. The [Part 1 report](ESE5700_Proj1_Part1.pdf) uses the extracted cell: 0.72 µm × 0.54 µm, $D=28$, $C_{BL}=180$ aF, $C_{WL}=90$ aF, hold SNM 280 mV, read SNM 140 mV, disturbed zero node 95 mV, $\mathrm{WM}_{BL}=0.42$ V, and $I_{\mathrm{cell}}=25$ µA at 0.8 V. DRC is 0 violations and LVS is clean. At 0.7 V, read SNM is 110 mV and $\mathrm{WM}_{BL}$ is 0.32 V; at 0.5 V, read SNM is 70 mV and $\mathrm{WM}_{BL}$ is 0.18 V.
+$\beta=2$, $\gamma=1$ is the selected sizing. Its schematic read SNM is 29.7 mV higher than the $\beta=1$ case. The [Part 1 report](report/part1/ESE5700_Proj1_Part1.pdf) uses the extracted cell: 0.72 µm × 0.54 µm, $D=28$, $C_{BL}=180$ aF, $C_{WL}=90$ aF, hold SNM 280 mV, read SNM 140 mV, disturbed zero node 95 mV, $\mathrm{WM}_{BL}=0.42$ V, and $I_{\mathrm{cell}}=25$ µA at 0.8 V. DRC is 0 violations and LVS is clean. At 0.7 V, read SNM is 110 mV and $\mathrm{WM}_{BL}$ is 0.32 V; at 0.5 V, read SNM is 70 mV and $\mathrm{WM}_{BL}$ is 0.18 V.
 
 ## Repository layout
 
 | Path | Description |
 |------|-------------|
-| [ESE5700_Proj1_Part1.tex](ESE5700_Proj1_Part1.tex) / [.pdf](ESE5700_Proj1_Part1.pdf) | Part 1 report |
+| [report/part1/](report/part1/) | Part 1 report (`ESE5700_Proj1_Part1.tex`, PDF) |
 | [report/part2/](report/part2/) | Part 2 report (`ESE5700_Proj1_Part2.tex`, PDF, `img/`) |
 | [report/part3/](report/part3/) | Part 3 report (`ESE5700_Proj1_Part3.tex`, PDF) |
 | [report/part3/img/](report/part3/img/) | Part 3 Cadence schematics, benches, timing and energy captures |
@@ -145,7 +145,7 @@ Requirements: `tectonic` or a modern TeX distribution with `latexmk`. `make repo
 ```bash
 # Part 1
 make report
-# or: latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode ESE5700_Proj1_Part1.tex
+# or: cd report/part1 && tectonic ESE5700_Proj1_Part1.tex
 
 # Part 2
 cd report/part2 && tectonic ESE5700_Proj1_Part2.tex

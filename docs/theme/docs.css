@@ -1018,7 +1018,6 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
   }
   .cadence-capture { min-width:0 !important; }
   table, #content table.tableblock { min-width:0 !important; }
-  #content table.tableblock tbody td { grid-template-columns:minmax(0,1fr); gap:3px; }
   .listingblock pre, .literalblock pre, pre { font-size:13px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; }
   .mobile-toc nav { max-height:46vh; overflow-y:auto; overscroll-behavior:contain; }
   .pagination { flex-direction:column; }
@@ -1027,4 +1026,28 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
 @media(max-width:560px) {
   #content .hero .cta-row { flex-direction:column; align-items:stretch; }
   #content .hero .cta { width:100%; white-space:normal; }
+  #content table.tableblock tbody td { grid-template-columns:minmax(0,1fr); gap:3px; }
+}
+
+/* Curated figure grid: two or three across on desktop, one column on a phone. */
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(230px, 1fr));
+  gap:16px;
+  margin:8px 0 28px;
+  align-items:start;
+}
+.gallery .imageblock { margin:0; }
+.gallery .imageblock img {
+  width:100%;
+  max-width:100% !important;
+  max-height:200px !important;
+  min-width:0 !important;
+  object-fit:contain;
+  background:#0a0a0a;
+}
+.gallery .imageblock .title { font-size:12px; margin:8px 0 0; }
+@media(max-width:560px) {
+  .gallery { grid-template-columns:1fr; }
+  .gallery .imageblock img { max-height:46vh !important; }
 }

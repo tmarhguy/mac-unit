@@ -1,0 +1,49 @@
+[#figures]
+== Captured benches
+
+Chapters above keep one or two figures per idea. This page is the rest of the captures worth keeping: FO4, decoder delay, err1/err2, DFF energy, Test B/C energy, leaf cells. Debug dumps (`*_unreadable*`, `*_overzoomed*`, `*_prefix*`) stay out. Full sets are in the link:report.pdf[Part 1], link:report-part2.pdf[Part 2] and link:report-part3.pdf[Part 3] PDFs.
+
+On a phone the grid is one column; tap a capture for the full-size file.
+
+=== Macro captures
+
+[.gallery]
+--
+.FO4 of `inv_u`, 53 ps
+image::tb_fo4_tran.jpg[FO4 inverter chain transient,align=center]
+
+.Address 0 to wordline
+image::tb_dec_pre_addr_to_wl.jpg[Decoder address-to-wordline delay,align=center]
+
+.Read-path VTC, 2:2
+image::read_path_vtc_2to2.jpg[Read path voltage transfer curve at 2-to-2 fins,align=center]
+
+.`tb_sram_macro` err1 / err2 pass
+image::tb_sram_macro_ade_results_err.jpg[ADE results table for macro err1 and err2,align=center]
+--
+
+=== MAC captures
+
+[.gallery]
+--
+.DFF idle energy, 3.895 fJ
+image::dff_energy_idle.png[DFF idle energy integral,align=center]
+
+.DFF toggle energy, 9.309 fJ
+image::dff_energy_toggle.png[DFF toggle energy integral,align=center]
+
+.Counter bench
+image::tb_counter4b_tran.png[Four-bit counter transient,align=center]
+
+.Test B energy at 2.5 ns, 15.29 pJ
+image::tb_top_B_eng_2p5.png[ViVA energy integral for Test B at 2.5 ns,align=center]
+
+.Test C energy at 2.5 ns, 9.500 pJ
+image::tb_top_C_eng_2p5.png[ViVA energy integral for Test C at 2.5 ns,align=center]
+
+.Transmission gate
+image::tgate_schematic.png[Transmission gate schematic,align=center]
+
+.XOR2
+image::xor2_schematic.png[XOR2 schematic,align=center]
+--

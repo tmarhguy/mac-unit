@@ -1,52 +1,69 @@
 [#macro]
-== SRAM Macro (Part 2 — roadmap)
+== SRAM macro (Part 2)
 
-NOTE: Roadmap — Part 2 hardware does not exist yet. Every value in
-this chapter is TBD; nothing here is measured or estimated.
+The Part 1 cell is tiled into a 16×4 synchronous SRAM (`sram_macro`) with a 4-to-16 predecoder, per-column precharge, write driver, 2:2 read path and output latch, and a delay-chain controller. Wordlines run horizontally; bitline pairs run vertically. The 64 cells keep the Part 1 sizes (no one-off resize). Bitline stand-in load is stem:[C_{BL}=3.5] fF (`cbw` plus 16 × 180 aF). Simulations in this chapter are schematic-level. Area uses stem:[D=28] from Part 1 except the array, which is 64 × 0.389 µm².
 
-Part 2 deliverable: the Part 1 bitcell tiled into a 16 × 4
-synchronous SRAM macro. This chapter is a stub with fixed headings
-so Part 2 bring-up only fills tables and drops figures.
+.Part 2 `sram_macro` schematic
+image::sram_macro_schematic.jpg[SRAM macro schematic with array, decoder, columns and controller,align=center,width=760]
 
-=== Tiling and floorplan
+.Macro area (est.) and selected timing
+[cols="2,1,2",options="header"]
+|===
+| Quantity | Value | Notes
+| Array (64 cells) | 24.9 µm² | tiled from the Part 1 PR boundary, not a new layout
+| Periphery | 29.7 µm² | decoder 12.6 + controller 10.3 + columns
+| Macro total | **54.6 µm²** | 1226 periphery fins × 0.0242 µm² + array
+| FO4 (`inv_u`) | 53 ps | `tb_fo4`, 0.4 V, average of 54.66 / 50.59 ps
+| stem:[T_{CLK}] | **0.69 ns** | shortest passing period on `tb_sram_macro`
+| stem:[t_{\mathrm{acc}}] fall / rise | 463.7 / 484.2 ps | 1 ns bench, DOUT⟨1⟩ at addresses 0 and 1
+| stem:[t_{\mathrm{access}}] (worst) | **488 ps** | CLK to DOUT, read of 1 at 0.69 ns
+| err1 / err2 / err3 | 173.8 µV (pass) | spec 0.1 V
+| stem:[P_{\mathrm{read}}] | 115.2 µW | checkerboard at 0.69 ns
+| stem:[P_{\mathrm{leak}}] | 3.99 µW | clock stopped
+| FOM | stem:[\approx 4.7\times10^{3}] | Area × write power × stem:[T_{CLK}]
+|===
 
-* Wordline horizontal, bitline pair vertical (from <<bitcell,Bitcell>>).
-* 16 rows × 4 columns of the exact Part 1 cell — no resized one-off.
-* Per-cell stem:[C_{\mathrm{BL}}] / stem:[C_{\mathrm{WL}}] scale to
-full-line loads here.
-
-Macro area, aspect ratio, pinout: TBD.
+link:report-part2.pdf[Part 2 PDF] has the full benches, decoder logical-effort write-up, and power tables.
 
 === Periphery
 
-* Row decoder (4-to-16) driving wordlines.
-* Precharge / equalize on the bitline pairs.
-* Sense or full-swing read path per handout; write drivers.
-* Control: clock, chip-select, write-enable, address, data in/out.
+Write driver NMOS stacks are **nfin=8** (smallest that writes at 3.5 fF is nfin=5; nfin=8 writes in 96 ps with BLB staying above ~0.34 V). Minimum write pulse at 50% is 100–120 ps; design pulse ~140 ps.
 
-Periphery schematic and timing arcs: TBD.
+.Write driver, nfin=8
+image::write_driver_schematic_nfin8.jpg[Write driver schematic with 8-fin pulldowns,align=center,width=560]
 
-=== Timing and loads
+.Write of 1 at nfin=8, 96 ps to the cell trip
+image::write_driver_tran_nfin8.jpg[Write driver transient at nfin 8,align=center,width=640]
 
-* Read path: WL rise → bitline develop → sense/sample.
-* Write path: setup → WL pulse → hold.
-* Bitline load = 16 × stem:[C_{\mathrm{BL}}] + periphery;
-wordline load = 4 × stem:[C_{\mathrm{WL}}] + wire (extracted).
+Precharge is three 2-fin PMOS per column. Read path is a 2:2 inverter into an output latch enabled on the clock-high phase (see Part 3 for the RD_EN fix on `tb_top`).
 
-.Corner timing (post-layout, 1.2 V)
-[cols="1,1,1",options="header"]
-|===
-| Arc | Value | Notes
+.Precharge
+image::precharge_schematic.jpg[Bitline precharge schematic,align=center,width=480]
 
-| Read access | TBD | |
-| Write pulse min | TBD | |
-| Precharge recovery | TBD | |
-|===
+.Read path (2:2) in the library
+image::read_path_schematic_library_view_2to2.jpg[Read path inverter schematic 2-to-2 fins,align=center,width=520]
 
-Waveforms and corner table: TBD.
+.Output latch
+image::out_latch_schematic.jpg[Output latch schematic,align=center,width=520]
 
-=== Verification hooks
+=== Decoder
 
-DRC/LVS/PEX clean at macro level; functional march over all 16
-addresses; read/write at 1.2 V minimum. Detail lives in
-<<verification,Verification>>.
+Chosen decoder is a 2–2 predecode (NAND3 + `inv_2x` + row NAND2 + `inv_drv`). Logical effort with B=8 (address fan-out) predicts 182 ps address-to-wordline (stem:[\tau=10.5] ps from FO4=53 ps). Measured A⟨0⟩ path: 106 ps (new row rising) / 112 ps (old row falling).
+
+.Predecoder
+image::decoder_predec_schematic.jpg[Row predecoder schematic,align=center,width=640]
+
+=== Full-macro bench
+
+`tb_sram_macro` writes 16 words, reads them, writes the complement, and reads again. err1 / err2 / err3 (M-weighted DOUT error) all pass at 173.8 µV against a 0.1 V spec. Worst-case access at stem:[T_{CLK}=0.69] ns is 488 ps on a read of 1.
+
+.Row 15: WL, BL, WE, CLK, DOUT
+image::tb_sram_macro_row15_wl_bl_we_clk_dout_zoom_BEST.jpg[SRAM macro row-15 access waveform,align=center,width=760]
+
+.Access markers near 680–700 ps
+image::tb_sram_macro_tclk_access_680_700ps.jpg[Clock-to-DOUT access markers at 0.69 ns,align=center,width=760]
+
+.Power sweep including standby
+image::tb_sram_macro_power_sweep_with_standby.jpg[Macro power sweep with clock-running idle and leakage,align=center,width=700]
+
+Clock-running idle (112.2 µW) is almost the read power (115.2 µW): the delay-chain controller has no chip-select, so SRAM energy in Part 3 is nearly pattern-independent.

@@ -1,65 +1,45 @@
 [#verification]
 == Verification
 
-How the project proves the hardware is correct — and how to re-run
-that proof locally.
+Part 1 numbers that come from Quantus are extracted. Part 2 (`sram_macro`) and Part 3 (`top`) in this report are schematic-level Spectre benches: no DRC, LVS, or PEX on the macro or the MAC. Area outside the tiled cell uses stem:[D=28] from Part 1.
 
-=== Signoff gates
+=== Signoff that actually ran
 
-Every graded part must clear the same three gates before numbers
-promote to <<results,Results>>:
+[cols="1,2,2",options="header"]
+|===
+| Part | Layout / extraction | Simulation
+| 1 bitcell | DRC 0, LVS clean, Quantus C+CC | Extracted hold / read SNM, write margin, cell current, supply sweep
+| 2 SRAM macro | none (tiled-cell area only) | `tb_sram_macro` (err1 / err2 / err3, access, stem:[T_{CLK}], power)
+| 3 MAC | none | `tb_dff`, `tb_multiplier4b`, `tb_controller_mac`, `tb_counter4b`, `tb_top` Tests A/B/C
+|===
 
-. DRC clean (Cadence GPDK 18 nm deck, no waived violations unrecorded).
-. LVS clean (schematic vs. layout match).
-. PEX + post-layout simulation (extracted netlist, not schematic-only).
+=== Benches that exist
 
-IMPORTANT: No sizing, timing, or margin lands without post-layout
-evidence. Schematic-only numbers stay in their design section.
-
-=== Spectre benches
-
-* Butterfly (hold: stem:[WL = 0]; read: stem:[WL = V_{DD}],
-stem:[BL = BLB = V_{DD}]) → SNM via maximum-square method.
-* Write margin: store stem:[Q = 1], sweep BLB, record
-stem:[V_{\mathrm{trip}}].
-* Cell current: 0-side bitline, stem:[WL = V_{DD}].
-* Supply sweep: 0.8 V, 0.7 V, 0.5 V for SNM_read and WM_BL.
-* Functional transient: ideal WL + precharge, 15-load bitlines,
-write-0/read, write-1/read on WL, BL, BLB, stem:[Q],
-stem:[\overline{Q}].
+* Part 1: butterfly (hold and read), write-margin sweep, cell current, 0.8 / 0.7 / 0.5 V supply table, functional write/read with 15-load bitlines (<<sizing>>, <<read-snm>>, <<signoff>>).
+* Part 2: write driver nfin sweep, decoder address-to-WL, `tb_sram_macro` checkerboard / complement / worst-row, period sweep to 0.69 ns, power including standby (<<macro>>).
+* Part 3 register: `tb_dff` clock-to-Q, setup, hold, stem:[C_{CLK}], idle/toggle energy.
+* Part 3 datapath: `tb_multiplier4b` 256/256 products; 12-bit adder as twelve copies of the same full adder.
+* Part 3 sequencer: `tb_controller_mac` 60/60, `tb_counter4b` 38/38.
+* Part 3 integration: `tb_top` Tests A (0x34D), B (0xE10), C (0x320) at 10 / 4.0 / 2.5 / 2.0 / 1.75 / 1.5 ns; VDD-pin energy at 2.5 ns (<<mac-system>>).
 
 === Correctness properties
 
-.Properties and where they are checked
 [cols="2,2",options="header"]
 |===
 | Property | Where it is checked
-
-| `DRC == clean`, `LVS == clean`
-| Virtuoso DRC/LVS logs per cell, macro, top
-
-| `PEX(post-layout) == simulated`
-| Extracted Spectre netlists, not schematic
-
-| `SNM_read > 0` at 0.8 V and 0.7 V
-| Butterfly benches (§4a–4b)
-
-| `WM_BL` recorded with trip voltage
-| Write-margin sweep (§4c)
-
-| `write(0); read == 0`, `write(1); read == 1`
-| Functional transient (§5)
-
-| `ACC == sum(W[i]*X[i])` on reference vectors
-| Part 3 integration bench
+| DRC 0, LVS match | Part 1 cell only (`proj1_lib/drc`, `lvs_clean.png`)
+| Extracted SNM~read~ > 0 at 0.8 V and 0.7 V | Part 1 butterflies (140 mV / 110 mV)
+| Write 0 then read 0; write 1 then read 1 | Part 1 functional check; Part 2 err1 / err2 / err3
+| DOUT matches written word | `tb_sram_macro` err1 / err2 / err3 = 173.8 µV (spec 0.1 V)
+| 256/256 products | `tb_multiplier4b`
+| COUNT 0–15, DONE 17 edges after START | `tb_controller_mac` 60/60
+| ACC = Σ W[i]·X[i] on A/B/C | `tb_top` at 2.5 ns (and 10 ns, 4.0 ns)
 |===
 
 === Re-running locally
 
-. Open `proj1_lib` in Virtuoso (see flow checkout in <<spec,Specification>>).
-. Check-and-save each schematic; run DRC then LVS then PEX.
-. Launch ADE with the documented bench states and compare against
-the tables in <<bitcell,Bitcell>> and <<results,Results>>.
+. Open `proj1_lib` in Virtuoso (flow checkout in <<spec>>).
+. Part 1: check-and-save the schematic; DRC, LVS, PEX; ADE states in <<sizing>> and <<read-snm>>.
 . Recompute read SNM without Cadence:
 +
 [source,bash]
@@ -67,6 +47,6 @@ the tables in <<bitcell,Bitcell>> and <<results,Results>>.
 python3 scripts/check_snm_sweep.py --all
 # per-beta: results/part1/read-snm/beta*/raw.csv -> q.csv, qb.csv, snm.json, butterfly.png/.svg
 ----
+. Part 2 / 3: schematic-level ADE on `tb_sram_macro`, `tb_dff`, `tb_multiplier4b`, `tb_controller_mac`, `tb_top`. Vector files live in `stimuli/timing/` on the cluster.
 
-Tool logs and export settings behind each figure are recorded with
-the figure in `media/` so a teammate can reproduce it. Raw 4-col exports live in `results/part1/read-snm/beta*/raw.csv`; clean plots in `media/part1/butterfly-read-beta*.png`.
+Raw 4-col SNM exports live in `results/part1/read-snm/beta*/raw.csv`. Part 2 notes: `results/sram_macro_unit_test.md`, `results/sram_macro_area_fom.md`. Part 3 figures: `report/part3/img/`.

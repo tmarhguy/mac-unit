@@ -72,7 +72,10 @@ These benches use the extracted view. The margin is the same largest-square redu
 | Cell current | Both bitlines at stem:[V_{DD}]; current from the zero-side bitline | 25 µA
 |===
 
-Extraction lowers read SNM from the schematic 156.3 mV to 140 mV and raises the disturbed zero node from 77.1 mV to 95 mV. Hold SNM, 280 mV, stays well above the read margin. The hold butterfly, extracted read butterfly, and write-margin sweep captures are not in the repository yet.
+Extraction lowers read SNM from the schematic 156.3 mV to 140 mV and raises the disturbed zero node from 77.1 mV to 95 mV. Hold SNM, 280 mV, stays well above the read margin.
+
+.Extracted hold SNM, 280 mV
+image::hold_snm_viva.png[Extracted hold SNM butterfly from ViVA,align=center,width=700]
 
 .Read SNM and write margin versus supply, extracted view
 [cols="1,1,1,2",options="header"]
@@ -95,11 +98,13 @@ Read stability is set by the pass-gate/pull-down divider. The schematic sweep mo
 
 === Team contributions
 
-Both authors are responsible for the complete design and report. The repository does not record which author performed each task.
+Both authors are responsible for the complete design and report.
 
-[cols="1,2",options="header"]
+[cols="1,3",options="header"]
 |===
 | Author | Contribution
-| Tyrone Marhguy | —
-| Victor Wanjohi | —
+| Tyrone Marhguy
+| Part 1 6T cell: schematic, β sweep, pull-up/pass/pull-down sizing, custom layout, DRC and LVS. Part 2 SRAM macro, instantiated twice as W and X. Part 3 `top`, transistor-level register (`d_ff`) and characterization, 12-bit adder / accumulator, `tb_top` Tests A/B/C, period sweep, VDD energy and FOM~MAC~.
+| Victor Wanjohi
+| Part 1 write-stability analysis. Part 2 column circuits, decoder, and SRAM-macro benches (stem:[T_{CLK}], power, access). Part 3 leaf cells (`tg`, `xor2`, `mux2`), 4×4 array multiplier (256/256, 1.14–1.24 ns), 4-bit counter (38/38) and `controller_mac` (60/60); sequencer schematics; logical-effort sizing.
 |===

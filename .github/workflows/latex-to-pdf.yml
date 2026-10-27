@@ -6,7 +6,7 @@ on:
   push:
     branches: [main, master]
     paths:
-      - "ESE5700_Proj1_Part1.tex"
+      - "report/part1/**"
       - "media/**"
       - ".github/workflows/latex-to-pdf.yml"
   workflow_dispatch:
@@ -30,6 +30,7 @@ jobs:
       - name: Compile Part 1
         uses: xu-cheng/latex-action@v3
         with:
+          working_directory: report/part1
           root_file: ESE5700_Proj1_Part1.tex
           compiler: latexmk
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
@@ -44,7 +45,7 @@ jobs:
           git config user.name "Tyrone Marhguy"
           git config user.email "tmarhguy@gmail.com"
 
-          git add -f ESE5700_Proj1_Part1.pdf
+          git add -f report/part1/ESE5700_Proj1_Part1.pdf
 
           if git diff --cached --quiet; then
             echo "No PDF changes to commit."

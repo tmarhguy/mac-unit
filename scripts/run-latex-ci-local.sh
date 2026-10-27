@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 TEX_FILES=(
-  ESE5700_Proj1_Part1.tex
+  report/part1/ESE5700_Proj1_Part1.tex
 )
 
 if command -v docker >/dev/null 2>&1; then
@@ -45,11 +45,13 @@ fi
 "${DOCKER[@]}" pull "${PULL_ARGS[@]}" "$IMAGE"
 
 for tex in "${TEX_FILES[@]}"; do
+  tex_dir="$(dirname "$tex")"
+  tex_base="$(basename "$tex")"
   echo "Compiling $tex ..."
   "${DOCKER[@]}" run --rm "${RUN_ARGS[@]}" \
     -v "$ROOT:/workdir" \
-    -w /workdir \
+    -w "/workdir/${tex_dir}" \
     "$IMAGE" \
-    latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode "$tex"
+    latexmk -pdf -file-line-error -halt-on-error -interaction=nonstopmode "$tex_base"
   echo "OK: $ROOT/${tex%.tex}.pdf"
 done
