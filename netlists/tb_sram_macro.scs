@@ -1,0 +1,398 @@
+simulator lang=spectre
+
+// Library name: proj1_lib
+// Cell name: inv_u
+// View name: schematic
+subckt inv_u A VDD VSS Y
+    PM0 (Y A VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+    NM0 (Y A VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+ends inv_u
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: out_latch
+// View name: schematic
+subckt out_latch DOUT EN RD VDD VSS
+    PF2 (X EN f1 VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PF1 (f1 XB VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    P2 (DOUT XB VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    P1 (XB X VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PT (X ENB RD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PE (ENB EN VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NF1 (f2 XB VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NF2 (X ENB f2 VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    N2 (DOUT XB VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    N1 (XB X VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NT (X EN RD VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NE (ENB EN VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+ends out_latch
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: inv_2x
+// View name: schematic
+subckt inv_2x A VDD VSS Y
+    PM0 (Y A VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=8 nf=1 m=1 ngcon=1 \
+        asej=2.6112e-14 adej=2.6112e-14 psej=5.2e-07 pdej=5.2e-07 \
+        lrsd=68.0n
+    NM0 (Y A VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+ends inv_2x
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: nand2_u
+// View name: schematic
+subckt nand2_u A B VDD VSS Y
+    PM1 (Y A VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 \
+        lrsd=68.0n
+    PM0 (Y B VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 \
+        lrsd=68.0n
+    NM1 (x B VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 \
+        lrsd=68.0n
+    NM0 (Y A x VSS) cds_ff_mpt_n1svt l=18.0n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 \
+        lrsd=68.0n
+ends nand2_u
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: controller
+// View name: schematic
+subckt controller A\<3\> A\<2\> A\<1\> A\<0\> AB\<3\> AB\<2\> AB\<1\> \
+        AB\<0\> ADDR\<3\> ADDR\<2\> ADDR\<1\> ADDR\<0\> CLK D\<3\> D\<2\> \
+        D\<1\> D\<0\> DIN\<3\> DIN\<2\> DIN\<1\> DIN\<0\> PRE_B RD_EN VDD \
+        VSS WE WL_EN WR_EN
+    I12 (net5 VDD VSS RD_EN) inv_u
+    DLY2\<0\> (WL_EN VDD VSS r\<0\>) inv_u
+    DLY2\<1\> (r\<0\> VDD VSS r\<1\>) inv_u
+    DLY2\<2\> (r\<1\> VDD VSS r\<2\>) inv_u
+    DLY2\<3\> (r\<2\> VDD VSS r\<3\>) inv_u
+    DLY2\<4\> (r\<3\> VDD VSS r\<4\>) inv_u
+    DLY2\<5\> (r\<4\> VDD VSS r\<5\>) inv_u
+    DLY2\<6\> (r\<5\> VDD VSS r\<6\>) inv_u
+    DLY2\<7\> (r\<6\> VDD VSS WLD) inv_u
+    DLY1\<0\> (CLKBUF VDD VSS c\<0\>) inv_u
+    DLY1\<1\> (c\<0\> VDD VSS c\<1\>) inv_u
+    DLY1\<2\> (c\<1\> VDD VSS c\<2\>) inv_u
+    DLY1\<3\> (c\<2\> VDD VSS c\<3\>) inv_u
+    DLY1\<4\> (c\<3\> VDD VSS c\<4\>) inv_u
+    DLY1\<5\> (c\<4\> VDD VSS c\<5\>) inv_u
+    DLY1\<6\> (c\<5\> VDD VSS CLKD_B) inv_u
+    I3 (WE_L VDD VSS WE_LB) inv_u
+    IAB\<3\> (A\<3\> VDD VSS AB\<3\>) inv_u
+    IAB\<2\> (A\<2\> VDD VSS AB\<2\>) inv_u
+    IAB\<1\> (A\<1\> VDD VSS AB\<1\>) inv_u
+    IAB\<0\> (A\<0\> VDD VSS AB\<0\>) inv_u
+    I1 (CLKB VDD VSS CLKBUF) inv_u
+    I0 (CLK VDD VSS CLKB) inv_u
+    LWE (WE_L CLKBL WE VDD VSS) out_latch
+    LD\<3\> (D\<3\> CLKBL DIN\<3\> VDD VSS) out_latch
+    LD\<2\> (D\<2\> CLKBL DIN\<2\> VDD VSS) out_latch
+    LD\<1\> (D\<1\> CLKBL DIN\<1\> VDD VSS) out_latch
+    LD\<0\> (D\<0\> CLKBL DIN\<0\> VDD VSS) out_latch
+    LA\<3\> (A\<3\> CLKBL ADDR\<3\> VDD VSS) out_latch
+    LA\<2\> (A\<2\> CLKBL ADDR\<2\> VDD VSS) out_latch
+    LA\<1\> (A\<1\> CLKBL ADDR\<1\> VDD VSS) out_latch
+    LA\<0\> (A\<0\> CLKBL ADDR\<0\> VDD VSS) out_latch
+    I9 (net4 VDD VSS WR_EN) inv_2x
+    I7 (net3 VDD VSS WL_EN) inv_2x
+    I13 (CLK VDD VSS CLKBL) inv_2x
+    I4 (CLKB VDD VSS PRE_B) inv_2x
+    I11 (WLD WE_LB VDD VSS net5) nand2_u
+    I8 (WL_EN WE_L VDD VSS net4) nand2_u
+    I6 (CLKBUF CLKD_B VDD VSS net3) nand2_u
+ends controller
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: nand3_u
+// View name: schematic
+subckt nand3_u A B C VDD VSS Y
+    NM2 (x2 C VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=6 nf=1 m=1 ngcon=1 \
+        asej=1.9584e-14 adej=1.9584e-14 psej=4.24e-07 pdej=4.24e-07 \
+        lrsd=68.0n
+    NM1 (x1 B x2 VSS) cds_ff_mpt_n1svt l=18.0n nfin=6 nf=1 m=1 ngcon=1 \
+        asej=1.9584e-14 adej=1.9584e-14 psej=4.24e-07 pdej=4.24e-07 \
+        lrsd=68.0n
+    NM0 (Y A x1 VSS) cds_ff_mpt_n1svt l=18.0n nfin=6 nf=1 m=1 ngcon=1 \
+        asej=1.9584e-14 adej=1.9584e-14 psej=4.24e-07 pdej=4.24e-07 \
+        lrsd=68.0n
+    PM2 (Y C VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+    PM1 (Y B VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+    PM0 (Y A VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+ends nand3_u
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: inv_drv
+// View name: schematic
+subckt inv_drv A VDD VSS Y
+    PM0 (Y A VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=6 nf=1 m=1 ngcon=1 \
+        asej=1.9584e-14 adej=1.9584e-14 psej=4.24e-07 pdej=4.24e-07 \
+        lrsd=68.0n
+    NM0 (Y A VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=3 nf=1 m=1 ngcon=1 \
+        asej=9.792e-15 adej=9.792e-15 psej=2.8e-07 pdej=2.8e-07 lrsd=68.0n
+ends inv_drv
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: row_pre
+// View name: schematic
+subckt row_pre PA PB VDD VSS WL
+    I0 (PA PB VDD VSS net3) nand2_u
+    I1 (net3 VDD VSS WL) inv_drv
+ends row_pre
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: decoder_predec
+// View name: schematic
+subckt decoder_predec A\<3\> A\<2\> A\<1\> A\<0\> AB\<3\> AB\<2\> AB\<1\> \
+        AB\<0\> VDD VSS WL\<15\> WL\<14\> WL\<13\> WL\<12\> WL\<11\> \
+        WL\<10\> WL\<9\> WL\<8\> WL\<7\> WL\<6\> WL\<5\> WL\<4\> WL\<3\> \
+        WL\<2\> WL\<1\> WL\<0\> WL_EN
+    I3 (WL_EN A\<1\> A\<0\> VDD VSS net22) nand3_u
+    I2 (WL_EN A\<1\> AB\<0\> VDD VSS net16) nand3_u
+    I1 (WL_EN AB\<1\> A\<0\> VDD VSS net10) nand3_u
+    I0 (WL_EN AB\<1\> AB\<0\> VDD VSS net4) nand3_u
+    I7 (A\<3\> A\<2\> VDD VSS net42) nand2_u
+    I6 (A\<3\> AB\<2\> VDD VSS net37) nand2_u
+    I5 (AB\<3\> A\<2\> VDD VSS net32) nand2_u
+    I4 (AB\<3\> AB\<2\> VDD VSS net27) nand2_u
+    I15 (net42 VDD VSS PB\<3\>) inv_2x
+    I14 (net37 VDD VSS PB\<2\>) inv_2x
+    I13 (net32 VDD VSS PB\<1\>) inv_2x
+    I12 (net27 VDD VSS PB\<0\>) inv_2x
+    I11 (net16 VDD VSS PA\<2\>) inv_2x
+    I10 (net22 VDD VSS PA\<3\>) inv_2x
+    I9 (net10 VDD VSS PA\<1\>) inv_2x
+    I8 (net4 VDD VSS PA\<0\>) inv_2x
+    R\<15\> (PA\<3\> PB\<3\> VDD VSS WL\<15\>) row_pre
+    R\<14\> (PA\<2\> PB\<3\> VDD VSS WL\<14\>) row_pre
+    R\<13\> (PA\<1\> PB\<3\> VDD VSS WL\<13\>) row_pre
+    R\<12\> (PA\<0\> PB\<3\> VDD VSS WL\<12\>) row_pre
+    R\<11\> (PA\<3\> PB\<2\> VDD VSS WL\<11\>) row_pre
+    R\<10\> (PA\<2\> PB\<2\> VDD VSS WL\<10\>) row_pre
+    R\<9\> (PA\<1\> PB\<2\> VDD VSS WL\<9\>) row_pre
+    R\<8\> (PA\<0\> PB\<2\> VDD VSS WL\<8\>) row_pre
+    R\<7\> (PA\<3\> PB\<1\> VDD VSS WL\<7\>) row_pre
+    R\<6\> (PA\<2\> PB\<1\> VDD VSS WL\<6\>) row_pre
+    R\<5\> (PA\<1\> PB\<1\> VDD VSS WL\<5\>) row_pre
+    R\<4\> (PA\<0\> PB\<1\> VDD VSS WL\<4\>) row_pre
+    R\<3\> (PA\<3\> PB\<0\> VDD VSS WL\<3\>) row_pre
+    R\<2\> (PA\<2\> PB\<0\> VDD VSS WL\<2\>) row_pre
+    R\<1\> (PA\<1\> PB\<0\> VDD VSS WL\<1\>) row_pre
+    R\<0\> (PA\<0\> PB\<0\> VDD VSS WL\<0\>) row_pre
+ends decoder_predec
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: precharge
+// View name: schematic
+subckt precharge BL BLB PRE_B VDD
+    PM2 (BL PRE_B BLB VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PM1 (BLB PRE_B VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PM0 (BL PRE_B VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+ends precharge
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: write_driver
+// View name: schematic
+subckt write_driver BL BLB D VDD VSS WR_EN
+    PM0 (DB D VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NM4 (net9 D VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=8 nf=1 m=1 ngcon=1 \
+        asej=2.6112e-14 adej=2.6112e-14 psej=5.2e-07 pdej=5.2e-07 \
+        lrsd=68.0n
+    NM3 (BLB WR_EN net9 VSS) cds_ff_mpt_n1svt l=18.0n nfin=8 nf=1 m=1 \
+        ngcon=1 asej=2.6112e-14 adej=2.6112e-14 psej=5.2e-07 pdej=5.2e-07 \
+        lrsd=68.0n
+    NM2 (net1 DB VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=8 nf=1 m=1 ngcon=1 \
+        asej=2.6112e-14 adej=2.6112e-14 psej=5.2e-07 pdej=5.2e-07 \
+        lrsd=68.0n
+    NM1 (BL WR_EN net1 VSS) cds_ff_mpt_n1svt l=18.0n nfin=8 nf=1 m=1 \
+        ngcon=1 asej=2.6112e-14 adej=2.6112e-14 psej=5.2e-07 pdej=5.2e-07 \
+        lrsd=68.0n
+    NM0 (DB D VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+ends write_driver
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: read_path
+// View name: schematic
+subckt read_path BLB RD VDD VSS
+    PM0 (RD BLB VDD VDD) cds_ff_mpt_p1svt l=18.0n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 \
+        lrsd=68.0n
+    NM0 (RD BLB VSS VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+ends read_path
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: sram_6t
+// View name: schematic
+subckt sram_6t BL BLB Q QB VDD VSS WL
+    PM1 (QB Q VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    PM0 (Q QB VDD VDD) cds_ff_mpt_p1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NM3 (Q WL BL VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NM2 (BLB WL QB VSS) cds_ff_mpt_n1svt l=18n nfin=2 nf=1 m=1 ngcon=1 \
+        asej=6.528e-15 adej=6.528e-15 psej=2.32e-07 pdej=2.32e-07 lrsd=18n
+    NM1 (QB Q VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+    NM0 (Q QB VSS VSS) cds_ff_mpt_n1svt l=18.0n nfin=4 nf=1 m=1 ngcon=1 \
+        asej=1.3056e-14 adej=1.3056e-14 psej=3.28e-07 pdej=3.28e-07 \
+        lrsd=68.0n
+ends sram_6t
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: sram_col
+// View name: schematic
+subckt sram_col D DOUT PRE_B RD_EN VDD VSS WL\<15\> WL\<14\> WL\<13\> \
+        WL\<12\> WL\<11\> WL\<10\> WL\<9\> WL\<8\> WL\<7\> WL\<6\> WL\<5\> \
+        WL\<4\> WL\<3\> WL\<2\> WL\<1\> WL\<0\> WR_EN
+    I1 (BL BLB PRE_B VDD) precharge
+    I2 (BL BLB D VDD VSS WR_EN) write_driver
+    I3 (BLB RD VDD VSS) read_path
+    I4 (DOUT RD_EN RD VDD VSS) out_latch
+    X\<15\> (BL BLB Q\<15\> QB\<15\> VDD VSS WL\<15\>) sram_6t
+    X\<14\> (BL BLB Q\<14\> QB\<14\> VDD VSS WL\<14\>) sram_6t
+    X\<13\> (BL BLB Q\<13\> QB\<13\> VDD VSS WL\<13\>) sram_6t
+    X\<12\> (BL BLB Q\<12\> QB\<12\> VDD VSS WL\<12\>) sram_6t
+    X\<11\> (BL BLB Q\<11\> QB\<11\> VDD VSS WL\<11\>) sram_6t
+    X\<10\> (BL BLB Q\<10\> QB\<10\> VDD VSS WL\<10\>) sram_6t
+    X\<9\> (BL BLB Q\<9\> QB\<9\> VDD VSS WL\<9\>) sram_6t
+    X\<8\> (BL BLB Q\<8\> QB\<8\> VDD VSS WL\<8\>) sram_6t
+    X\<7\> (BL BLB Q\<7\> QB\<7\> VDD VSS WL\<7\>) sram_6t
+    X\<6\> (BL BLB Q\<6\> QB\<6\> VDD VSS WL\<6\>) sram_6t
+    X\<5\> (BL BLB Q\<5\> QB\<5\> VDD VSS WL\<5\>) sram_6t
+    X\<4\> (BL BLB Q\<4\> QB\<4\> VDD VSS WL\<4\>) sram_6t
+    X\<3\> (BL BLB Q\<3\> QB\<3\> VDD VSS WL\<3\>) sram_6t
+    X\<2\> (BL BLB Q\<2\> QB\<2\> VDD VSS WL\<2\>) sram_6t
+    X\<1\> (BL BLB Q\<1\> QB\<1\> VDD VSS WL\<1\>) sram_6t
+    X\<0\> (BL BLB Q\<0\> QB\<0\> VDD VSS WL\<0\>) sram_6t
+    C1 (BLB VSS) capacitor c=cbw
+    C0 (BL VSS) capacitor c=cbw
+ends sram_col
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: sram_macro
+// View name: schematic
+subckt sram_macro ADDR\<3\> ADDR\<2\> ADDR\<1\> ADDR\<0\> CLK DIN\<3\> \
+        DIN\<2\> DIN\<1\> DIN\<0\> DOUT\<3\> DOUT\<2\> DOUT\<1\> DOUT\<0\> \
+        VDD VSS WE
+    I0 (A\<3\> A\<2\> A\<1\> A\<0\> AB\<3\> AB\<2\> AB\<1\> AB\<0\> \
+        ADDR\<3\> ADDR\<2\> ADDR\<1\> ADDR\<0\> CLK D\<3\> D\<2\> D\<1\> \
+        D\<0\> DIN\<3\> DIN\<2\> DIN\<1\> DIN\<0\> PRE_B RD_EN VDD VSS WE \
+        WL_EN WR_EN) controller
+    I1 (A\<3\> A\<2\> A\<1\> A\<0\> AB\<3\> AB\<2\> AB\<1\> AB\<0\> VDD \
+        VSS WL\<15\> WL\<14\> WL\<13\> WL\<12\> WL\<11\> WL\<10\> WL\<9\> \
+        WL\<8\> WL\<7\> WL\<6\> WL\<5\> WL\<4\> WL\<3\> WL\<2\> WL\<1\> \
+        WL\<0\> WL_EN) decoder_predec
+    COL\<3\> (D\<3\> DOUT\<3\> PRE_B RD_EN VDD VSS WL\<15\> WL\<14\> \
+        WL\<13\> WL\<12\> WL\<11\> WL\<10\> WL\<9\> WL\<8\> WL\<7\> \
+        WL\<6\> WL\<5\> WL\<4\> WL\<3\> WL\<2\> WL\<1\> WL\<0\> WR_EN) \
+        sram_col
+    COL\<2\> (D\<2\> DOUT\<2\> PRE_B RD_EN VDD VSS WL\<15\> WL\<14\> \
+        WL\<13\> WL\<12\> WL\<11\> WL\<10\> WL\<9\> WL\<8\> WL\<7\> \
+        WL\<6\> WL\<5\> WL\<4\> WL\<3\> WL\<2\> WL\<1\> WL\<0\> WR_EN) \
+        sram_col
+    COL\<1\> (D\<1\> DOUT\<1\> PRE_B RD_EN VDD VSS WL\<15\> WL\<14\> \
+        WL\<13\> WL\<12\> WL\<11\> WL\<10\> WL\<9\> WL\<8\> WL\<7\> \
+        WL\<6\> WL\<5\> WL\<4\> WL\<3\> WL\<2\> WL\<1\> WL\<0\> WR_EN) \
+        sram_col
+    COL\<0\> (D\<0\> DOUT\<0\> PRE_B RD_EN VDD VSS WL\<15\> WL\<14\> \
+        WL\<13\> WL\<12\> WL\<11\> WL\<10\> WL\<9\> WL\<8\> WL\<7\> \
+        WL\<6\> WL\<5\> WL\<4\> WL\<3\> WL\<2\> WL\<1\> WL\<0\> WR_EN) \
+        sram_col
+ends sram_macro
+// End of subcircuit definition.
+
+// Library name: proj1_lib
+// Cell name: tb_sram_macro
+// View name: schematic
+I0 (ADDR\<3\> ADDR\<2\> ADDR\<1\> ADDR\<0\> CLK DIN\<3\> DIN\<2\> DIN\<1\> \
+        DIN\<0\> DOUT\<3\> DOUT\<2\> DOUT\<1\> DOUT\<0\> VDD 0 WE) \
+        sram_macro
+V9 (VDD 0) vsource dc=800.0m type=dc
+V8 (E 0) vsource type=pulse val0=0 val1=800.0m period=2*tclk delay=tclk \
+        rise=20p fall=20p width=tclk
+V7 (M 0) vsource type=pulse val0=0 val1=800.0m period=tclk delay=1.35*tclk \
+        rise=20p fall=20p width=0.13*tclk
+V6 (ph_s 0) vsource type=pulse val0=0 val1=800.0m period=200*tclk \
+        delay=32.25*tclk rise=20p fall=20p width=100*tclk
+V5 (we_s 0) vsource type=pulse val0=800.0m val1=0 period=32*tclk delay=16.25*tclk  \
+         rise=20p fall=20p width=16*tclk-20p
+V4 (a3_s 0) vsource type=pulse val0=0 val1=800.0m period=16*tclk \
+        delay=8.25*tclk rise=20p fall=20p width=8.25*tclk-20p
+V3 (a2_s 0) vsource type=pulse val0=0 val1=800.0m period=8*tclk \
+        delay=4.25*tclk rise=20p fall=20p width=4*tclk-20p
+V2 (a1_s 0) vsource type=pulse val0=0 val1=800.0m period=4*tclk delay=2.25*tclk  \
+         rise=20p fall=20p width=2*tclk-20p
+V1 (a0_s 0) vsource type=pulse val0=0 val1=800.0m period=2*tclk \
+        delay=1.25*tclk rise=20p fall=20p width=tclk-20p
+V0 (clk_s 0) vsource type=pulse val0=0 val1=800.0m period=tclk \
+        delay=tclk/2 rise=20p fall=20p width=tclk/2-20p
+IDIN\<3\> (xb VDD 0 DIN\<3\>) inv_u
+IDIN\<2\> (xbb VDD 0 DIN\<2\>) inv_u
+IDIN\<1\> (xb VDD 0 DIN\<1\>) inv_u
+IDIN\<0\> (xbb VDD 0 DIN\<0\>) inv_u
+IB1\<0\> (clk_s VDD 0 nb\<0\>) inv_u
+IB1\<1\> (we_s VDD 0 nb\<1\>) inv_u
+IB1\<2\> (a3_s VDD 0 nb\<2\>) inv_u
+IB1\<3\> (a2_s VDD 0 nb\<3\>) inv_u
+IB1\<4\> (a1_s VDD 0 nb\<4\>) inv_u
+IB1\<5\> (a0_s VDD 0 nb\<5\>) inv_u
+IX1 (X VDD 0 xb) inv_u
+IX2 (xb VDD 0 xbb) inv_u
+IB2\<0\> (nb\<0\> VDD 0 CLK) inv_u
+IB2\<1\> (nb\<1\> VDD 0 WE) inv_u
+IB2\<2\> (nb\<2\> VDD 0 ADDR\<3\>) inv_u
+IB2\<3\> (nb\<3\> VDD 0 ADDR\<2\>) inv_u
+IB2\<4\> (nb\<4\> VDD 0 ADDR\<1\>) inv_u
+IB2\<5\> (nb\<5\> VDD 0 ADDR\<0\>) inv_u
+N4 (x2 x3 VDD 0 X) nand2_u
+N2 (a0_s x1 VDD 0 x2) nand2_u
+N3 (ph_s x1 VDD 0 x3) nand2_u
+N1 (a0_s ph_s VDD 0 x1) nand2_u
+CD\<3\> (DOUT\<3\> 0) capacitor c=1f
+CD\<2\> (DOUT\<2\> 0) capacitor c=1f
+CD\<1\> (DOUT\<1\> 0) capacitor c=1f
+CD\<0\> (DOUT\<0\> 0) capacitor c=1f
