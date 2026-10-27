@@ -14,8 +14,11 @@ The drawn cell keeps the schematic sizes: L=18 nm, pull-ups at 2 fins, pull-down
 
 Mirrored neighbours can share the VDD rail, the VSS rail, and the bitline contacts. The PR boundary is 0.72 µm by 0.54 µm.
 
-.Drawn 6T bitcell. Pull-ups are at the top on VDD, pull-downs are at the bottom on VSS, and WL runs along the bottom and up both sides.
-image::layout_.png[Drawn 6T bitcell layout,align=center,width=760]
+.Drawn 6T bitcell, DRC 0 and LVS match. Pull-ups on VDD, pull-downs on VSS, WL along the bottom and up both sides.
+image::6t_sram_final_layout.png[Drawn 6T bitcell layout without fins,align=center,width=760]
+
+.Same cell with fins shown.
+image::6t_sram_final_layout_fins.png[Drawn 6T bitcell layout with fins visible,align=center,width=760]
 
 .Layout signoff and area. stem:[F=10\,\mathrm{nm}], so stem:[A_{F^2}=10^4 A_{\mu\mathrm m^2}].
 [cols="2,1,2",options="header"]
