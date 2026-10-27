@@ -11,7 +11,10 @@
 <p align="center">
   <img alt="6T SRAM bitcell schematic" src="media/part1/bitcell-schematic.png" width="320">
   <br>
-  <em>Part 1 6T cell, Cadence GPDK 18 nm.</em>
+  <img alt="Drawn 6T bitcell layout without fins" src="media/part1/6t_sram_final_layout.png" width="400">
+  <img alt="Drawn 6T bitcell layout with fins visible" src="media/part1/6t_sram_final_layout_fins.png" width="400">
+  <br>
+  <em>Part 1 6T cell: schematic and layout (DRC 0, LVS match), Cadence GPDK 18 nm.</em>
 </p>
 
 <p align="center">
