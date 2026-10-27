@@ -12,33 +12,24 @@
 
 [preface]
 [#overview]
-== A 16-element MAC around two SRAM macros
+== SRAM-based 4-bit MAC
 
-ESE 5700 Project 1 (Digital Integrated Circuits and VLSI Fundamentals, University of Pennsylvania) is a 6T SRAM bitcell, a 16×4 synchronous SRAM macro, and an SRAM-based 4-bit multiply-accumulate unit in *Cadence GPDK 18 nm* (`cds_ff_mpt`) at nominal stem:[V_{DD}=0.8\,\mathrm V]. The unit computes stem:[\mathrm{ACC}=\sum_{i=0}^{15} W_i X_i] from two copies of the Part 2 macro, a 4×4 array multiplier, a 12-bit ripple accumulator, and a 4-bit counter plus FSM. All registers are transmission-gate master-slave flip-flops. A pipelined read / MAC takes 17 cycles from START to DONE.
+A 6T bitcell, a 16×4 SRAM, and a 4-bit MAC in Cadence GPDK 18 nm at 0.8 V. Seventeen cycles from START to DONE.
 
-Selected operating points (schematic-level on the MAC; Part 1 cell is extracted):
+[.lead-metrics]
+0.39 µm² cell · 0.69 ns SRAM · 2.5 ns MAC. Part 1 is extracted; Parts 2 and 3 are schematic-level.
 
-[cols="1,3",options="header"]
-|===
-| Part | Result
-| **1** bitcell | 0.72 µm × 0.54 µm = 0.39 µm², D=28, DRC 0, LVS clean; extracted read SNM 140 mV at 0.8 V
-| **2** SRAM macro | stem:[T_{CLK}=0.69] ns, stem:[t_{\mathrm{access}}=488] ps, area 54.6 µm² (est.), FOM stem:[\approx 4.7\times10^{3}]
-| **3** MAC | stem:[T_{CLK}=2.5] ns (400 MHz), stem:[t_{dot}=42.5] ns, Test A stem:[E_{dot}=8.870] pJ, FOM~MAC~ stem:[=1.1\times10^{5}] µm²·pJ·ns
-|===
+image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso,align=center,width=320]
 
-.Left: Part 1 6T cell. Right: Part 3 `top` (two macros, 4×4 multiplier, 12-bit accumulator).
-image::bitcell-schematic.png[Symmetric six transistor SRAM schematic in Virtuoso,align=center,width=480]
+The unit computes stem:[\mathrm{ACC}=\sum_{i=0}^{15} W_i X_i] from two copies of the Part 2 macro, a 4×4 array multiplier, a 12-bit ripple accumulator, and a 4-bit counter plus FSM. Every register is a transmission-gate master-slave flip-flop. ESE 5700 Project 1, University of Pennsylvania.
 
-.Part 3 `top`, left half: SRAM macros I1/I0, multiplier, accumulator
-image::mac_top_schematic.png[MAC top schematic left half with two SRAM macros and datapath,align=center,width=760]
+Start with the <<spec,specification>>, then the <<sizing,bitcell>>, the <<macro,SRAM macro>>, and the <<mac-system,MAC>>. Estimates are labeled. Full write-ups:
 
 * link:report.pdf[Part 1 PDF]
 * link:report-part2.pdf[Part 2 PDF]
 * link:report-part3.pdf[Part 3 PDF]
 * link:ese5700-project1.pdf[Course handout]
 * https://github.com/tmarhguy/mac-unit/tree/main/results/part1/read-snm[Part 1 SNM CSVs]
-
-Start with the <<spec,specification>>, then the <<sizing,bitcell>>, the <<macro,SRAM macro>>, and the <<mac-system,MAC>>. Part 1 numbers are post-layout. Parts 2 and 3 are schematic-level unless a table says otherwise. Estimates are labeled.
 
 include::sections/02-spec.adoc[]
 

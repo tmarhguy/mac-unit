@@ -10,10 +10,8 @@
 
 <p align="center">
   <img alt="6T SRAM bitcell schematic" src="media/part1/bitcell-schematic.png" width="320">
-  &nbsp;
-  <img alt="MAC top schematic (left half)" src="report/part3/img/mac_top_schematic.png" width="420">
   <br>
-  <em>Left: Part 1 6T cell. Right: Part 3 <code>top</code> — two Part 2 macros, 4×4 multiplier, 12-bit accumulator.</em>
+  <em>Part 1 6T cell, Cadence GPDK 18 nm.</em>
 </p>
 
 <p align="center">

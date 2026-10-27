@@ -5,6 +5,9 @@ Two Part 2 macros hold W and X. A static-CMOS array multiplier, a 12-bit ripple 
 
 link:report-part3.pdf[Part 3 PDF] is the Gradescope write-up (figures, DFF tables, energy integrals).
 
+.Part 3 `top`, left half: SRAM macros I1/I0, multiplier, accumulator
+image::mac_top_schematic.png[MAC top schematic left half with two SRAM macros and datapath,align=center,width=760]
+
 .Part 3 `top`, right half: controller, counter, address muxes
 image::mac_top_schematic_right.png[MAC top schematic right half with controller and counter,align=center,width=760]
 

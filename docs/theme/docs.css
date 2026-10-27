@@ -23,7 +23,7 @@
   --line:#303030;
   --accent:#ededed;
   --soft:#262626;
-  --code:#1c1c1c;
+  --code:#2a2a2a;
 }
 * {
   box-sizing:border-box;
@@ -439,9 +439,14 @@ hr {
 
 code,kbd,pre {
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:var(--ink);
 }
-p code,li code,td code {
+/* Asciidoctor's default stylesheet uses :not(pre)>code { background:#f7f7f8 },
+   which is more specific than `p code` and stays white in dark mode. */
+:not(pre):not([class^=L])>code,
+p code,li code,td code,dd code {
   font-size:.85em;
+  color:var(--ink);
   background:var(--code);
   border:1px solid var(--line);
   border-radius:4px;
@@ -551,7 +556,7 @@ td p {
 .imageblock img {
   max-width:100%;
   height:auto;
-  background:white;
+  background:var(--paper);
   border-radius:7px;
 }
 .imageblock .title {
@@ -1050,4 +1055,39 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
 @media(max-width:560px) {
   .gallery { grid-template-columns:1fr; }
   .gallery .imageblock img { max-height:46vh !important; }
+}
+
+/* Home: left-aligned copy; only the schematic is centered. */
+.sect1:has(#overview)>h2 {
+  font-size:1.85rem;
+  margin-bottom:12px;
+  text-align:left;
+}
+.sect1:has(#overview) .paragraph p {
+  margin:0 0 12px;
+  text-align:left;
+}
+.lead-metrics p {
+  color:var(--muted);
+  font-size:14px;
+}
+.sect1:has(#overview) .imageblock {
+  margin:20px auto;
+  text-align:center;
+}
+.sect1:has(#overview) .imageblock img,
+.sect1:has(#overview) .imageblock .figure-link img {
+  width:auto !important;
+  max-width:min(320px, 92vw) !important;
+  max-height:180px !important;
+  min-width:0 !important;
+  margin-inline:auto;
+}
+@media(max-width:900px) {
+  .sect1:has(#overview)>h2 { font-size:1.45rem; }
+  .sect1:has(#overview) .imageblock img,
+  .sect1:has(#overview) .imageblock .figure-link img {
+    max-width:min(280px, 88vw) !important;
+    max-height:160px !important;
+  }
 }
