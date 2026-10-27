@@ -41,9 +41,6 @@
 					<output>u
 						<evalType>point</evalType>
 					</output>
-					<output>errmax_old
-						<evalType>point</evalType>
-					</output>
 					<output>Pint
 						<evalType>point</evalType>
 					</output>
@@ -63,6 +60,12 @@
 						<evalType>point</evalType>
 					</output>
 					<output>tworst
+						<evalType>point</evalType>
+					</output>
+					<output>d_mult
+						<evalType>point</evalType>
+					</output>
+					<output>d_v244
 						<evalType>point</evalType>
 					</output>
 				</outputs>

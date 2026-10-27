@@ -29,24 +29,9 @@
 						<value>active</value>
 					</option>
 				</tooloptions>
-				<outputs>
-					<output>"/RST"
-						<evalType>point</evalType>
-					</output>
-				</outputs>
 			</test>
 		</tests>
 		<currentmode>Single Run, Sweeps and Corners</currentmode>
-		<checksasserts netlist="0">
-			<test netlist="0" netlistscope="all">proj1_lib_tb_accumulator_12b_1</test>
-		</checksasserts>
-		<extensions>
-			<extension>Parasitics
-				<callback>_parSetupDBExtensionCB</callback>
-				<iconvalue></iconvalue>
-				<icontype></icontype>
-			</extension>
-		</extensions>
 		<plottingoptions>
 			<plottingoption>waveformtemplate
 				<value>(None)</value>
@@ -78,6 +63,16 @@
 				<value>(None)</value>
 			</exploreroption>
 		</exploreroptions>
+		<checksasserts netlist="0">
+			<test netlist="0" netlistscope="all">proj1_lib_tb_accumulator_12b_1</test>
+		</checksasserts>
+		<extensions>
+			<extension>Parasitics
+				<callback>_parSetupDBExtensionCB</callback>
+				<iconvalue></iconvalue>
+				<icontype></icontype>
+			</extension>
+		</extensions>
 		<incrementalsimsetup>
 			<useincremental>0</useincremental>
 			<reusenetlist>0</reusenetlist>
