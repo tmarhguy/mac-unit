@@ -32,10 +32,10 @@ Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi \quad\textbullet\quad Due 10
 \begin{tabularx}{\linewidth}{@{}p{.5\linewidth}p{.07\linewidth}p{.13\linewidth}X@{}}
 \toprule Required item & Pts & Section & Status\\\midrule
 \rowcolor{partc}Register cell with its characterization (setup, hold, $t_{cq}$, $C_{CLK}$, energy per clock) & 1 & \S2 & \textbf{Partial}: \code{tb\_dff} and \code{tb\_register\_1b} run (functional); setup/hold/energy sweeps still open\\
-\rowcolor{partc}Multiplier and adder schematics with sizes; logical-effort sizing of the critical path & 1.5 & \S3 & \textbf{Partial}: multiplier verified (256 pairs), worst case $\approx1.2$ ns measured, schematics in; logical effort missing\\
-\rowcolor{partc}State diagram, sequencer schematic, one-dot-product timing diagram & 1.5 (with timing closure) & \S4 & \textbf{Partial}: state diagram, counter and controller verified (38/38, 60/60 vector checks); \code{controller\_mac} schematic and one-dot-product timing diagram missing\\
+\rowcolor{okc}Multiplier and adder schematics with sizes; logical-effort sizing of the critical path & 1.5 & \S3 & \textbf{Done}: schematics, LE path analysis (1.85 ns predicted vs 1.2 ns measured), sizing proposal, unit tests\\
+\rowcolor{partc}State diagram, sequencer schematic, one-dot-product timing diagram & 1.5 (with timing closure) & \S4 & \textbf{Partial}: state diagram, counter and controller verified (38/38, 60/60 vector checks); one-dot-product timing diagram missing\\
 \rowcolor{missc}Timing closure: hand-computed critical path vs.\ measured $T_{CLK,\min}$; hold check & (above) & \S5 & \textbf{Missing}: critical path named; numbers need \S2 and \code{tb\_top}\\
-\rowcolor{partc}Verification waveforms (Test A) and pass/fail table & 1 (with metrics and report quality) & \S6 & \textbf{Partial}: \code{tb\_top} built; Test A captured (ACC $=0$); B/C still open\\
+\rowcolor{okc}Verification waveforms (Test A) and pass/fail table & 1 (with metrics and report quality) & \S6 & \textbf{Done}: A, B, C pass at $T=10$ ns; Test A ACC/DONE waveform\\
 \rowcolor{partc}Metrics table: FOM$_{MAC}$, $D$, $V_{DD}$; energy per MAC with and without memory; where the energy goes & (above) & \S7 & \textbf{Partial}: area estimated; delay, energy, FOM missing\\
 \rowcolor{partc}Short paragraph: what limited the design & & \S8 & \textbf{Partial}: first draft; final numbers missing\\
 \rowcolor{partc}Top-level block diagram and schematic; team members and contributions & & \S1 & \textbf{Partial}: \code{top} schematic in; block diagram and contributions missing\\\bottomrule
@@ -62,7 +62,7 @@ Register bit (DFF) & latch pair, T-gates & \code{tb\_dff}, \code{tb\_register\_1
 12-bit adder / acc. & \code{fulladder\_12b}, \code{register\_12b} & \code{tb\_fulladder\_12b}, \code{tb\_accumulator\_12b} & adder sums match; acc. reaches $0$xE10\\
 4-bit counter & 4 DFFs, toggle chain & \code{tb\_counter4b} & 38/38 vector checks pass\\
 Controller (idle/compute/done) & 4 registers, gates & \code{tb\_controller\_mac} & 60/60 vector checks pass; DONE 17 edges after START\\
-MAC top & all of the above and 2 macros & \code{tb\_top} & PWL bench; Test A captured, ACC $=0$\\\bottomrule\end{tabular}\end{center}
+MAC top & all of the above and 2 macros & \code{tb\_top} & Tests A, B, C pass at $T=10$ ns (after the read-latch fix)\\\bottomrule\end{tabular}\end{center}
 
 %==============================================================
 \section*{2. Sequential elements (3.1)}
@@ -118,14 +118,25 @@ Energy per clock & \todo{fJ} & integral of $V_{DD}$ current over one cycle, D to
 \fig{tb_fulladder_12b_tran}{.98}{\code{tb\_fulladder\_12b}, $0$--$35$ ns: A, B, CIN and SUM as bits (left) and hex buses (right).}
 \fig{tb_fulladder_closeup}{.85}{Close-up: $0$x00F${}+{}$0x00F${}={}$0x01E; $0$x0E1${}+{}$0x0E1${}={}$0x1C2. CIN $=0$, COUT $=0$.}
 
-\textbf{Logical-effort analysis (before simulation).} \todo{Path from the multiplier input (or register output) through the multiplier and adder to the accumulator register D pin.}
-\begin{center}\small\begin{tabular}{@{}lllll@{}}\toprule Stage & Gate & $g$ & $p$ & Size / $h$\\\midrule
-\todo{1} & & & & \\ \todo{\ldots} & & & & \\\midrule
-\multicolumn{5}{@{}l}{Path effort $F=GBH=\todo{}$, $N=\todo{}$, $\hat f=F^{1/N}=\todo{}$, $D=N\hat f+P=\todo{}\,\tau$, $\tau=\todo{ps}$ (FO4 from Part 2) $\Rightarrow t_{\text{path}}\approx\todo{ps}$}\\\bottomrule\end{tabular}\end{center}
+\textbf{Logical-effort analysis.} Delay of each stage in units of $\tau=10.5$ ps (Part 2: FO4 $=53$ ps $=5\tau$, chain of \code{inv\_u}) as $d=f+p$, with the effort $f=g\,h$ computed directly from fin counts: $f=R\cdot C_{\text{load}}/C_{\text{inv\_u}}$, where $R$ is the gate's worst-edge pull-up or pull-down resistance relative to \code{inv\_u} (PMOS 4 / NMOS 2 fins, $C_{\text{inv\_u}}=6$ fins) and $C_{\text{load}}$ the gate fins it drives. A full-adder input or carry-in (one \code{xor2} input: \code{inv\_2x} 12 fins $+$ two 2-fin devices; plus one \code{nand2\_u} input, 4 fins) is 20 fins.
+\begin{center}\small\begin{tabular}{@{}llrrrr@{}}\toprule Stage & Load & $R$ (worst edge) & $f$ & $p$ & $d$ [$\tau$]\\\midrule
+\code{inv\_2x} (xor2 input inverter) & 4 fins & 0.5 & 0.3 & 1 & 1.3\\
+\code{xor2} core (2-series stacks: PMOS 2$+$2, NMOS 2$+$4 fins) & 20 fins & 2.75 (avg.\ up 4, down 1.5) & 9.2 & 3 & 12.2\\
+\code{nand2\_u} (2$+$2 series, 2$\parallel$2) & 12 fins & 2 & 4 & 2 & 6\\
+\code{inv\_2x} (and2 output) & 4 fins & 0.5 & 0.3 & 1 & 1.3\\
+\code{nor2} in \code{or2} (PMOS 2$+$2 series) & 12 fins & 2.5 & 5 & 2 & 7\\
+\code{inv\_2x} (or2 output $=C_{out}$) & 20 fins & 0.5 & 1.7 & 1 & 2.7\\\bottomrule\end{tabular}\end{center}
+Full-adder arcs: $C_{in}\to C_{out}$ (and2 $+$ or2) $=6+1.3+7+2.7\approx17\tau$; $C_{in}\to S$ (one xor2) $\approx13\tau$; $A/B\to S$ (two xor2) $\approx26\tau$; $A/B\to C_{out}$ (xor2, and2, or2) $\approx30\tau$; a partial-product \code{and2} into a full-adder input $\approx6+2.7\approx9\tau$.
+
+\textbf{Multiplier critical path.} With ripple rows, the longest path alternates carry and sum through all three rows and then ripples along the last one: $a_ib_j$ (and2) $\to$ I5 bit 0 ($A/B\to C_{out}$) $\to$ I5 bit 1 ($C_{in}\to S$) $\to$ I7 bit 0 ($A/B\to C_{out}$) $\to$ I7 bit 1 ($C_{in}\to S$) $\to$ I9 bit 0 ($A/B\to C_{out}$) $\to$ I9 bits 1--3 ($C_{in}\to C_{out}$) $\to P_7$:
+\[ D_{\text{mult}}\approx 9+30+13+30+13+30+3\times17=176\,\tau\approx1.85\text{ ns}. \]
+Measured worst case: 1.14--1.24 ns. The estimate is about 50\% high, as expected: it charges every stage its slower edge and the full 20-fin load, and the slowest simulated vector (244) need not excite the whole alternating path. Both agree on what dominates: the \code{xor2} core, whose 2-fin series PMOS stack makes it about 4$\times$ weaker than \code{inv\_u} on the rising edge (12 of the 26 $\tau$ in a sum arc). \textbf{Sizing from this analysis:} widening the \code{xor2} stacks to 4-fin PMOS and NMOS ($R\approx1$) cuts each xor2 stage from $\approx12\tau$ to $\approx5\tau$ and the multiplier path to $\approx120\tau\approx1.3$ ns (LE); the cells were simulated at the drawn sizes.
+
+\textbf{Accumulator adder.} The product bits arrive at different times; the late ones are the upper bits. Worst case: $P_4$ settles last, then $A/B\to C_{out}$ at bit 4, carries through bits 5--10 and $C_{in}\to S$ at bit 11: $30+6\times17+13=145\,\tau\approx1.5$ ns. (A carry from ACC bit 0 through all 12 bits, $30+11\times17\approx217\,\tau\approx2.3$ ns, starts at $t_{cq}$ after the edge and so ends earlier than the path through the multiplier.) The register input adds the \code{mux2} and \code{and2} before the flip-flop, $\approx10\tau\approx0.1$ ns.
 
 \textbf{Unit tests and predicted vs.\ measured.}
 \begin{center}\small\begin{tabular}{@{}lllll@{}}\toprule Block & Bench & Test & Predicted delay & Measured delay\\\midrule
-Multiplier & \code{tb\_multiplier} & Exhaustive: all 256 input pairs, product compared to $a\cdot b$ (error count must be 0); 0 errors for $t_v\ge1.3$ ns; worst vector 244 ($A$ $3\to4$, $B=15$) & \todo{LE} & 1.14--1.24 ns ($\approx1.2$ ns)\\
+Multiplier & \code{tb\_multiplier} & Exhaustive: all 256 input pairs, product compared to $a\cdot b$ (error count must be 0); 0 errors for $t_v\ge1.3$ ns; worst vector 244 ($A$ $3\to4$, $B=15$) & 1.85 ns (LE, 176$\tau$) & 1.14--1.24 ns ($\approx1.2$ ns)\\
 12-bit accumulator & \code{tb\_accumulator\_12b} & accumulate, RST, hold; $16\times0$xE1 $\to$ 0xE10 & --- & $16\times225=3600$\\\bottomrule\end{tabular}\end{center}
 \textbf{Multiplier bench} (\code{tb\_multiplier4b}, Fig.~below). Eight \code{vpulse} sources count through all 256 $(A,B)$ pairs, one per $t_v$ ($A$ the low nibble: bit $k$ has delay $2^k t_v$, width $2^k t_v$, period $2^{k+1}t_v$; $B$ bit $k$ uses $2^{k+4}t_v$), 20 ps edges, tran stop $256\,t_v$; each product bit drives one \code{inv\_2x} (\code{LD<7:0>}). \todo{Inputs are ideal sources; add two \code{inv\_u} buffers per input or state this.}
 \fig{tb_multiplier4b_schematic}{.95}{\code{tb\_multiplier4b}. \todo{Re-capture with V8 $=$ \code{vdd} $=0.8$ V (this capture shows vdc $=1.8$) and V5 corrected to delay/width $32\,t_v$, period $64\,t_v$.}}
@@ -190,7 +201,8 @@ Encoding (from \code{controller\_mac}): two state registers, $S_0$ and DONE; IDL
 
 \textbf{Counter and controller.} \code{counter\_4b} is a synchronous toggle-chain counter: $T_1=EN\cdot Q_0$, $T_2=T_1Q_1$, $T_3=T_2Q_2$ (\code{and2}), $D_k=(Q_k\oplus T_k)\cdot\overline{RST}$ with $T_0=EN$ (\code{xor2}, \code{and2}), four \code{d\_ff}; RST is driven by CLEAR, so the count restarts at 0 on START (728 fins). \code{controller\_mac} is the logic above: 4 \code{register\_1b}, 11 \code{and2}, 3 \code{or2}, 5 \code{inv\_2x} (948 fins). In \code{top}, four \code{mux2} send COUNT to the memory address while RUN $=1$ and the external ADDR otherwise, and LOAD\_EN $=\overline{\mathrm{RUN}+\mathrm{DONE}+\mathrm{START}}$ gates WE\_W and WE\_X. The counter passes all 38 vector checks (below). The controller, closed-loop with the counter, follows the expected sequence edge for edge, with DONE 17 edges after START (below).
 \fig{counter4b_schematic}{.98}{\code{counter\_4b}: four \code{d\_ff} (I5--I8); $D_k=(Q_k\oplus T_k)\cdot\overline{RST}$ through \code{xor2} and \code{and2} (I12/I13, I21/I22, I25/I26, I24/I23); toggle chain $T_1=EN\cdot Q_0$, $T_2=T_1Q_1$, $T_3=T_2Q_2$ (I15, I27, I28); RST inverted by I20. 728 fins.}
-\fig{controller_schematic}{.48}{\todo{Controller.}}
+\fig{controller_schematic}{.98}{\code{controller\_mac}, state registers: four \code{register\_1b} ($S_0$ from NEXT0, DONE from NEXT1, both reset by RST; VALID from RUN and LAST\_READ from READ\_LAST, both reset by CLEAR; EN tied to VDD) and the inverters $\overline{S_1}=\overline{\mathrm{DONE}}$, $\overline{\mathrm{RUN}}$, $\overline{\mathrm{LAST}}$, $\overline{\mathrm{LAST\_READ}}$, $\overline{\mathrm{START}}$.}
+\fig{controller_schematic_logic}{.98}{\code{controller\_mac}, next-state and output logic: RUN $=\overline{S_1}S_0$; LAST $=C_{32}C_{10}$ (count $=15$); $G_0=\mathrm{START}\cdot\overline{\mathrm{RUN}}$; COUNT\_EN $=\mathrm{RUN}\cdot\overline{\mathrm{LAST}}$; ACC\_EN $=\mathrm{RUN}\cdot\mathrm{VALID}$; KEEP\_RUN, FINISH, HOLD\_DONE, READ\_LAST; NEXT0 $=G_0+\mathrm{KEEP\_RUN}$, NEXT1 $=\mathrm{FINISH}+\mathrm{HOLD\_DONE}$, CLEAR $=\mathrm{RST}+G_0$ (\code{and2}, \code{or2}).}
 \textbf{\code{tb\_counter4b}.} Stimulus and check from a Spectre digital vector file (\code{counter4b.vec}): CLK (1 ns period, rising edges at 0.5, 1.5, \ldots\ ns), RST and EN change while CLK is low, and COUNT$\langle3{:}0\rangle$ is compared with the expected value a quarter period after every edge (output thresholds 0.2/0.6 V). The 38-edge sequence covers reset, counting through the $15\to0$ wrap, hold (EN $=0$), resume, reset while counting and a final hold; expected COUNT: 0 0 1 2 \ldots\ F 0 1 2 3 4 $|$ 4 4 4 $|$ 5 \ldots\ 9 $|$ 0 0 $|$ 1 2 3 4 $|$ 4 4. \textbf{Result: 38/38 checks pass} (empty \code{.vecerr}, Spectre 0 errors, 0 warnings); outputs swing rail to rail with $V_{DD}=0.8$ V.
 \fig{tb_counter4b_tran}{.98}{\code{tb\_counter4b}, 0--39 ns: COUNT$\langle3{:}0\rangle$. Bit 0 toggles every edge, bit 3 is high for counts 8--15 (9.6--17.6 ns) and 8--9 (28.6--30.6 ns); flat during the EN-low holds (21.6--25.6 ns, after 35.6 ns); reset to 0 at 30.6 ns.}
 \fig{tb_counter4b_internal}{.98}{Bit 0 next state $D_0$ and the master-latch node (\code{I5/net5}) change before each rising edge and COUNT$\langle0\rangle$ follows after it; $V_{DD}$ flat at 0.8 V.}
@@ -201,6 +213,7 @@ Debug note: the first runs left the bench's VSS net unconnected to the simulator
 \fig{tb_controller_tran}{.98}{\code{tb\_controller\_mac}, 0--61 ns, with COUNT$\langle3{:}0\rangle$: the counter steps 0$\to$15 and holds during each run, clears on the START edge (25.5 ns) and on RST (34.5 ns). RUN rises after the START edge (4.5 ns), ACC\_EN one cycle later (pipeline), and DONE after edge 22 (21.5 ns): \textbf{17 edges from START to DONE}. START at edge 26 restarts from DONE; START at edge 31 is ignored while RUN; RST at edge 35 aborts the run; the run from edge 40 ends with DONE at edge 57 and DONE holds.}
 \fig{tb_controller_tran_prefix}{.98}{First run, with the counter's reset wired to RST instead of CLEAR: the restart from DONE lasts two cycles because the counter still holds 15 (LAST is already true). Wiring the counter reset to CLEAR, as in \code{top}, fixed it.}
 \textbf{Result: all 60 edges match} (\code{input\_tran.vecerr} has 0 lines; Spectre read and processed \code{controller.vec}).
+\fig{tb_controller_count}{.98}{COUNT$\langle3{:}0\rangle$ in \code{tb\_controller\_mac}: 0$\to$15 and hold in each run, cleared at the restart (25.5 ns) and by RST (34.5 ns).}
 \fig{tb_controller_vec_result}{.8}{Vector check for \code{tb\_controller\_mac}: the mismatch file has 0 lines.}
 
 \textbf{Timing over one dot product.} \todo{Annotated diagram, as in Part 2 (\code{timing\_diagram\_2p2c.tex} is the model): CLK, START, state, counter, ADDR to the macros, $W$/$X$ outputs, product, ACC, DONE; mark the START edge, the first read, the first accumulate, the last accumulate, DONE rising.}
@@ -220,9 +233,10 @@ T_{\min}\ge\max\bigl(t_{cq}+t_{\text{SRAM}}+t_{su},\ t_{cq}+t_{\text{mult}}+t_{\
 \begin{center}\small\begin{tabular}{@{}lll@{}}\toprule Term & Value & Source\\\midrule
 $t_{cq}$ (register) & $\approx100$ ps & \S2, \code{tb\_dff} close-up, $C_Q=1$ fF\\
 $t_{\text{SRAM}}$ (CLK to DOUT) & 488 ps & Part 2, worst case at $T_{CLK}=0.69$ ns\\
-$t_{\text{mult}}+t_{\text{add}}$ & $t_{\text{mult}}\approx1200$ ps measured (1140--1240); \todo{LE estimate, $t_{\text{add}}$} & \S3\\
+$t_{\text{mult}}$ & 1850 ps (LE); 1140--1240 ps measured & \S3\\
+$t_{\text{add}}$ (P$_4\to$ ACC$_{11}$) $+$ register input & $\approx1500+100$ ps (LE) & \S3\\
 $t_{su}$ & \todo{ps} & \S2\\\midrule
-\textbf{Hand $T_{\min}$} & \todo{ns} & sum\\
+\textbf{Hand $T_{\min}$} & $0.49+1.85+1.6+t_{su}\approx\mathbf{4.0}$ ns $+\,t_{su}$ (LE); $\approx3.3$ ns $+\,t_{su}$ with the measured multiplier & $t_{\text{SRAM}}+t_{\text{mult}}+t_{\text{add}}+t_{su}$ (the macro's DOUT is the only pipeline stage)\\
 \textbf{Measured $T_{\min}$} & \todo{ns} & shortest period at which tests A, B, C pass (resolution \todo{10 ps})\\\bottomrule\end{tabular}\end{center}
 
 \textbf{Period sweep.} \todo{Table as in Part 2 \S6: $t_{clk}$, ACC error for A/B/C, result.} Discuss the gap between hand and measured value: \todo{}.
@@ -243,12 +257,17 @@ B & all 15 & all 15 & 3600 (0xE10)\\
 C & 5, 10, 5, 10, \ldots & 10, 5, 10, 5, \ldots & 800 (0x320)\\\bottomrule\end{tabular}\end{center}
 
 \begin{center}\small\begin{tabular}{@{}lllllll@{}}\toprule Test & Expected & ACC read & DONE high at cycle & Cycles & Result\\\midrule
-A & 845 (0x34D) & $0$x000 & DONE rises after START & --- & fail (ACC stays 0)\\
-B & 3600 (0xE10) & \todo{} & \todo{} & \todo{} & \todo{}\\
-C & 800 (0x320) & \todo{} & \todo{} & \todo{} & \todo{}\\\bottomrule\end{tabular}\end{center}
+A & 845 (0x34D) & 0x34D & edge 17 after START (502 ns) & 17 & \textbf{pass} ($T=10$ ns)\\
+B & 3600 (0xE10) & 0xE10 & edge 17 after START (502 ns) & 17 & \textbf{pass} ($T=10$ ns)\\
+C & 800 (0x320) & 0x320 & edge 17 after START (502 ns) & 17 & \textbf{pass} ($T=10$ ns)\\\bottomrule\end{tabular}\end{center}
 Test B is the full-scale case (largest carry chains, no overflow); Test C alternates $5\times10$ and $10\times5$ to maximize toggling on the memory outputs and multiplier inputs.
 
-\fig{tb_top_testA}{.98}{Test A on \code{tb\_top}, $0$--$270$ ns. WE\_W then WE\_X (load), START pulse near $165$ ns, DONE rising near $250$ ns. ACC$\langle11{:}0\rangle$ and ACC\_DIG stay $000$ (expected $0$x34D). The sequencer finishes; the memories did not return the Test~A vectors into the datapath in this run.}
+\fig{tb_top_testA_acc}{.98}{\textbf{Test A} ($T=10$ ns), ACC$\langle11{:}0\rangle$: START edge at 332 ns; first accumulate at 352 ns (0x01B $=27$), then 51, 156, 156, 216, 324, 324, 478, 556, 567, 583, 661, 685, 755, 805 and \textbf{0x34D $=845$} at 502 ns, when DONE rises (17 edges after START); ACC holds until the next START or RST.}
+\fig{tb_top_testA}{.98}{Earlier Test A run, before the read-latch fix: the sequencer finishes (DONE) but ACC stays 0x000.}
+\textbf{Read-latch fix found by \code{tb\_top}.} The first runs read ACC $=0$ although the sequencer was correct (DONE 17 edges after START). Probing inside \code{top}: WE, ADDR and DIN reach both macros correctly, the wordlines fire and the read inverter output RD rises after each read, but both DOUT buses stay at 0. The macro's output latch was enabled by a pulse derived from the delayed wordline enable (RD\_EN $=$ WLD$\cdot\overline{\mathrm{WE\_L}}$, about 150 ps wide), which closed before RD had crossed mid-rail, so the latch node peaked near 0.4 V and fell back. RD\_EN is now level-sensitive on the clock-high phase (RD\_EN $=$ CLKBUF$\cdot\overline{\mathrm{WE\_L}}$, one input of \code{I11} in \code{controller}): the latch follows RD for the whole high phase and closes about 40 ps before precharge pulls RD down after the falling edge. \todo{Rerun Part 2 \code{tb\_sram\_macro} with the changed controller.}
+\fig{tb_top_rden_bug}{.98}{Before the fix: RD rises after the read, but the RD\_EN pulse closes first; the latch node X peaks near 0.4 V and returns to 0, so DOUT stays 0.}
+\fig{tb_top_testB_acc}{.98}{Test B after the fix ($T=10$ ns): ACC$\langle11{:}0\rangle$ steps by 225 from 352 ns (0x0E1, 0x1C2, \ldots) and reaches 0xE10 $=3600$ at 502 ns, when DONE rises; ACC holds afterwards.}
+\fig{tb_top_testC_acc}{.98}{Test C ($T=10$ ns): ACC steps by 50 from 352 ns (0x032, 0x064, \ldots) to 0x320 $=800$ at 502 ns. The memory outputs alternate 0101/1010 every cycle, the maximum-toggling case.}
 \fig{tb_top_testA_partial_sums}{.7}{\todo{Optional: running partial sums against the hand-computed values for Test A, once ACC is non-zero.}}
 \todo{Also check, if time allows: RST mid-computation, START during compute, back-to-back dot products without reloading (ACC clears on START).}
 
