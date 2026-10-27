@@ -11,7 +11,7 @@
 \definecolor{navy}{HTML}{153654}\definecolor{pale}{HTML}{EAF1F7}
 \definecolor{okc}{HTML}{DDF3DD}\definecolor{partc}{HTML}{FFF2CC}\definecolor{missc}{HTML}{F8D7D7}
 \setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
-\graphicspath{{img/}{../../graph/}{../../tb_sch/}}
+\graphicspath{{img/}}
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small ESE 5700 / Project 1 / Part 3}\fancyhead[R]{\small MAC unit}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{.3pt}
 \captionsetup{font=small,labelfont=bf,skip=3pt}
 \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
@@ -31,7 +31,7 @@ Tyrone Marhguy \quad\textbullet\quad Victor Wanjohi \quad\textbullet\quad Due 10
 \section*{Rubric map (handout, Part 3: ``Report'' list and 5-point grading)}
 \begin{tabularx}{\linewidth}{@{}p{.5\linewidth}p{.07\linewidth}p{.13\linewidth}X@{}}
 \toprule Required item & Pts & Section & Status\\\midrule
-\rowcolor{partc}Register cell with its characterization (setup, hold, $t_{cq}$, $C_{CLK}$, energy per clock) & 1 & \S2 & \textbf{Partial}: \code{tb\_dff} and \code{tb\_register\_1b} run (functional); setup/hold/energy sweeps still open\\
+\rowcolor{okc}Register cell with its characterization (setup, hold, $t_{cq}$, $C_{CLK}$, energy per clock) & 1 & \S2 & \textbf{Done}: $t_{cq}=68.51/62.18$ ps; $t_{su}=40$ ps; $t_{h}=10/\le0$ ps; $C_{CLK}=2.822$ fF; $E=3.895/9.309$ fJ\\
 \rowcolor{okc}Multiplier and adder schematics with sizes; logical-effort sizing of the critical path & 1.5 & \S3 & \textbf{Done}: schematics, LE path analysis (1.85 ns predicted vs 1.2 ns measured), sizing proposal, unit tests\\
 \rowcolor{partc}State diagram, sequencer schematic, one-dot-product timing diagram & 1.5 (with timing closure) & \S4 & \textbf{Partial}: state diagram, counter and controller verified (38/38, 60/60 vector checks); one-dot-product timing diagram missing\\
 \rowcolor{missc}Timing closure: hand-computed critical path vs.\ measured $T_{CLK,\min}$; hold check & (above) & \S5 & \textbf{Missing}: critical path named; numbers need \S2 and \code{tb\_top}\\
@@ -57,7 +57,7 @@ Tyrone Marhguy & \todo{fill in}\\\bottomrule\end{tabularx}
 
 \paragraph{Block inventory and test benches.}
 \begin{center}\small\begin{tabular}{@{}llll@{}}\toprule Block & Built from & Test bench & Status\\\midrule
-Register bit (DFF) & latch pair, T-gates & \code{tb\_dff}, \code{tb\_register\_1b} & pass at $2$ ns; no $t_{su}$/$t_h$ sweep\\
+Register bit (DFF) & latch pair, T-gates & \code{tb\_dff}, \code{tb\_dff\_cclk} & $t_{cq}=68.51/62.18$ ps; $t_{su}=40$ ps; $t_{h}=10/\le0$ ps; $C_{CLK}=2.822$ fF; $E=3.895/9.309$ fJ\\
 4$\times$4 multiplier & AND array, adders & \code{tb\_multiplier4b} & 256/256 correct; worst case 1.14--1.24 ns\\
 12-bit adder / acc. & \code{fulladder\_12b}, \code{register\_12b} & \code{tb\_fulladder\_12b}, \code{tb\_accumulator\_12b} & adder sums match; acc. reaches $0$xE10\\
 4-bit counter & 4 DFFs, toggle chain & \code{tb\_counter4b} & 38/38 vector checks pass\\
@@ -73,12 +73,82 @@ MAC top & all of the above and 2 macros & \code{tb\_top} & Tests A, B, C pass at
 \textbf{Design note.} The first \code{dlatch} fed the node after one inversion back through the hold gate, an inverting loop that cannot store a value; the hold \code{tg} now returns $Q$ (two inversions) to the storage node and conducts while CLK $=0$ (fixed 10/25, before any register simulation).
 \fig{dff_schematic}{.75}{\code{d\_ff}: master \code{dlatch} I0 clocked by CLKB (transparent while CLK $=0$), slave I1 clocked by CLK, and the clock inverter I2 (\code{inv\_2x}, 8/4 fins). Each \code{dlatch}: input and hold \code{tg} (2$+$2 fins), two \code{inv\_2x} in the loop and one for its local clock; 100 fins in total.}
 
-\textbf{Test bench} (\code{tb\_dff}). DUT is \code{d\_ff}. CLK and D are \code{vpulse} sources, $0\to0.8$ V, $t_r=t_f=20$ ps; VDD is $0.8$ V; Q is loaded by $1$ fF. CLK period is $2$ ns (rising edges at $1,3,5,\ldots$ ns). D is an $8$ ns period, $4$ ns-high pulse (edges at $2,6,10,14$ ns), so each data value is stable for a full cycle before the capturing edge.
-\fig{tb_dff_schematic}{.95}{\code{tb\_dff}: \code{d\_ff} driven by CLK (V2) and D (V1), $V_{DD}=0.8$ V (V0), $C_Q=1$ fF, $20$ ps edges.}
+\textbf{Test bench} (\code{tb\_dff}). DUT is \code{d\_ff}. CLK and D are driven from \code{dff\_active.vec}; VDD is $0.8$ V (V0); Q is loaded by $C_Q=1$ fF. Each data value is stable for a full cycle before the capturing rising CLK edge.
+\fig{tb_dff_sch}{.85}{\code{tb\_dff}: \code{d\_ff} with CLK and D from the vector file, $V_{DD}=0.8$ V (V0), $C_Q=1$ fF.}
 
-The $0$--$15$ ns transient is a functional check of the hold-loop fix, not a setup/hold bisection. Q powers up near mid-rail ($\approx420$ mV), is forced to $0$ on the first rising CLK ($D=0$), then tracks D on every later rising edge: D rises at $2$ ns $\to$ Q rises at $3$ ns; D falls at $6$ ns $\to$ Q falls at $7$ ns; D rises at $10$ ns $\to$ Q rises at $11$ ns. Clock-to-Q, read from the close-up at the $3$ ns and $7$ ns edges, is $\approx100$ ps (50\% CLK to 50\% Q) for both rise and fall. Setup and hold walls, $C_{CLK}$ and energy per clock are not in this run: D never approaches the CLK edge (nominal slack $1$ ns).
+The $0$--$50$ ns transient is a functional check: Q tracks D on every rising CLK. $C_{CLK}$ and energy per clock are not in this run.
+\fig{tb_dff_functional}{.98}{\code{tb\_dff} with \code{dff\_active.vec}, $0$--$50$ ns: Q (bus) follows D on the rising CLK. Positive-edge capture.}
+
+\textbf{Clock-to-Q, Q rising.} Markers in ViVA at the $V_{DD}/2=0.4$ V threshold on the capturing CLK edge and the subsequent Q rise: CLK (A) at $6.010000$ ns, Q (B) at $6.078507$ ns, $\mathrm{d}x=68.50691$ ps. D is held high through this edge.
+\fig{tb_dff_clk_to_q}{.98}{\code{tb\_dff} rising clock-to-Q at $0.4$ V: CLK (green, A) at $6.010$ ns, $400$ mV; Q (red, B) at $6.078507$ ns, $400$ mV; $\mathrm{d}x=68.51$ ps. D (magenta) held high. $V_{DD}=0.8$ V, $C_Q=1$ fF.}
+
+\textbf{Clock-to-Q, Q falling.} Same $0.4$ V markers on \code{dff\_setup\_fall.vec} at the $8$ ns edge (D falling with $\approx1$ ns of slack): CLK (A) at $8.01$ ns, Q (B) at $8.07218$ ns, $\mathrm{d}x=62.17548$ ps. $V_{DD}=0.8$ V, $C_Q=1$ fF.
+\fig{dff_setup_fall_baseline}{.85}{Falling clock-to-Q at $0.4$ V: CLK (A) at $8.01$ ns, $400$ mV; Q (B) at $8.07218$ ns, $400$ mV; $\mathrm{d}x=62.18$ ps. Unconstrained slack ($\approx1$ ns).}
+
+The earlier $0$--$15$ ns close-up ($t_{cq}\approx100$ ps at the $3$ ns / $7$ ns edges) was a coarse read of the same bench and is superseded by the $0.4$ V marker measurements.
+
+\textbf{Setup time, D rising} (\code{dff\_setup\_rise.vec}). $t_{su}$ is the smallest D-to-CLK slack at which Q is still captured and $t_{cq}$ does not grow more than 10\% above the unconstrained value: $1.10\times 68.51\,\mathrm{ps}=75.36$ ps.
+\begin{center}\small\begin{tabular}{@{}llll@{}}\toprule Setup margin & CLK / Q at $0.4$ V & $t_{cq}$ & vs.\ $75.36$ ps wall\\\midrule
+$40$ ps & $106.01$ ns / $106.08143$ ns & $71.43$ ps ($+4.3$\%) & pass\\
+$30$ ps & $120.01$ ns / $120.08817$ ns & $78.17$ ps ($+14$\%) & fail\\
+$20$ ps & $134.01$ ns / $134.09757$ ns & $87.57$ ps ($+28$\%) & fail\\
+$10$ ps & $148.01$ ns / $148.1109$ ns & $100.90$ ps ($+47$\%) & fail\\\bottomrule\end{tabular}\end{center}
+Q still rises on every trial (the bit is captured); the wall is delay, not function. The smallest passing slack is $40$ ps, so $t_{su,\mathrm{rise}}=40$ ps.
+\fig{dff_setup_rise_40ps}{.98}{\code{dff\_setup\_rise.vec}, $40$ ps setup: CLK (green, A) at $106.01$ ns, $400$ mV; Q (red, B) at $106.08143$ ns, $400$ mV; $\mathrm{d}x=71.43$ ps. $4.3$\% slower than $68.51$ ps; passes the $75.36$ ps wall.}
+\fig{dff_setup_rise_30ps}{.98}{\code{dff\_setup\_rise.vec}, $30$ ps setup: CLK (A) at $120.01$ ns, $400$ mV; Q (B) at $120.08817$ ns, $400$ mV; $\mathrm{d}x=78.17$ ps. Fails the 10\% wall.}
+\fig{dff_setup_rise_20ps}{.98}{\code{dff\_setup\_rise.vec}, $20$ ps setup: CLK (green, A) at $134.01$ ns, $400$ mV; Q (red, B) at $134.09757$ ns, $400$ mV; $\mathrm{d}x=87.57$ ps. Fails the 10\% wall.}
+\fig{dff_setup_rise_10ps}{.98}{\code{dff\_setup\_rise.vec}, $10$ ps setup: CLK (green, A) at $148.01$ ns, $400$ mV; Q (red, B) at $148.1109$ ns, $400$ mV; $\mathrm{d}x=100.90$ ps. Captured, but $t_{cq}$ fails the $75.36$ ps wall.}
+
+\textbf{Setup time, D falling} (\code{dff\_setup\_fall.vec}). Same 10\% wall on the falling $t_{cq}$: $1.10\times 62.18\,\mathrm{ps}=68.39$ ps.
+\begin{center}\small\begin{tabular}{@{}llll@{}}\toprule Setup margin & CLK / Q at $0.4$ V & $t_{cq}$ & vs.\ $68.39$ ps wall\\\midrule
+$40$ ps & $106.01$ ns / $106.0758$ ns & $65.80$ ps ($+5.8$\%) & pass\\
+$30$ ps & $120.01$ ns / $120.08197$ ns & $71.97$ ps ($+16$\%) & fail\\
+$20$ ps & $134.01$ ns / $134.09081$ ns & $80.81$ ps ($+30$\%) & fail\\
+$10$ ps & $148.01$ ns / $148.11657$ ns & $106.57$ ps ($+71$\%) & fail\\\bottomrule\end{tabular}\end{center}
+Every trial captures the falling D; $t_{su,\mathrm{fall}}=40$ ps, the smallest passing slack. Combined with the rising sweep, both edges sit in $(30,40]$ ps, so the number used for timing is $t_{su}=40$ ps.
+\fig{dff_setup_fall_40ps}{.98}{\code{dff\_setup\_fall.vec}, $40$ ps setup: CLK (A) at $106.01$ ns, $400$ mV; Q (B) at $106.0758$ ns, $400$ mV; $\mathrm{d}x=65.80$ ps. Passes the $68.39$ ps wall.}
+\fig{dff_setup_fall_30ps}{.98}{\code{dff\_setup\_fall.vec}, $30$ ps setup: CLK (A) at $120.01$ ns, $400$ mV; Q (B) at $120.08197$ ns, $400$ mV; $\mathrm{d}x=71.97$ ps. Fails the 10\% wall.}
+\fig{dff_setup_fall_20ps}{.98}{\code{dff\_setup\_fall.vec}, $20$ ps setup: CLK (A) at $134.01$ ns, $400$ mV; Q (B) at $134.09081$ ns, $400$ mV; $\mathrm{d}x=80.81$ ps. Fails the 10\% wall.}
+\fig{dff_setup_fall_10ps}{.98}{\code{dff\_setup\_fall.vec}, $10$ ps setup: CLK (A) at $148.01$ ns, $400$ mV; Q (B) at $148.11657$ ns, $400$ mV; $\mathrm{d}x=106.57$ ps. Fails the 10\% wall.}
+
+\begin{center}\small\begin{tabular}{@{}lll@{}}\toprule Setup margin & D rising $t_{cq}$ & D falling $t_{cq}$\\\midrule
+baseline & $68.51$ ps & $62.18$ ps\\
+$40$ ps & $71.43$ ps (pass) & $65.80$ ps (pass)\\
+$30$ ps & $78.17$ ps (fail) & $71.97$ ps (fail)\\
+$20$ ps & $87.57$ ps (fail) & $80.81$ ps (fail)\\
+$10$ ps & $100.90$ ps (fail) & $106.57$ ps (fail)\\\bottomrule\end{tabular}\end{center}
+
+\textbf{Hold time, D rising} (\code{dff\_hold\_rise.vec}). D is LOW at the capturing CLK edge and rises after it; Q should stay LOW (the value that existed at the edge). Criterion is functional: Q must remain the captured value, not a 10\% $t_{cq}$ wall.
+\begin{center}\small\begin{tabular}{@{}llll@{}}\toprule Hold margin & CLK edge & Observed Q & Result\\\midrule
+$0$ ps & $8$ ns & stays HIGH; dip to $\approx0.48$ V & fail\\
+$10$ ps & $22$ ns & falls to $0$ V and stays LOW & pass\\
+$20$--$1000$ ps & later edges & captures LOW & pass\\\bottomrule\end{tabular}\end{center}
+The rising-data hold wall is in $(0,10]$ ps. The number used for timing is $t_{h,\mathrm{rise}}=10$ ps, the smallest passing slack.
+\fig{dff_hold_rise}{.98}{\code{dff\_hold\_rise.vec}, $0$--$154$ ns: Q (red), CLK (green), D (magenta). D rises after each capturing CLK. First edge ($8$ ns, $0$ ps hold) Q stays high; from $22$ ns ($10$ ps) onward Q captures LOW.}
+\fig{dff_hold_rise_0ps}{.98}{$0$ ps hold at $8$ ns: D and CLK rise together. Q dips to $\approx0.48$ V then returns HIGH (expected LOW). Fail.}
+\fig{dff_hold_rise_10ps}{.98}{$10$ ps hold at $22$ ns: D rises just after CLK. Q falls to $0$ V and stays LOW. Pass.}
+
+\textbf{Hold time, D falling} (\code{dff\_hold\_fall.vec}). D is HIGH at the capturing CLK edge and falls after it; Q should stay HIGH. At $0$ ps ($8$ ns) Q rises to $0.8$ V after $t_{cq}$ and remains HIGH: pass. The $10$ ps edge ($22$ ns) and later trials ($20$--$1000$ ps) also capture HIGH. So $t_{h,\mathrm{fall}}\le0$ ps; finding a failing (negative) hold would need D to fall before CLK. Combined hold used for timing is the worse edge: $t_{h}=10$ ps.
+\fig{dff_hold_fall_0ps}{.98}{\code{dff\_hold\_fall.vec}, $0$ ps hold at $8$ ns: CLK (purple) rises as D (orange) falls. Q (cyan) rises to $0.8$ V near $8.1$ ns and stays HIGH (expected HIGH). Pass.}
+
+\textbf{Energy per clock.} $V_{DD}=0.8$ V, $C_Q=1$ fF, 20 clocks from $10$ ns to $90$ ns. Energy drawn from the VDD source (external CLK-driver energy excluded):
+\[
+E=\frac{-V_{DD}}{20}\int_{10\,\mathrm{ns}}^{90\,\mathrm{ns}}I_{V0+}\,\mathrm{d}t.
+\]
+Idle (\code{dff\_energy\_idle.vec}, D constant): $3.895$ fJ/clock. Toggling (\code{dff\_energy\_toggle.vec}): $9.309$ fJ/clock. Extra energy due to data switching: $9.309-3.895=5.414$ fJ/clock.
+\fig{dff_energy_formula}{.95}{ViVA calculator: $-0.8\times\mathrm{value}(\mathrm{integ}(\mathrm{clip}(I_{V0+},10\,\mathrm{ns},90\,\mathrm{ns})),90\,\mathrm{ns})/20\times10^{15}$. Same expression for idle and toggle.}
+\fig{dff_energy_idle}{.85}{Idle: $3.895$ fJ/clock. D constant, $V_{DD}=0.8$ V, $C_Q=1$ fF, 20 clocks.}
+\fig{dff_energy_toggle}{.85}{Toggle: $9.309$ fJ/clock. Same window and load. Extra switching energy $5.414$ fJ/clock.}
+
+\textbf{Clock-input capacitance} (\code{tb\_dff\_cclk}). CLK is driven by \code{vpulse} V1 ($0\to0.8$ V, $t_r=20$ ps); VDD is $0.8$ V; $C_Q=1$ fF. Effective rising-edge capacitance from the charge delivered by the CLK source:
+\[
+C_{CLK}=-\int I_{V1+}\,\mathrm{d}t\;/\;V_{DD}=2.822\,\mathrm{fF}.
+\]
+\fig{tb_dff_clk_inp_cap}{.95}{\code{tb\_dff\_cclk}: \code{d\_ff} with CLK from V1 (\code{vpulse}, $0\to800$ mV, $t_r=20$ ps), $V_{DD}=0.8$ V (V0), $C_Q=1$ fF.}
+\fig{dff_clock_capacitance}{.85}{ViVA table: $-\mathrm{integ}(\mathrm{clip}(I_{V1+},0.9\,\mathrm{ns},\ldots))=2.822$ fF. Rising-edge $C_{CLK}$ at $V_{DD}=0.8$ V.}
+\fig{tb_dff_schematic}{.95}{\code{tb\_dff} (pulse-source view): \code{d\_ff} driven by CLK (V2) and D (V1), $V_{DD}=0.8$ V, $C_Q=1$ fF, $20$ ps edges.}
 \fig{tb_dff_tran}{.98}{\code{tb\_dff} transient, $0$--$15$ ns: Q (left), D (right), CLK (bottom). Positive-edge capture; $T_{CLK}=2$ ns.}
-\fig{tb_dff_close_graph}{.85}{Q close-up: capture at $3.1$ ns (rise) and $7.1$ ns (fall). $t_{cq}\approx100$ ps. Glitches at integer nanoseconds are clock feedthrough on the slave.}
+\fig{tb_dff_close_graph}{.85}{Earlier Q close-up at the $3.1$ ns (rise) and $7.1$ ns (fall) edges. Coarse $t_{cq}\approx100$ ps; replaced by the $68.51$ ps marker measurement above. Glitches at integer nanoseconds are clock feedthrough on the slave.}
 
 \textbf{\code{register\_1b}} wraps the flip-flop with a \code{mux2} load enable and a synchronous reset. \code{tb\_register\_1b} drives CLK, D, EN and RST from four \code{vpulse} sources ($0.8$ V, $20$ ps edges).
 \fig{tb_register1b_schematic}{.95}{\code{tb\_register\_1b}: \code{register\_1b} with CLK (V1), RST (V2), EN (V3), D (V4), $V_{DD}=0.8$ V.}
@@ -92,11 +162,16 @@ RST is active-low: it sits high except for a low pulse near $10$ ns. EN is high 
 \fig{tb_register_12b_tran}{.95}{\code{tb\_register\_12b}: Q follows D on the rising CLK ($000\to$A5A$\to$3C3$\to123$). D $=$\code{FFF} while EN/RST holds Q, then Q returns to $000$.}
 
 \begin{center}\small\begin{tabular}{@{}p{.3\linewidth}p{.22\linewidth}p{.4\linewidth}@{}}\toprule Quantity & Value & Determined by\\\midrule
-Setup time $t_{su}$ (D 0$\to$1 / 1$\to$0) & \todo{ps} & D-to-CLK offset sweep; not in the functional run (slack $1$ ns)\\
-Hold time $t_{h}$ & \todo{ps} & same criterion, D changing after the edge\\
-Clock-to-Q $t_{cq}$ (rise / fall) & $\approx100$ ps & CLK 50\% to Q 50\% on the $3$ ns and $7$ ns edges, $C_Q=1$ fF\\
-Clock-input capacitance $C_{CLK}$ & \todo{fF} & charge per cycle from CLK source / $V_{DD}$\\
-Energy per clock & \todo{fJ} & integral of $V_{DD}$ current over one cycle, D toggling / not toggling\\\bottomrule\end{tabular}\end{center}
+Setup time $t_{su}$ (D 0$\to$1) & $40$ ps & 10\% $t_{cq}$ wall at $75.36$ ps; $40$ ps: $71.43$ ps (pass); $30$/$20$/$10$ ps fail\\
+Setup time $t_{su}$ (D 1$\to$0) & $40$ ps & 10\% $t_{cq}$ wall at $68.39$ ps; $40$ ps: $65.80$ ps (pass); $30$/$20$/$10$ ps fail\\
+Hold time $t_{h}$ (D 0$\to$1 after CLK) & $10$ ps & functional: $0$ ps fail (Q stays HIGH), $10$ ps pass (Q stays LOW)\\
+Hold time $t_{h}$ (D 1$\to$0 after CLK) & $\le0$ ps & $0$ ps at $8$ ns: Q rises to $0.8$ V and stays HIGH (pass)\\
+Clock-to-Q $t_{cq}$ (rise) & $68.51$ ps & CLK $0.4$ V at $6.010$ ns to Q $0.4$ V at $6.078507$ ns, $C_Q=1$ fF, $V_{DD}=0.8$ V\\
+Clock-to-Q $t_{cq}$ (fall) & $62.18$ ps & CLK $0.4$ V at $8.01$ ns to Q $0.4$ V at $8.07218$ ns, $C_Q=1$ fF, $V_{DD}=0.8$ V\\
+Clock-input capacitance $C_{CLK}$ & $2.822$ fF & rising-edge $\int I_{\mathrm{CLK}}\,\mathrm{d}t/V_{DD}$ on \code{tb\_dff\_cclk}, $t_r=20$ ps\\
+Energy per clock (idle, D constant) & $3.895$ fJ & $-V_{DD}\int I_{V0+}\,\mathrm{d}t$ over 20 clocks ($10$--$90$ ns), $C_Q=1$ fF\\
+Energy per clock (D toggling) & $9.309$ fJ & same integral on \code{dff\_energy\_toggle.vec}\\
+Extra energy from data switching & $5.414$ fJ & $9.309-3.895$; CLK-driver energy excluded\\\bottomrule\end{tabular}\end{center}
 
 %==============================================================
 \section*{3. Datapath (3.2)}
@@ -231,11 +306,11 @@ T_{\min}\ge t_{cq}+t_{\text{SRAM}}+t_{\text{mult}}+t_{\text{add}}+t_{su}+t_{\tex
 T_{\min}\ge\max\bigl(t_{cq}+t_{\text{SRAM}}+t_{su},\ t_{cq}+t_{\text{mult}}+t_{\text{add}}+t_{su}\bigr)\quad\text{(pipelined)}.
 \end{equation}
 \begin{center}\small\begin{tabular}{@{}lll@{}}\toprule Term & Value & Source\\\midrule
-$t_{cq}$ (register) & $\approx100$ ps & \S2, \code{tb\_dff} close-up, $C_Q=1$ fF\\
+$t_{cq}$ (register, rise / fall) & $68.51$ / $62.18$ ps & \S2, $0.4$ V markers, $C_Q=1$ fF\\
 $t_{\text{SRAM}}$ (CLK to DOUT) & 488 ps & Part 2, worst case at $T_{CLK}=0.69$ ns\\
 $t_{\text{mult}}$ & 1850 ps (LE); 1140--1240 ps measured & \S3\\
 $t_{\text{add}}$ (P$_4\to$ ACC$_{11}$) $+$ register input & $\approx1500+100$ ps (LE) & \S3\\
-$t_{su}$ & \todo{ps} & \S2\\\midrule
+$t_{su}$ (rise / fall) & $40$ ps / $40$ ps & \S2, 10\% $t_{cq}$ wall; $40$ ps pass, $30$ ps fail on both edges\\\midrule
 \textbf{Hand $T_{\min}$} & $0.49+1.85+1.6+t_{su}\approx\mathbf{4.0}$ ns $+\,t_{su}$ (LE); $\approx3.3$ ns $+\,t_{su}$ with the measured multiplier & $t_{\text{SRAM}}+t_{\text{mult}}+t_{\text{add}}+t_{su}$ (the macro's DOUT is the only pipeline stage)\\
 \textbf{Measured $T_{\min}$} & \todo{ns} & shortest period at which tests A, B, C pass (resolution \todo{10 ps})\\\bottomrule\end{tabular}\end{center}
 
@@ -297,7 +372,7 @@ Energy per MAC, Test A ($E_{dot}/16$) & \todo{pJ} & \todo{pJ}\\\bottomrule\end{t
 \section*{8. What limited the design}
 The clock period is set by the multiply-accumulate path, not the memory: the array multiplier alone takes about 1.2 ns in its worst case, over twice the 488 ps SRAM read, before the 12-bit ripple adder and the register setup are added. Both arithmetic blocks are ripple structures built from one small full adder (2-fin \code{xor2} stacks with input inverters), which made them easy to verify but long. In area the datapath (138 $\mu$m$^2$) is larger than the two macros (109 $\mu$m$^2$ \est), mostly the 24 full adders and the 12 accumulator registers. \todo{Energy split once measured.} With more time: a carry-save multiplier, a faster final adder (carry-select or lookahead), upsized \code{xor2} stacks, and a pipeline register after the multiplier.
 \begin{itemize}\setlength{\itemsep}{0pt}\setlength{\topsep}{0pt}
-\item \textbf{Register style:} static TG master-slave, 100 fins per flip-flop (152 with enable and reset), reused everywhere; a dynamic latch would be smaller and faster but cannot hold with the clock stopped. \todo{$t_{cq}$, $t_{su}$, energy per clock.}
+\item \textbf{Register style:} static TG master-slave, 100 fins per flip-flop (152 with enable and reset), reused everywhere; a dynamic latch would be smaller and faster but cannot hold with the clock stopped. Measured $t_{cq}=68.51/62.18$ ps, $t_{su}=40$ ps, $t_{h}=10/\le0$ ps, $C_{CLK}=2.822$ fF, $E=3.895$ fJ idle / $9.309$ fJ toggling.
 \item \textbf{Pipelined vs.\ not:} overlapping the read with the multiply-accumulate costs one cycle (17 instead of 16) and stays within the 20-cycle limit; because the macro output latch is the only pipeline stage, the SRAM access and the arithmetic still share one period. A register after the multiplier would split them, at a second extra cycle (18).
 \item \textbf{Multiplier and adder architecture:} ripple array and ripple adder: smallest design effort and regular, but the slowest choice; a carry-save tree and a carry-select final adder are the first changes for speed.
 \end{itemize}
