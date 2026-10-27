@@ -6,6 +6,8 @@
 :sectnums:
 :sectnumlevels: 2
 :icons: font
+:stylesheet!:
+:webfonts!:
 :docinfo: shared
 :imagesdir: images
 :stem: latexmath

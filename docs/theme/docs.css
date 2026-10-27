@@ -33,6 +33,8 @@ body {
   background:var(--bg);
   color:var(--ink);
   line-height:1.7;
+  overflow-wrap:break-word;
+  word-wrap:break-word;
 }
 a {
   color:var(--accent);
@@ -523,7 +525,19 @@ td p {
   margin:0;
 }
 .tableblock {
-  overflow-wrap:anywhere;
+  overflow-wrap:break-word;
+}
+caption, caption.title, table.tableblock > caption, table.tableblock > .title, .table-caption {
+  display:block;
+  width:auto;
+  max-width:100%;
+  color:var(--muted)!important;
+  text-align:left;
+  caption-side:top;
+  white-space:normal!important;
+  overflow-wrap:break-word;
+  word-break:normal;
+  writing-mode:horizontal-tb;
 }
 .table-scroll {
   overflow-x:auto;
@@ -779,7 +793,7 @@ dialog::backdrop {
 
 
   table {
-    min-width:480px;
+    min-width:0;
   }
   .admonitionblock table {
     min-width:0;
@@ -988,15 +1002,95 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
   .pagination a { min-height:64px; }
 }
 @media(max-width:900px) {
-  #content .table-scroll { border:0; overflow:visible; }
-  #content table.tableblock,#content table.tableblock tbody,#content table.tableblock tr { display:block; width:100%; }
-  #content table.tableblock { border:0; background:transparent!important; }
-  #content table.tableblock thead { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-  #content table.tableblock tbody tr { margin:0 0 12px; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--paper); }
-  #content table.tableblock tbody td { display:grid; grid-template-columns:minmax(0,38%) minmax(0,1fr); gap:12px; width:100%; padding:11px 12px; border:0; border-bottom:1px solid var(--line); background:var(--paper)!important; font-size:13px; }
+  #content .table-scroll { display:block; border:0; overflow:visible; width:100%; max-width:100%; }
+  #content .table-caption {
+    display:block;
+    width:100%;
+    max-width:100%;
+    margin:0 0 10px;
+    padding:0;
+    font-size:13px;
+    line-height:1.45;
+    color:var(--muted);
+    white-space:normal;
+    overflow-wrap:break-word;
+    word-break:normal;
+    writing-mode:horizontal-tb;
+  }
+  #content table.tableblock {
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    max-width:100%;
+    border:0;
+    background:transparent!important;
+  }
+  #content table.tableblock > caption,
+  #content table.tableblock caption {
+    display:block!important;
+    position:static!important;
+    float:none!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0 0 10px!important;
+    padding:0!important;
+    clip:auto!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    writing-mode:horizontal-tb!important;
+    color:var(--muted)!important;
+    font-size:13px;
+    line-height:1.45;
+    text-align:left;
+  }
+  #content table.tableblock > colgroup,
+  #content table.tableblock col { display:none!important; }
+  #content table.tableblock > thead {
+    position:absolute!important;
+    width:1px!important;
+    height:1px!important;
+    padding:0!important;
+    margin:-1px!important;
+    overflow:hidden!important;
+    clip:rect(0,0,0,0)!important;
+    clip-path:inset(50%)!important;
+    white-space:nowrap!important;
+    border:0!important;
+  }
+  #content table.tableblock tbody {
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    width:100%;
+  }
+  #content table.tableblock tbody tr {
+    display:block;
+    width:100%;
+    margin:0;
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  #content table.tableblock tbody td {
+    display:grid;
+    grid-template-columns:minmax(0,38%) minmax(0,1fr);
+    gap:12px;
+    width:100%;
+    max-width:100%;
+    padding:11px 12px;
+    border:0;
+    border-bottom:1px solid var(--line);
+    background:var(--paper)!important;
+    font-size:13px;
+    overflow-wrap:break-word;
+  }
   #content table.tableblock tbody td:last-child { border-bottom:0; }
   #content table.tableblock tbody td::before { content:attr(data-label); color:var(--muted); font-weight:650; }
-  #content table.tableblock tbody td .cell-value { min-width:0; overflow-wrap:anywhere; }
+  #content table.tableblock tbody td .cell-value { min-width:0; overflow-wrap:break-word; word-break:normal; }
 }
 @media print {
   .enhanced #content { margin:0; padding:0; }
@@ -1013,7 +1107,7 @@ body { padding:0!important; font-family:Inter,-apple-system,BlinkMacSystemFont,"
   .nav-open .nav-backdrop { inset:52px 0 0; }
   h2 { font-size:1.45rem !important; letter-spacing:-0.3px; line-height:1.25; }
   h3 { font-size:1.15rem; line-height:1.3; }
-  p, li, dd, .paragraph, figcaption, .imageblock .title { overflow-wrap:anywhere; }
+  p, li, dd, .paragraph, figcaption, .imageblock .title, caption, .table-caption { overflow-wrap:break-word; word-break:normal; }
   .docs-hero>a, .imageblock .content, .log-entry { max-width:100%; overflow-x:auto; overscroll-behavior-inline:contain; }
   .docs-diagram, .docs-hero .docs-diagram, .docs-hero svg, #content .inline-chart {
     display:block; width:auto !important; min-width:0 !important; max-width:none !important; height:auto !important;

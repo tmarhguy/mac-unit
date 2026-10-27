@@ -114,7 +114,31 @@
   addEventListener('hashchange',()=>route());
   document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;if(a.getAttribute('href')==='#content'){setMenu(false);return;}if(a.hash===location.hash)route();});
   document.querySelectorAll('.listingblock pre,.literalblock pre').forEach(pre=>{const parent=pre.closest('.listingblock,.literalblock');const copy=button('Copy','copy-code','Copy code to clipboard');const code=pre.querySelector('code');const toolbar=make('div','code-toolbar');const wrap=button('Wrap','wrap-code','Wrap code lines');wrap.setAttribute('aria-pressed','false');wrap.onclick=()=>{const on=pre.classList.toggle('code-wrap');wrap.setAttribute('aria-pressed',String(on));};toolbar.append(make('span','code-language',code?.dataset.lang || 'text'),wrap,copy);pre.before(toolbar);copy.onclick=async()=>{try{await navigator.clipboard.writeText(pre.textContent);copy.textContent='Copied';}catch{copy.textContent='Select & copy';const range=document.createRange();range.selectNodeContents(pre);const selection=getSelection();selection.removeAllRanges();selection.addRange(range);}setTimeout(()=>{copy.textContent='Copy';},2000);};});
-  document.querySelectorAll('table.tableblock').forEach(table=>{const wrap=make('div','table-scroll');wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Reference table');table.before(wrap);wrap.append(table);const labels=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());table.querySelectorAll('tbody tr').forEach(row=>[...row.querySelectorAll('td')].forEach((cell,i)=>{cell.dataset.label=labels[i]||'';const value=make('div','cell-value');while(cell.firstChild)value.append(cell.firstChild);cell.append(value);}));});
+  document.querySelectorAll('table.tableblock').forEach(table=>{
+    const wrap=make('div','table-scroll');
+    wrap.tabIndex=0;
+    wrap.setAttribute('role','region');
+    const caption=table.querySelector('caption');
+    const captionText=caption?caption.textContent.trim():'';
+    wrap.setAttribute('aria-label',captionText||'Reference table');
+    if(caption){
+      const title=make('p','table-caption');
+      title.textContent=captionText;
+      table.before(title);
+      caption.remove();
+      title.after(wrap);
+    }else{
+      table.before(wrap);
+    }
+    wrap.append(table);
+    const labels=[...table.querySelectorAll('thead th')].map(th=>th.textContent.trim());
+    table.querySelectorAll('tbody tr').forEach(row=>[...row.querySelectorAll('td')].forEach((cell,i)=>{
+      cell.dataset.label=labels[i]||'';
+      const value=make('div','cell-value');
+      while(cell.firstChild)value.append(cell.firstChild);
+      cell.append(value);
+    }));
+  });
   mobileTocLinks.addEventListener('click',e=>{if(e.target.closest('a'))mobileToc.open=false;});
   document.querySelectorAll('.imageblock img').forEach(img=>{if(img.closest('a'))return;const a=link('',img.getAttribute('src'),'figure-link');a.target='_blank';a.rel='noopener';a.setAttribute('aria-label','Open full-size image: '+(img.alt||'figure'));img.before(a);a.append(img);});
   // Hero raster media opens full-size in a dialog; without JS the link opens the file.
