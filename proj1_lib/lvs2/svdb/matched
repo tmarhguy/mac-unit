@@ -1,0 +1,34 @@
+##############################################################################################################
+#####  
+#####                                       Pegasus LVS COMPARISON
+#####  
+#####  Version                       :   23.20-p013
+#####  NVN Run Start                 :   Sun Oct 18 19:14:42 2026
+#####  ERC Summary File              :   sram_6t.sum
+#####  Extraction Report File        :   sram_6t.rep
+#####  Comparison Report File        :   sram_6t.rep.cls
+#####  Top Cell                      :   sram_6t  <vs>  sram_6t
+#####  
+#####  Run Result                    :   MATCH
+#####  
+#####  Run Summary                   :   [INFO]  ERC Results: Empty
+#####                                :   [INFO]  Extraction Clean
+#####  
+#####  Layout Design                 :   proj1_lib sram_6t layout
+#####  Schematic File                :   /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs2/sram_6t.cdl (cdl)
+#####  Rules File                    :   /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlLVS.rul
+#####  Pin Swap File                 :   sram_6t.rep.cps
+#####  
+#####  Extraction CPU Time           :   0h 0m 1s - (1s)
+#####  Extraction Exec Time          :   0h 0m 3s - (3s)
+#####  Extraction Peak Memory Usage  :   26.00MB
+#####  NVN CPU Time                  :   0h 0m 0s - (0s)                 
+#####  NVN Exec Time                 :   0h 0m 2s - (2s)                 
+#####  NVN Peak Memory Usage         :   244.99MB
+#####  LVS Total CPU Time            :   0h 0m 1s - (1s)                 
+#####  LVS Total Exec Time           :   0h 0m 5s - (5s)                 
+#####  LVS Total Peak Memory Usage   :   244.99MB
+#####  
+##############################################################################################################
+
+

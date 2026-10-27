@@ -1,0 +1,16 @@
+#
+# Edit Lock-Stake file. CAUTION: Please do not change.
+#
+# Information about current Edit Lock Owner.
+#
+LockStakeVersion               1.1
+LoginName                      tmarhguy
+HostName                       epyc-2-12.cm.cluster
+ProcessIdentifier              2466697
+ProcessCreationTime_UTC        1791781886
+ProcessCreationTime_Readable   Mon Oct 12 01:11:26 2026 EDT
+AppIdentifier                  OA File System Design Manager
+OSType                         unix
+ReasonForPlacingEditLock       OpenAccess edit lock
+FilePathUsedToEditLock         /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/6t_sram_read_snm_qb_tb/schematic/sch.oa.cdslck
+TimeEditLocked                 Mon Oct 12 02:15:47 2026 EDT

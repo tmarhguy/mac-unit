@@ -1,0 +1,30 @@
+
+*** Checking layout cellview 'proj1_lib/6t_sram_64b/layout' against source cellview 'proj1_lib/6t_sram_64b/schematic'. - Wed Oct 21 18:44:40 2026 ***
+
+INFO (LX-1018): Schematic pin 'BL0' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BL1' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BL2' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BL3' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BLB0' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BLB1' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BLB2' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'BLB3' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL0' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL1' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL10' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL11' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL12' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL13' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL14' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL15' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL2' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL3' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL4' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL5' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL6' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL7' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL8' has no corresponding layout pin.
+INFO (LX-1018): Schematic pin 'WL9' has no corresponding layout pin.
+
+*** Check Against Source complete. ***
+

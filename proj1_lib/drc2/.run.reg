@@ -1,0 +1,64 @@
+# This Pegasus GUI File Index Registry was created automatically
+# Do not attempt to modify this file as any change may lead
+# to Pegasus GUI Tools malfunction.
+# 
+"Run Directory" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2
+"Current Directory" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1
+"Cadence Directory" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/.cadence/
+"Job Signature" internal none IPVS_1792365030_3056474
+"Pegasus Job Mode" internal none drc
+"GUI Flow" internal none virtuoso6
+"GUI Preset" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/.preset.autosave
+"Pegasus Version" internal none 23.20-p013
+"Binary Name" internal none pegasusgui
+"Pegasus Build Date" internal none "Tue Jan 9 12:32:47 PST 2024"
+"Pegasus Job Time" internal none 1792365030
+"DFII version" internal none IC23.1.0
+"Run Directory" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2
+"Pegasus Job Mode" internal none drc
+"Rule File" input text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+"Cell Tree" output text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/cell_tree.txt
+"Layout Scale" internal none 0.0005
+"Layout TechLib" internal none cds_ff_mpt
+"Layout Library Name" internal none proj1_lib
+"Layout Cell Name" internal none sram_6t
+"Layout View Name" internal none layout
+"Layout ConvertPin" internal text geometry
+"Layout HierDepth" internal none 32
+"Layout MaxVertices" internal none 2048
+"Layout Top Cell" internal none sram_6t
+"Layout GDSII" input none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.gds.gz
+"Intermediate GDSII File" output none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.gds.gz
+"Intermediate GDSII File creation Errors" internal text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/PIPO1.LOG
+"Intermediate OASIS File creation Errors" internal text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/PIPO1.LOG
+"Enable Coloring" input none yes
+"Layout ReplaceBusBitChar" input none nil
+"Layout NoConvertHalfWidthPath" input none nil
+"Job Signature" internal none IPVS_1792365030_3056474
+"Do not check rules files before run" internal none ENABLED
+"Control File" input text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/pegasusdrcctl
+"Pegasus Job Log" log text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/pegasusuidrc.log
+"It is Pegasus flow" internal none ENABLED
+"Pegasus Log Dir" internal none LOGS
+"PIPO Setup File I" internal text  /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/pipo1.setup
+"PIPO Log I" log text  /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/PIPO1.LOG
+"PIPO Output I" internal text  /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/PIPO1.OUT
+"Input Layout" input none OA: proj1_lib sram_6t layout
+"Output Layout Cellmap I" internal text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/lay_cellMap.txt
+"Pegasus Version" internal none 23.20-p013
+"Binary Name" internal none pegasusvirt
+"Pegasus Build Date" internal none "Tue Jan 9 12:32:47 PST 2024"
+"Pegasus Job Time" internal none 1792365031
+"Pegasus Job Mode" internal none drc
+"Rule File" input text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/pvs/pvlDRC.rul
+"Layout GDSII" input none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.gds.gz
+"DRC Summary" output text /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.sum
+"ASCII DRC Report Database" output rdb /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.drc_errors.ascii
+"Run Directory" internal none /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/
+"UI Data" internal none ENABLED
+"Pegasus Mode Info" internal none FGPNIGCKBFAEAMOBMICCEKCAMPFICOHG
+"Report MaxResults" internal none 1000
+"Pegasus Version" internal none 23.20-p013
+"Binary Name" internal none Pegasus
+"Pegasus Build Date" internal none "Tue Jan 9 12:32:47 PST 2024"
+"Pegasus Job Time" internal none 1792365034

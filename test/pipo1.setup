@@ -1,0 +1,17 @@
+case	"preserve"
+convertDot	"node"
+convertPin	"geometry"
+hierDepth	32
+labelCase	"preserve"
+labelDepth	32
+library	"proj1_lib"
+logFile	"/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/test/PIPO1.LOG"
+maxVertices	2048
+pinAttNum	0
+runDir	"/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/test"
+strmFile	"/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/test/sram_6t.gds.gz"
+strmVersion	5
+techLib	"cds_ff_mpt"
+topCell	"sram_6t"
+view	"layout"
+enableColoring

@@ -1,0 +1,14 @@
+( ( nil
+  version "2.1"
+  mapType "incremental"
+  blockName "sram_6t"
+  repList "auCdl schematic"
+  stopList "auCdl"
+  hierDelim "."
+  netlistDir "/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/lvs2/"
+ )
+( model
+( "proj1_lib/sram_6t/schematic" "sram_6t" )
+ )
+( "sram_6t" "ihnl/cds0/map" )
+ )

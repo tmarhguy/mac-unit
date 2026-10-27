@@ -1,0 +1,78 @@
+********************************************************************************
+Product   : Virtuoso(R) XStream Out
+Program   : @(#)$CDS: strmout version IC23.1-64b 06/21/2023 09:20 (cpgbld16) $
+          : sub-version  IC23.1-64b.43 
+Started at: 18-Oct-2026  19:10:31
+User Name : vwanjohi
+Host Name : epyc-2-12
+Directory : /vast/projects/radway/ese-5700-fall/tmarhguy/project_1
+CADENCE Design Systems, Inc.
+********************************************************************************
+Info: Cellview Rev Num:99,  Tech Rev Num:59
+
+WARNING (XSTRM-20): Output Stream file '/vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.gds.gz' already exists. It will be overwritten.
+INFO (XSTRM-217): Reading the layer map file, /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt/cds_ff_mpt.layermap
+INFO (XSTRM-217): Reading the object map file, /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt/cds_ff_mpt.objectmap
+INFO (XSTRM-328): The '-enableColoring' and '-topCell' options are specified but '-arrayInstToScalar' option is not specified. Additionally, the layer map file has unlocked mapping entries. The GDS file will be generated with the effective color for the unlocked color shapes. However, array instances might be written as multiple SREF records in the GDS file because the effective color requires color variant generation.
+INFO (XSTRM-280): The output file will be a compressed file because the file name has extension .gz
+INFO (XSTRM-162): You have not used the '-viaMap' option. If the OpenAccess design has native oaVia instances, use the '-viaMap' option for preserving oaVia instances in a XStream Out - XStream In round trip. Using the '-viaMap' option improves performance and VM usage of applications using the Streamed-In design.
+
+Summary of Options :
+library                                 proj1_lib
+strmFile                                /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/sram_6t.gds.gz
+topCell                                 sram_6t
+view                                    layout
+runDir                                  /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2
+logFile                                 /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/PIPO1.LOG
+techLib                                 cds_ff_mpt
+hierDepth                               32
+maxVertices                             2048
+layerMap                                /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt/cds_ff_mpt.layermap
+objectMap                                /vast/projects/radway/cad-tools/pdks/gpdk018/cds_ff_mpt/cds_ff_mpt.objectmap
+userSkillFile                           /vast/projects/radway/ese-5700-fall/tmarhguy/project_1/proj1_lib/drc2/strmout.il
+labelDepth                              32
+case                                    Preserve
+convertDot                              node
+enableColoring
+
+INFO (XSTRM-223): 1. Translating cellview cds_ff_mpt/M1_LiAct/layout as STRUCTURE M1_LiAct_CDNS_792365031120_0_cv1.
+INFO (XSTRM-223): 2. Translating cellview cds_ff_mpt/M2_M1/layout as STRUCTURE M2_M1_CDNS_792365031120_1_cv1.
+INFO (XSTRM-223): 3. Translating cellview cds_ff_mpt/M3_M2/layout as STRUCTURE M3_M2_CDNS_792365031120_2_cv1.
+INFO (XSTRM-223): 4. Translating cellview cds_ff_mpt/LiPo_Poly/layout as STRUCTURE LiPo_Poly_CDNS_792365031120_3.
+INFO (XSTRM-223): 5. Translating cellview cds_ff_mpt/M1_LiPo/layout as STRUCTURE M1_LiPo_CDNS_792365031120_4_cv1.
+INFO (XSTRM-223): 6. Translating cellview cds_ff_mpt/p1svt/layout as STRUCTURE p1svt_CDNS_792365031120.
+INFO (XSTRM-223): 7. Translating cellview cds_ff_mpt/n1svt/layout as STRUCTURE n1svt_CDNS_792365031121.
+INFO (XSTRM-223): 8. Translating cellview cds_ff_mpt/n1svt/layout as STRUCTURE n1svt_CDNS_792365031122.
+INFO (XSTRM-223): 9. Translating cellview cds_ff_mpt/nwellTap/layout as STRUCTURE nwellTap_CDNS_792365031123.
+INFO (XSTRM-223): 10. Translating cellview cds_ff_mpt/subTap/layout as STRUCTURE subTap_CDNS_792365031124.
+INFO (XSTRM-223): 11. Translating cellview cds_ff_mpt/n1svt/layout as STRUCTURE n1svt_CDNS_792365031125.
+INFO (XSTRM-223): 12. Translating cellview proj1_lib/sram_6t/layout as STRUCTURE sram_6t.
+
+Summary of Objects Translated:
+	Scalar Instances:                       8
+	Array Instances:                        1
+	Polygons:                               0
+	Paths:                                  0
+	Rectangles:                             160
+	Lines:                                  0
+	Arcs:                                   0
+	Donuts:                                 0
+	Dots:                                   0
+	Ellipses:                               0
+	Boundaries:                             1
+	Area Blockages:                         0
+	Layer Blockages:                        0
+	Area Halos:                             0
+	Markers:                                15
+	Rows:                                   0
+	Stitch:                                 0
+	Standard Vias                           66
+	Custom Vias:                            0
+	CdsGen Vias:                            0
+	Pathsegs:                               0
+	Text:                                   15
+	TextDisplay:                            0
+	Cells:                                  12
+
+Elapsed Time: 0.6s   User Time: 0.1s   CPU Time: 0.0s   Peak VM: 7228KB
+INFO (XSTRM-234): Translation completed. '0' error(s) and '1' warning(s) found.

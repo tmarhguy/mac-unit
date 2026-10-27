@@ -1,0 +1,38 @@
+************************************************************************
+* auCdl Netlist:
+* 
+* Library Name:  proj1_lib
+* Top Cell Name: sram_6t
+* View Name:     schematic
+* Netlisted on:  Oct 18 19:14:29 2026
+************************************************************************
+
+*.BIPOLAR
+*.RESI = 2000 
+*.RESVAL
+*.CAPVAL
+*.DIOPERI
+*.DIOAREA
+*.EQUATION
+*.SCALE METER
+*.MEGA
+.PARAM
+
+
+
+************************************************************************
+* Library Name: proj1_lib
+* Cell Name:    sram_6t
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT sram_6t BL BLB Q QB VDD VSS WL
+*.PININFO BL:B BLB:B Q:B QB:B VDD:B VSS:B WL:B
+MPM1 QB Q VDD VDD p1svt m=1 l=18n nfin=2 nf=1
+MPM0 Q QB VDD VDD p1svt m=1 l=18n nfin=2 nf=1
+MNM3 Q WL BL VSS n1svt m=1 l=18n nfin=2 nf=1
+MNM2 BLB WL QB VSS n1svt m=1 l=18n nfin=2 nf=1
+MNM1 QB Q VSS VSS n1svt m=1 l=18.0n nfin=4 nf=1
+MNM0 Q QB VSS VSS n1svt m=1 l=18.0n nfin=4 nf=1
+.ENDS
+
